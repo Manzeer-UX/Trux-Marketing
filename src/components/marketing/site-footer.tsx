@@ -42,6 +42,9 @@ export function SiteFooter() {
                   <li key={item.label} className="whitespace-nowrap">
                     <Link
                       href={item.href}
+                      aria-current={
+                        "active" in item && item.active ? "page" : undefined
+                      }
                       className="nav-gradient-link inline-flex min-h-11 items-center transition-colors hover:text-off-white focus-visible:text-off-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
                     >
                       {item.label}
