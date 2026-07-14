@@ -1,12 +1,12 @@
-# TRUX Hero Dropdown UI Design
+# TRUX Number-of-Spots Dropdown UI Design
 
 ## Goal
 
-Replace the browser-native open menus used by the hero parking type and number-of-spots fields with a consistent TRUX-styled dropdown. The controls must remain real form inputs, work without a backend, and preserve the compact Figma search-card layout across screen sizes.
+Replace only the browser-native open menu used by the hero number-of-spots field with a consistent TRUX-styled dropdown. The parking-type control remains unchanged. The improved control must remain a real form input, work without a backend, and preserve the compact Figma search-card layout across screen sizes.
 
 ## Chosen Approach
 
-Create a small reusable Client Component named `FormSelect`. It renders a polished custom trigger and listbox for the visible interface while keeping a synchronized native `<select>` in the DOM as the real named form control. The Client Component boundary stays limited to the dropdown instead of moving the entire hero section to the client.
+Create a focused Client Component named `SpotCountSelect`. It renders a polished custom trigger and listbox for the visible interface while keeping a synchronized native `<select>` in the DOM as the real named form control. The Client Component boundary stays limited to this dropdown instead of moving the entire hero section to the client.
 
 Native option styling was rejected because Windows and browser rendering remains inconsistent. Adding a component-library dependency was rejected because this interaction is small and the project already has all required React and icon primitives.
 
@@ -30,16 +30,12 @@ Native option styling was rejected because Windows and browser rendering remains
 
 ## Component Interface
 
-`FormSelect` receives `id`, `name`, `placeholder`, `options`, and an accessible label. Options are stable `{ value, label }` objects. It owns only open state, selected value, and active option index.
-
-The hero passes two configurations:
-
-- Parking type: one-time and monthly.
-- Number of spots: values 1 through 10.
+`SpotCountSelect` receives `id`, `name`, `placeholder`, and the accessible label. Its fixed options are values 1 through 10. It owns only open state, selected value, and active option index.
 
 ## Error Handling and Constraints
 
 - No backend request or form submission behavior is added.
+- The parking-type native select and every other hero field remain unchanged.
 - An empty value represents the placeholder and remains valid for this visual demo.
 - The menu closes safely when focus/click moves away or the component unmounts.
 - No third-party dropdown dependency is introduced.
