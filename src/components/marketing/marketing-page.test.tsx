@@ -205,6 +205,20 @@ describe("TRUX marketing page", () => {
     expect(dates).toHaveAttribute("placeholder", "Select parking dates");
   });
 
+  it("shows a decorative dropdown indicator for each parking select", () => {
+    render(<HomePage />);
+
+    for (const name of ["Type", "Number of spots"]) {
+      const combobox = screen.getByRole("combobox", { name });
+      const field = combobox.closest("[data-search-field]");
+      const indicator = field?.querySelector("[data-select-indicator]");
+
+      expect(field).not.toBeNull();
+      expect(indicator).toHaveAttribute("aria-hidden", "true");
+      expect(indicator).toHaveClass("pointer-events-none", "text-warm-gray");
+    }
+  });
+
   it("renders the static FAQ and app download surfaces", () => {
     render(<HomePage />);
 

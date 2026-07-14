@@ -1,3 +1,4 @@
+import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
@@ -17,6 +18,7 @@ function SearchField({
 }) {
   return (
     <div
+      data-search-field={id}
       className={`flex h-[66px] flex-col gap-0.5 bg-off-white/5 px-4 py-3 ${className}`}
     >
       <label
@@ -27,6 +29,17 @@ function SearchField({
       </label>
       {children}
     </div>
+  );
+}
+
+function SelectIndicator() {
+  return (
+    <ChevronDown
+      data-select-indicator
+      aria-hidden="true"
+      className="pointer-events-none absolute top-1/2 right-0 size-4 -translate-y-1/2 text-warm-gray"
+      strokeWidth={1.75}
+    />
   );
 }
 
@@ -81,39 +94,45 @@ export function HeroSection() {
                 label="Type"
                 className="border-r border-b border-border"
               >
-                <select
-                  id="parking-type"
-                  name="parkingType"
-                  defaultValue=""
-                  className={controlClassName}
-                >
-                  <option value="">Select type</option>
-                  <option value="one-time">One time</option>
-                  <option value="monthly">Monthly</option>
-                </select>
+                <div className="relative min-w-0">
+                  <select
+                    id="parking-type"
+                    name="parkingType"
+                    defaultValue=""
+                    className={`${controlClassName} w-full pr-6`}
+                  >
+                    <option value="">Select type</option>
+                    <option value="one-time">One time</option>
+                    <option value="monthly">Monthly</option>
+                  </select>
+                  <SelectIndicator />
+                </div>
               </SearchField>
               <SearchField
                 id="number-of-spots"
                 label="Number of spots"
                 className="border-b border-border"
               >
-                <select
-                  id="number-of-spots"
-                  name="numberOfSpots"
-                  defaultValue=""
-                  className={controlClassName}
-                >
-                  <option value="">Select amount</option>
-                  {Array.from({ length: 10 }, (_, index) => {
-                    const amount = index + 1;
+                <div className="relative min-w-0">
+                  <select
+                    id="number-of-spots"
+                    name="numberOfSpots"
+                    defaultValue=""
+                    className={`${controlClassName} w-full pr-6`}
+                  >
+                    <option value="">Select amount</option>
+                    {Array.from({ length: 10 }, (_, index) => {
+                      const amount = index + 1;
 
-                    return (
-                      <option key={amount} value={amount}>
-                        {amount}
-                      </option>
-                    );
-                  })}
-                </select>
+                      return (
+                        <option key={amount} value={amount}>
+                          {amount}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <SelectIndicator />
+                </div>
               </SearchField>
               <div className="col-span-2">
                 <SearchField id="parking-dates" label="Dates">
