@@ -130,4 +130,74 @@ describe("TRUX marketing page", () => {
     expect(screen.getByText("City, state, or zip code")).toBeInTheDocument();
     expect(screen.getByText("Select parking dates")).toBeInTheDocument();
   });
+
+  it("renders the static FAQ and app download surfaces", () => {
+    render(<HomePage />);
+
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: "Frequently Asked Questions",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("listitem", { name: /FAQ:/ })).toHaveLength(7);
+    expect(
+      screen.getByText(
+        "Book, access, and manage your spot all from your phone.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", {
+        name: "TRUX mobile app showing a parking location",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("contentinfo")).toBeInTheDocument();
+  });
+
+  it("contains no submitting form", () => {
+    const { container } = render(<HomePage />);
+
+    expect(container.querySelector("form")).toBeNull();
+  });
+
+  it("exposes accessible telephone entry without a form", () => {
+    render(<HomePage />);
+    const phoneInput = screen.getByRole("textbox", {
+      name: "Mobile phone number",
+    });
+
+    expect(phoneInput).toHaveAttribute("type", "tel");
+    expect(phoneInput).toHaveAttribute("placeholder", "(555) 123-4567");
+    expect(phoneInput.closest("form")).toBeNull();
+  });
+
+  it("keeps the lower page static and uses exact wide section heights", () => {
+    const { container } = render(<HomePage />);
+    const faqSection = screen.getByRole("region", {
+      name: "Frequently Asked Questions",
+    });
+    const appSection = screen.getByRole("region", {
+      name: "Book, access, and manage your spot all from your phone.",
+    });
+    const footer = screen.getByRole("contentinfo");
+
+    expect(faqSection).toHaveClass("wide:h-[602px]");
+    expect(appSection).toHaveClass("wide:h-[716px]");
+    expect(footer).toHaveClass("wide:h-[368px]");
+    expect(screen.getByRole("button", { name: "Send Link" })).toHaveAttribute(
+      "type",
+      "button",
+    );
+    expect(
+      screen.getByRole("button", { name: "Download on the App Store" }),
+    ).toHaveAttribute("type", "button");
+    expect(
+      screen.getByRole("button", { name: "Get it on Google Play" }),
+    ).toHaveAttribute("type", "button");
+    expect(container.querySelector('a[href="#"]')).toBeNull();
+
+    for (const item of screen.getAllByRole("listitem", { name: /FAQ:/ })) {
+      expect(item.querySelector("button, a, input")).toBeNull();
+    }
+  });
 });
