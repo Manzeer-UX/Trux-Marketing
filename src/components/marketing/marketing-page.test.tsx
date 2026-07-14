@@ -242,8 +242,9 @@ describe("TRUX marketing page", () => {
       ),
     ).toHaveLength(7);
 
-    fireEvent.click(faqToggles[0]);
-    expect(faqToggles[0]).toHaveAttribute("aria-expanded", "true");
+    const firstFaqToggle = faqToggles[0]!;
+    fireEvent.click(firstFaqToggle);
+    expect(firstFaqToggle).toHaveAttribute("aria-expanded", "true");
     expect(
       screen.getByText(
         "Book, access, and manage your spot all from your phone.",
