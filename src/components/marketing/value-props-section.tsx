@@ -35,7 +35,7 @@ function ValuePropColumn({ start }: { start: number }) {
   const column = valueProps.slice(start, start + 2);
 
   return (
-    <div className="flex flex-col gap-7 lg:h-[400px]">
+    <div className="flex flex-col gap-7 wide:h-[400px]">
       {column.map((valueProp, offset) => (
         <div key={valueProp.title} className="contents">
           {offset > 0 ? (
@@ -52,20 +52,20 @@ export function ValuePropsSection() {
   return (
     <section
       aria-labelledby="value-props-heading"
-      className="bg-section px-6 py-12 md:px-10 lg:flex lg:h-[560px] lg:items-center lg:gap-12 lg:px-20 lg:py-0 xl:gap-20"
+      className="bg-section px-6 py-12 md:px-10 wide:grid wide:h-[560px] wide:grid-cols-2 wide:items-center wide:gap-20 wide:px-20 wide:py-0"
     >
       <h2
         id="value-props-heading"
-        className="font-display text-[40px] leading-[44px] font-semibold tracking-[-1.2px] text-off-white lg:max-w-[534px] lg:flex-1 lg:text-5xl lg:leading-12"
+        className="font-display text-[40px] leading-[44px] font-semibold tracking-[-1.2px] text-off-white wide:min-w-0 wide:text-5xl wide:leading-12"
       >
         Why drivers choose TRUX.
       </h2>
 
-      <div className="mt-10 grid flex-1 gap-7 sm:grid-cols-2 sm:gap-8 lg:mt-0 lg:h-full lg:grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)] lg:items-center lg:gap-6 lg:py-10 xl:gap-10">
+      <div className="mt-10 grid min-w-0 gap-7 wide:mt-0 wide:h-full wide:grid-cols-value-props wide:items-center wide:gap-10 wide:py-10">
         <ValuePropColumn start={0} />
         <span
           aria-hidden="true"
-          className="hidden h-[400px] border-l border-border lg:block"
+          className="h-px border-t border-border wide:h-[400px] wide:border-t-0 wide:border-l"
         />
         <ValuePropColumn start={2} />
       </div>

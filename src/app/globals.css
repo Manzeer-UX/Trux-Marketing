@@ -15,6 +15,9 @@
 
   --breakpoint-wide: 90rem;
 
+  --grid-template-columns-value-props: minmax(0, 1fr) 1px minmax(0, 1fr);
+  --grid-template-columns-coverage: minmax(0, 11fr) minmax(0, 9fr);
+
   --spacing: 4px;
   --spacing-1: 4px;
   --spacing-1-5: 6px;

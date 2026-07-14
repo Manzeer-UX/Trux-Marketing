@@ -4,7 +4,7 @@ export function TestimonialsSection() {
   return (
     <section
       aria-labelledby="testimonials-heading"
-      className="flex flex-col justify-center bg-section px-6 py-12 md:px-10 lg:h-[510px] lg:px-20 lg:py-12 xl:py-20"
+      className="flex flex-col justify-center bg-section px-6 py-12 md:px-10 wide:h-[510px] wide:px-20 wide:py-20"
     >
       <div className="flex w-full flex-col gap-6">
         <h2

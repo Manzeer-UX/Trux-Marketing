@@ -51,6 +51,40 @@ describe("TRUX marketing page", () => {
     ).toBeInTheDocument();
   });
 
+  it("uses named split layouts only at the wide desktop breakpoint", () => {
+    render(<HomePage />);
+
+    const valuePropsSection = screen.getByRole("region", {
+      name: "Why drivers choose TRUX.",
+    });
+    const valuePropsGrid = valuePropsSection.querySelector(":scope > div");
+    const coverageSection = screen.getByRole("region", {
+      name: /Secure parking.*25 states and growing\./,
+    });
+    const testimonialsSection = screen.getByRole("region", {
+      name: "WHAT DRIVERS ARE SAY",
+    });
+
+    expect(valuePropsSection).toHaveClass(
+      "wide:grid",
+      "wide:h-[560px]",
+      "wide:grid-cols-2",
+    );
+    expect(valuePropsSection).not.toHaveClass("lg:h-[560px]");
+    expect(valuePropsGrid).toHaveClass("wide:grid-cols-value-props");
+    expect(valuePropsGrid).not.toHaveClass("sm:grid-cols-2");
+
+    expect(coverageSection).toHaveClass(
+      "wide:grid",
+      "wide:h-[512px]",
+      "wide:grid-cols-coverage",
+    );
+    expect(coverageSection).not.toHaveClass("lg:h-[512px]");
+
+    expect(testimonialsSection).toHaveClass("wide:h-[510px]");
+    expect(testimonialsSection).not.toHaveClass("lg:h-[510px]");
+  });
+
   it("renders visual-only navigation labels without fake fragment links", () => {
     render(<HomePage />);
 
