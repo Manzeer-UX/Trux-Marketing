@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Generated build output
+.next/
+out/
+dist/
+build/
+
+# Generated test output
+playwright-report/
+blob-report/
+test-results/
+coverage/
+
+# TypeScript incremental build state
+*.tsbuildinfo
