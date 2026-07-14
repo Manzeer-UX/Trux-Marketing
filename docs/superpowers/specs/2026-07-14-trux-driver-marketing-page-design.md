@@ -112,3 +112,9 @@ The work is complete when the desktop screenshot closely matches the supplied Fi
 ## User Override Addendum — July 14, 2026
 
 This addendum supersedes the visual-only navigation and search-field behavior above. The four visible hero search fields are genuine labeled native `input` and `select` controls, and header account actions plus header/footer navigation are rendered with Next.js `Link` using meaningful destinations. These controls preserve the approved Figma geometry, dark theme, focus treatment, and responsive behavior. The page still has no form submission, handler, Client Component boundary, API call, persistence, authentication flow, or backend integration; the search action remains a non-submitting `type="button"` control.
+
+## Final User Override Addendum — July 14, 2026
+
+This final override supersedes the earlier 1280px content-container guidance, static social controls, non-interactive FAQ behavior, and the statement that the page has no Client Component boundary. Every section uses one centered responsive container backed by the named `--container-site: 90rem` Tailwind theme token while section backgrounds remain full bleed. Header and footer navigation share an amber-to-TRUX-blue bottom-gradient interaction; hover and focus reveal it, and the active Drivers link keeps it visible.
+
+Footer social icons are white, 44px Next.js `Link` targets that open the official Facebook, LinkedIn, and Instagram pages in a new tab. `FaqSection` is the only Client Component and implements a keyboard-native, one-open-at-a-time accordion with explicit expanded/control associations, rotating plus icons, animated answers, and temporary explanatory copy. All prior responsive breakpoints, real navigation destinations, labeled form controls, and non-submitting actions remain in place. Per the user's explicit instruction, this override is reviewed from source only; no build, tests, typecheck, lint, Playwright, or browser verification is run.

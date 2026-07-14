@@ -13,9 +13,9 @@ export function StatsSection() {
   return (
     <section
       aria-labelledby="stats-heading"
-      className="bg-amber px-6 py-12 text-midnight md:px-10 lg:flex lg:h-[251px] lg:items-center lg:p-20"
+      className="bg-amber text-midnight"
     >
-      <div className="mx-auto flex w-full max-w-[1352px] flex-col gap-10 lg:flex-row lg:items-center lg:gap-12">
+      <div className="site-container flex flex-col gap-10 px-6 py-12 md:px-10 lg:h-[251px] lg:flex-row lg:items-center lg:gap-12 lg:p-20">
         <h2
           id="stats-heading"
           className="text-xs leading-4 font-extrabold tracking-[1.8px] text-trux-blue"

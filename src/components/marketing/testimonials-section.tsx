@@ -4,9 +4,9 @@ export function TestimonialsSection() {
   return (
     <section
       aria-labelledby="testimonials-heading"
-      className="flex flex-col justify-center bg-section px-6 py-12 md:px-10 wide:h-[510px] wide:px-20 wide:py-20"
+      className="bg-section"
     >
-      <div className="flex w-full flex-col gap-6">
+      <div className="site-container flex w-full flex-col justify-center gap-6 px-6 py-12 md:px-10 wide:h-[510px] wide:px-20 wide:py-20">
         <h2
           id="testimonials-heading"
           className="text-xs leading-4 font-extrabold tracking-[1.8px] text-amber"

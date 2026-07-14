@@ -53,22 +53,24 @@ export function ValuePropsSection() {
     <section
       id="why-trux"
       aria-labelledby="value-props-heading"
-      className="bg-section px-6 py-12 md:px-10 wide:grid wide:h-[560px] wide:grid-cols-2 wide:items-center wide:gap-20 wide:px-20 wide:py-0"
+      className="bg-section"
     >
-      <h2
-        id="value-props-heading"
-        className="font-display text-[40px] leading-[44px] font-semibold tracking-[-1.2px] text-off-white wide:min-w-0 wide:text-5xl wide:leading-12"
-      >
-        Why drivers choose TRUX.
-      </h2>
+      <div className="site-container px-6 py-12 md:px-10 wide:grid wide:h-[560px] wide:grid-cols-2 wide:items-center wide:gap-20 wide:px-20 wide:py-0">
+        <h2
+          id="value-props-heading"
+          className="font-display text-[40px] leading-[44px] font-semibold tracking-[-1.2px] text-off-white wide:min-w-0 wide:text-5xl wide:leading-12"
+        >
+          Why drivers choose TRUX.
+        </h2>
 
-      <div className="mt-10 grid min-w-0 gap-7 wide:mt-0 wide:h-full wide:grid-cols-value-props wide:items-center wide:gap-10 wide:py-10">
-        <ValuePropColumn start={0} />
-        <span
-          aria-hidden="true"
-          className="h-px border-t border-border wide:h-[400px] wide:border-t-0 wide:border-l"
-        />
-        <ValuePropColumn start={2} />
+        <div className="mt-10 grid min-w-0 gap-7 wide:mt-0 wide:h-full wide:grid-cols-value-props wide:items-center wide:gap-10 wide:py-10">
+          <ValuePropColumn start={0} />
+          <span
+            aria-hidden="true"
+            className="h-px border-t border-border wide:h-[400px] wide:border-t-0 wide:border-l"
+          />
+          <ValuePropColumn start={2} />
+        </div>
       </div>
     </section>
   );

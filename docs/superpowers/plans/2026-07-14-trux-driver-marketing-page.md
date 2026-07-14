@@ -754,3 +754,14 @@ Expected: no output.
 ## User Override Addendum — July 14, 2026
 
 The user explicitly replaced the earlier visual-only behavior for the hero search fields and navigation. Implement the four visible hero fields as labeled native `input` and `select` controls, render header account actions and all header/footer navigation through Next.js `Link` with meaningful destinations, and retain the reviewed Figma geometry, responsive breakpoints, theme tokens, 44 px targets, and visible keyboard focus. Do not add a form, submit handler, Client Component, API call, persistence, or other backend behavior; the search button remains `type="button"`.
+
+## Final User Override Addendum — July 14, 2026
+
+This final override replaces the Task 8 browser-test workflow and the earlier static FAQ/social behavior:
+
+- Add a named 90rem container token and one reusable centered container class. Apply it to header, hero, stats, value props, coverage, testimonials, FAQ, app download, and footer inner content without changing the full-bleed section backgrounds or responsive gutters.
+- Share one amber-to-TRUX-blue pseudo-element underline between header and footer navigation. Reveal it on hover/focus and retain it for the active Drivers link.
+- Replace footer social buttons with white, 44px Next.js links to the official Facebook, LinkedIn, and Instagram accounts, including accessible labels and safe new-tab attributes.
+- Convert only `FaqSection` to a Client Component and add a one-open-at-a-time accessible accordion with native buttons, ARIA associations, a rotating plus icon, animation that does not measure DOM height, and temporary answer copy.
+- Remove only the abandoned `tests/e2e/marketing-page.spec.ts`, empty `tests` directories, `test-results`, and generated `pnpm-workspace.yaml`; keep standard `next-env.d.ts` metadata.
+- Review the code diff and optionally run `git diff --check`. Do not add or run tests, build, typecheck, lint, Playwright, or browser verification, per the user's explicit instruction.

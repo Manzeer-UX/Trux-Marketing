@@ -1,12 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { navItems } from "@/constants/marketing-content";
 
 const socialItems = [
-  { label: "Facebook", src: "/assets/social-facebook.svg" },
-  { label: "LinkedIn", src: "/assets/social-linkedin.svg" },
-  { label: "Instagram", src: "/assets/social-instagram.svg" },
+  {
+    label: "Facebook",
+    src: "/assets/social-facebook.svg",
+    href: "https://www.facebook.com/truxparking/",
+  },
+  {
+    label: "LinkedIn",
+    src: "/assets/social-linkedin.svg",
+    href: "https://www.linkedin.com/company/trux-parking",
+  },
+  {
+    label: "Instagram",
+    src: "/assets/social-instagram.svg",
+    href: "https://www.instagram.com/truxparking/",
+  },
 ] as const;
 
 const legalItems = ["Privacy Policy", "Terms of Service", "Cookies Settings"];
@@ -14,7 +25,7 @@ const legalItems = ["Privacy Policy", "Terms of Service", "Cookies Settings"];
 export function SiteFooter() {
   return (
     <footer className="bg-midnight py-12 wide:h-[368px] wide:py-24">
-      <div className="mx-auto flex h-full w-full max-w-[1280px] flex-col gap-10 px-6 wide:gap-16">
+      <div className="site-container flex h-full flex-col gap-10 px-6 md:px-10 wide:gap-16 wide:px-20">
         <div className="flex flex-col gap-8 wide:h-7 wide:flex-row wide:items-center wide:justify-between wide:gap-10">
           <div className="flex flex-col gap-6 wide:flex-row wide:items-center wide:gap-12">
             <Image
@@ -31,7 +42,7 @@ export function SiteFooter() {
                   <li key={item.label} className="whitespace-nowrap">
                     <Link
                       href={item.href}
-                      className="inline-flex min-h-11 items-center transition-colors hover:text-off-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
+                      className="nav-gradient-link inline-flex min-h-11 items-center transition-colors hover:text-off-white focus-visible:text-off-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
                     >
                       {item.label}
                     </Link>
@@ -47,15 +58,22 @@ export function SiteFooter() {
             role="group"
           >
             {socialItems.map((item) => (
-              <Button
+              <Link
                 key={item.label}
-                type="button"
-                variant="ghost"
+                href={item.href}
                 aria-label={item.label}
-                className="size-11 shrink-0 p-2.5"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex size-11 shrink-0 items-center justify-center rounded-md p-2.5 transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
               >
-                <Image src={item.src} alt="" width={24} height={24} />
-              </Button>
+                <Image
+                  src={item.src}
+                  alt=""
+                  width={24}
+                  height={24}
+                  className="brightness-0 invert"
+                />
+              </Link>
             ))}
           </div>
         </div>

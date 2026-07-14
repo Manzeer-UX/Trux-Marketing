@@ -14,6 +14,7 @@
   --font-body: var(--font-inter);
 
   --breakpoint-wide: 90rem;
+  --container-site: 90rem;
 
   --grid-template-columns-value-props: minmax(0, 1fr) 1px minmax(0, 1fr);
   --grid-template-columns-coverage: minmax(0, 11fr) minmax(0, 9fr);
@@ -65,4 +66,43 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+@layer components {
+  .site-container {
+    width: 100%;
+    max-width: var(--container-site);
+    margin-inline: auto;
+  }
+
+  .nav-gradient-link {
+    position: relative;
+  }
+
+  .nav-gradient-link::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background-image: linear-gradient(
+      to right,
+      var(--color-amber),
+      var(--color-trux-blue)
+    );
+    content: "";
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition:
+      opacity 150ms ease,
+      transform 150ms ease;
+  }
+
+  .nav-gradient-link:hover::after,
+  .nav-gradient-link:focus-visible::after,
+  .nav-gradient-link[aria-current="page"]::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
 }

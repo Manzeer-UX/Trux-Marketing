@@ -18,9 +18,10 @@ export function AppDownloadSection() {
   return (
     <section
       aria-labelledby="app-download-heading"
-      className="flex flex-col gap-10 overflow-hidden bg-midnight px-6 py-12 md:px-10 wide:grid wide:h-[716px] wide:grid-cols-[560px_minmax(0,1fr)] wide:items-center wide:gap-20 wide:px-20 wide:py-14"
+      className="overflow-hidden bg-midnight"
     >
-      <div className="flex w-full max-w-[560px] flex-col items-start gap-10">
+      <div className="site-container flex flex-col gap-10 px-6 py-12 md:px-10 wide:grid wide:h-[716px] wide:grid-cols-[560px_minmax(0,1fr)] wide:items-center wide:gap-20 wide:px-20 wide:py-14">
+        <div className="flex w-full max-w-[560px] flex-col items-start gap-10">
         <div className="flex w-full flex-col gap-4">
           <div className="flex flex-col gap-2">
             <p className="text-xs leading-4 font-extrabold tracking-[1.8px] text-amber">
@@ -102,17 +103,18 @@ export function AppDownloadSection() {
             ))}
           </div>
         </div>
-      </div>
+        </div>
 
-      <div className="relative flex min-w-0 justify-center wide:h-full">
-        <Image
-          src="/assets/phone-app.png"
-          alt="TRUX mobile app showing a parking location"
-          width={628}
-          height={960}
-          sizes="(min-width: 1440px) 628px, (min-width: 768px) 500px, calc(100vw - 48px)"
-          className="h-auto w-full max-w-[500px] wide:absolute wide:top-[-110px] wide:left-[-77px] wide:h-[960px] wide:w-[628px] wide:max-w-none"
-        />
+        <div className="relative flex min-w-0 justify-center wide:h-full">
+          <Image
+            src="/assets/phone-app.png"
+            alt="TRUX mobile app showing a parking location"
+            width={628}
+            height={960}
+            sizes="(min-width: 1440px) 628px, (min-width: 768px) 500px, calc(100vw - 48px)"
+            className="h-auto w-full max-w-[500px] wide:absolute wide:top-[-110px] wide:left-[-77px] wide:h-[960px] wide:w-[628px] wide:max-w-none"
+          />
+        </div>
       </div>
     </section>
   );
