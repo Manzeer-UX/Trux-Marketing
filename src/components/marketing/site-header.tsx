@@ -1,6 +1,7 @@
 import { Menu } from "lucide-react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Button, ButtonLink } from "@/components/ui/button";
 import { navItems } from "@/constants/marketing-content";
 
 const headerNavItems = navItems.slice(0, 7);
@@ -29,7 +30,8 @@ export function SiteHeader() {
           <ul className="flex list-none items-center gap-6">
             {headerNavItems.map((item) => (
               <li key={item.label}>
-                <span
+                <Link
+                  href={item.href}
                   aria-current={
                     "active" in item && item.active ? "page" : undefined
                   }
@@ -40,7 +42,7 @@ export function SiteHeader() {
                     aria-hidden="true"
                     className="mt-1 h-[3px] w-full bg-gradient-to-r from-amber to-transparent opacity-0 group-aria-[current=page]:opacity-100"
                   />
-                </span>
+                </Link>
               </li>
             ))}
           </ul>
@@ -48,25 +50,29 @@ export function SiteHeader() {
       </div>
 
       <div className="hidden items-center gap-3 wide:flex">
-        <Button
-          type="button"
+        <ButtonLink
+          href="https://trucklots.com/"
           variant="ghost"
           size="sm"
           className="whitespace-nowrap"
         >
           Sign In
-        </Button>
-        <Button
-          type="button"
+        </ButtonLink>
+        <ButtonLink
+          href="https://truxparking.com/propertyowners/"
           variant="blue"
           size="sm"
           className="whitespace-nowrap"
         >
           New Lot Owner Account
-        </Button>
-        <Button type="button" size="sm" className="whitespace-nowrap">
+        </ButtonLink>
+        <ButtonLink
+          href="https://trucklots.com/"
+          size="sm"
+          className="whitespace-nowrap"
+        >
           New Driver Account
-        </Button>
+        </ButtonLink>
       </div>
 
       <Button

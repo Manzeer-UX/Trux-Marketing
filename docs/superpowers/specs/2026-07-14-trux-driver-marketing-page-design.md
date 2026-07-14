@@ -108,3 +108,7 @@ The page will be checked with:
 - Overflow, keyboard-focus, semantic-heading, and image-alt checks
 
 The work is complete when the desktop screenshot closely matches the supplied Figma frame, smaller breakpoints preserve the same design language without clipping or overflow, and all local quality checks pass.
+
+## User Override Addendum — July 14, 2026
+
+This addendum supersedes the visual-only navigation and search-field behavior above. The four visible hero search fields are genuine labeled native `input` and `select` controls, and header account actions plus header/footer navigation are rendered with Next.js `Link` using meaningful destinations. These controls preserve the approved Figma geometry, dark theme, focus treatment, and responsive behavior. The page still has no form submission, handler, Client Component boundary, API call, persistence, authentication flow, or backend integration; the search action remains a non-submitting `type="button"` control.

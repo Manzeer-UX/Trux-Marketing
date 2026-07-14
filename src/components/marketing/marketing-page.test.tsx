@@ -85,20 +85,63 @@ describe("TRUX marketing page", () => {
     expect(testimonialsSection).not.toHaveClass("lg:h-[510px]");
   });
 
-  it("renders visual-only navigation labels without fake fragment links", () => {
+  it("renders header and footer navigation as links with meaningful destinations", () => {
     render(<HomePage />);
 
-    const navigation = screen.getByRole("navigation", {
+    const primaryNavigation = screen.getByRole("navigation", {
       name: "Primary navigation",
     });
+    const footerNavigation = screen.getByRole("navigation", {
+      name: "Footer navigation",
+    });
 
-    expect(navigation.querySelector('a[href="#"]')).not.toBeInTheDocument();
-    expect(within(navigation).getByText("Drivers")).toHaveAttribute(
-      "aria-current",
-      "page",
+    const expectedDestinations = new Map([
+      ["Lot Owners", "https://truxparking.com/propertyowners/"],
+      ["Drivers", "/"],
+      ["Why Trux", "/#why-trux"],
+      ["About Us", "https://truxparking.com/about-us/"],
+      ["Partners", "https://truxparking.com/truxpartners/"],
+      ["Referrals", "https://truxparking.com/affiliateprogram/"],
+      ["Trux Perx", "https://truxparking.com/truxpartners/"],
+      ["Locations", "https://truxparking.com/locations-we-serve/"],
+      ["Blog", "https://truxparking.com/blog/"],
+    ]);
+
+    for (const [label, href] of expectedDestinations) {
+      expect(
+        within(footerNavigation).getByRole("link", { name: label }),
+      ).toHaveAttribute("href", href);
+    }
+
+    for (const [label, href] of [...expectedDestinations].slice(0, 7)) {
+      expect(
+        within(primaryNavigation).getByRole("link", { name: label }),
+      ).toHaveAttribute("href", href);
+    }
+
+    expect(
+      within(primaryNavigation).getByRole("link", { name: "Drivers" }),
+    ).toHaveAttribute("aria-current", "page");
+    expect(within(primaryNavigation).getAllByRole("listitem")).toHaveLength(7);
+    expect(document.querySelector('a[href="#"]')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("region", { name: "Why drivers choose TRUX." }),
+    ).toHaveAttribute("id", "why-trux");
+  });
+
+  it("renders account actions as links with exact destinations", () => {
+    render(<HomePage />);
+
+    expect(screen.getByRole("link", { name: "Sign In" })).toHaveAttribute(
+      "href",
+      "https://trucklots.com/",
     );
-    expect(within(navigation).getByText("Trux Perx")).toBeInTheDocument();
-    expect(within(navigation).getAllByRole("listitem")).toHaveLength(7);
+    expect(
+      screen.getByRole("link", { name: "New Lot Owner Account" }),
+    ).toHaveAttribute("href", "https://truxparking.com/propertyowners/");
+    expect(
+      screen.getByRole("link", { name: "New Driver Account" }),
+    ).toHaveAttribute("href", "https://trucklots.com/");
   });
 
   it("keeps the compact header until the wide breakpoint and right-aligns the desktop map", () => {
@@ -120,15 +163,46 @@ describe("TRUX marketing page", () => {
     ).toHaveClass("whitespace-nowrap");
   });
 
-  it("keeps the visual search controls non-submitting", () => {
+  it("renders four labeled native search controls without submission behavior", () => {
     const { container } = render(<HomePage />);
 
     expect(container.querySelector("form")).not.toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Search Available Lots" }),
     ).toHaveAttribute("type", "button");
-    expect(screen.getByText("City, state, or zip code")).toBeInTheDocument();
-    expect(screen.getByText("Select parking dates")).toBeInTheDocument();
+
+    const location = screen.getByRole("textbox", { name: "Location" });
+    expect(location).toHaveAttribute("type", "text");
+    expect(location).toHaveAttribute("name", "location");
+    expect(location).toHaveAttribute("placeholder", "City, state, or zip code");
+
+    const parkingType = screen.getByRole("combobox", { name: "Type" });
+    expect(parkingType).toHaveAttribute("name", "parkingType");
+    expect(parkingType).toHaveDisplayValue("Select type");
+    expect(
+      within(parkingType).getByRole("option", { name: "One time" }),
+    ).toBeInTheDocument();
+    expect(
+      within(parkingType).getByRole("option", { name: "Monthly" }),
+    ).toBeInTheDocument();
+
+    const numberOfSpots = screen.getByRole("combobox", {
+      name: "Number of spots",
+    });
+    expect(numberOfSpots).toHaveAttribute("name", "numberOfSpots");
+    expect(numberOfSpots).toHaveDisplayValue("Select amount");
+    expect(within(numberOfSpots).getAllByRole("option")).toHaveLength(11);
+    expect(
+      within(numberOfSpots).getByRole("option", { name: "1" }),
+    ).toBeInTheDocument();
+    expect(
+      within(numberOfSpots).getByRole("option", { name: "10" }),
+    ).toBeInTheDocument();
+
+    const dates = screen.getByRole("textbox", { name: "Dates" });
+    expect(dates).toHaveAttribute("type", "text");
+    expect(dates).toHaveAttribute("name", "parkingDates");
+    expect(dates).toHaveAttribute("placeholder", "Select parking dates");
   });
 
   it("renders the static FAQ and app download surfaces", () => {

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { navItems } from "@/constants/marketing-content";
 
@@ -28,7 +29,12 @@ export function SiteFooter() {
               <ul className="flex list-none flex-wrap items-center gap-x-8 gap-y-4 text-sm leading-5 text-muted">
                 {navItems.map((item) => (
                   <li key={item.label} className="whitespace-nowrap">
-                    {item.label}
+                    <Link
+                      href={item.href}
+                      className="inline-flex min-h-11 items-center transition-colors hover:text-off-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
+                    >
+                      {item.label}
+                    </Link>
                   </li>
                 ))}
               </ul>

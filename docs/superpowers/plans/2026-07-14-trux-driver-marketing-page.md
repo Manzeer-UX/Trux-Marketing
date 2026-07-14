@@ -51,6 +51,7 @@
 ### Task 1: Scaffold the Next.js application and test harness
 
 **Files:**
+
 - Create: `package.json`
 - Create: `next.config.ts`
 - Create: `tsconfig.json`
@@ -63,6 +64,7 @@
 - Test: `src/app/page.test.tsx`
 
 **Interfaces:**
+
 - Consumes: approved design spec and repository root.
 - Produces: `pnpm dev`, `pnpm build`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, and `pnpm test:e2e` commands; `HomePage(): JSX.Element` at `/`.
 
@@ -132,7 +134,9 @@ import HomePage from "./page";
 
 it("renders the TRUX driver page landmark", () => {
   render(<HomePage />);
-  expect(screen.getByRole("main", { name: "TRUX driver parking" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("main", { name: "TRUX driver parking" }),
+  ).toBeInTheDocument();
 });
 ```
 
@@ -164,6 +168,7 @@ git commit -m "chore: scaffold Next.js marketing app"
 ### Task 2: Establish fonts, design tokens, and reusable button styles
 
 **Files:**
+
 - Create: `src/app/layout.tsx`
 - Create: `src/app/globals.css`
 - Create: `src/lib/cn.ts`
@@ -171,6 +176,7 @@ git commit -m "chore: scaffold Next.js marketing app"
 - Test: `src/components/ui/button.test.tsx`
 
 **Interfaces:**
+
 - Consumes: Tailwind v4 build and React.
 - Produces: `cn(...inputs: ClassValue[]): string`; `Button` with `variant: "amber" | "blue" | "ghost"`, `size: "sm" | "md" | "lg"`, and native button props; CSS tokens `--color-midnight`, `--color-section`, `--color-amber`, `--color-trux-blue`, `--color-off-white`, `--color-warm-gray`, `--color-muted`, and `--color-border`.
 
@@ -207,20 +213,33 @@ const buttonVariants = cva(
       variant: {
         amber: "bg-amber text-midnight hover:bg-amber/90",
         blue: "bg-trux-blue text-white hover:bg-trux-blue/90",
-        ghost: "bg-transparent text-off-white hover:bg-white/10"
+        ghost: "bg-transparent text-off-white hover:bg-white/10",
       },
-      size: { sm: "px-4 text-sm", md: "px-5 text-sm", lg: "px-6 text-base" }
+      size: { sm: "px-4 text-sm", md: "px-5 text-sm", lg: "px-6 text-base" },
     },
-    defaultVariants: { variant: "amber", size: "md" }
-  }
+    defaultVariants: { variant: "amber", size: "md" },
+  },
 );
 
 export interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {}
 
-export function Button({ className, variant, size, type = "button", ...props }: ButtonProps) {
-  return <button type={type} className={cn(buttonVariants({ variant, size }), className)} {...props} />;
+export function Button({
+  className,
+  variant,
+  size,
+  type = "button",
+  ...props
+}: ButtonProps) {
+  return (
+    <button
+      type={type}
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    />
+  );
 }
 ```
 
@@ -240,6 +259,7 @@ git commit -m "feat: add TRUX design tokens and UI primitives"
 ### Task 3: Export Figma artwork and define typed marketing content
 
 **Files:**
+
 - Create: `public/assets/trux-logo.svg`
 - Create: `public/assets/hero-map.png`
 - Create: `public/assets/coverage-map.png`
@@ -257,13 +277,20 @@ git commit -m "feat: add TRUX design tokens and UI primitives"
 - Test: `src/constants/marketing-content.test.ts`
 
 **Interfaces:**
+
 - Consumes: Figma file `0iOu7EEMEgAOvyr2x4tqU8`, nodes `1309:2475` and `1532:12262`.
 - Produces: `navItems`, `stats`, `valueProps`, `testimonials`, and `faqs` as readonly typed arrays; the exact local asset paths listed above.
 
 - [ ] **Step 1: Write failing content-shape tests**
 
 ```ts
-import { faqs, navItems, stats, testimonials, valueProps } from "./marketing-content";
+import {
+  faqs,
+  navItems,
+  stats,
+  testimonials,
+  valueProps,
+} from "./marketing-content";
 
 it("captures every repeated item in the Figma page", () => {
   expect(navItems).toHaveLength(9);
@@ -287,24 +314,43 @@ Use Figma `get_screenshot` at original resolution for `1532:12262` to create `he
 - [ ] **Step 4: Implement the exact typed page copy**
 
 ```ts
-export interface NavItem { label: string; href: "#"; active?: boolean }
-export interface Stat { value: string; label: string }
-export interface ValueProp { title: string; description: string; icon: string }
-export interface Testimonial { quote: string; name: string; location: string }
+export interface NavItem {
+  label: string;
+  href: "#";
+  active?: boolean;
+}
+export interface Stat {
+  value: string;
+  label: string;
+}
+export interface ValueProp {
+  title: string;
+  description: string;
+  icon: string;
+}
+export interface Testimonial {
+  quote: string;
+  name: string;
+  location: string;
+}
 
 export const navItems = [
-  { label: "Lot Owners", href: "#" }, { label: "Drivers", href: "#", active: true },
-  { label: "Why Trux", href: "#" }, { label: "About Us", href: "#" },
-  { label: "Partners", href: "#" }, { label: "Referrals", href: "#" },
-  { label: "Trux Perx", href: "#" }, { label: "Locations", href: "#" },
-  { label: "Blog", href: "#" }
+  { label: "Lot Owners", href: "#" },
+  { label: "Drivers", href: "#", active: true },
+  { label: "Why Trux", href: "#" },
+  { label: "About Us", href: "#" },
+  { label: "Partners", href: "#" },
+  { label: "Referrals", href: "#" },
+  { label: "Trux Perx", href: "#" },
+  { label: "Locations", href: "#" },
+  { label: "Blog", href: "#" },
 ] as const satisfies readonly NavItem[];
 
 export const stats = [
   { value: "200+", label: "Verified truck lots" },
   { value: "25", label: "States and growing" },
   { value: "10K +", label: "Drivers trust Trux" },
-  { value: "24/7", label: "Remote gate access" }
+  { value: "24/7", label: "Remote gate access" },
 ] as const satisfies readonly Stat[];
 ```
 
@@ -324,6 +370,7 @@ git commit -m "feat: add Figma artwork and marketing content"
 ### Task 4: Build the header, hero, and metrics strip
 
 **Files:**
+
 - Create: `src/components/marketing/site-header.tsx`
 - Create: `src/components/marketing/hero-section.tsx`
 - Create: `src/components/marketing/stats-section.tsx`
@@ -331,6 +378,7 @@ git commit -m "feat: add Figma artwork and marketing content"
 - Test: `src/components/marketing/marketing-page.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `Button`, `navItems`, `stats`, `/assets/trux-logo.svg`, and `/assets/hero-map.png`.
 - Produces: `SiteHeader()`, `HeroSection()`, and `StatsSection()` Server Components.
 
@@ -343,14 +391,26 @@ import HomePage from "@/app/page";
 describe("TRUX marketing page", () => {
   it("renders the primary navigation and hero", () => {
     render(<HomePage />);
-    expect(screen.getByRole("navigation", { name: "Primary navigation" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 1, name: /The Safest Truck Parking Network/i })).toBeInTheDocument();
-    expect(screen.getByRole("img", { name: "Available TRUX parking lots around Atlanta" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("navigation", { name: "Primary navigation" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: /The Safest Truck Parking Network/i,
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", {
+        name: "Available TRUX parking lots around Atlanta",
+      }),
+    ).toBeInTheDocument();
   });
 
   it("renders all four metrics", () => {
     render(<HomePage />);
-    for (const value of ["200+", "25", "10K +", "24/7"]) expect(screen.getByText(value)).toBeInTheDocument();
+    for (const value of ["200+", "25", "10K +", "24/7"])
+      expect(screen.getByText(value)).toBeInTheDocument();
   });
 });
 ```
@@ -385,6 +445,7 @@ git commit -m "feat: build TRUX header hero and stats"
 ### Task 5: Build value propositions, coverage, and testimonials
 
 **Files:**
+
 - Create: `src/components/marketing/value-props-section.tsx`
 - Create: `src/components/marketing/coverage-section.tsx`
 - Create: `src/components/marketing/testimonials-section.tsx`
@@ -392,6 +453,7 @@ git commit -m "feat: build TRUX header hero and stats"
 - Modify: `src/components/marketing/marketing-page.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `valueProps`, `testimonials`, `Button`, feature icons, and `/assets/coverage-map.png`.
 - Produces: `ValuePropsSection()`, `CoverageSection()`, and `TestimonialsSection()` Server Components.
 
@@ -400,10 +462,18 @@ git commit -m "feat: build TRUX header hero and stats"
 ```tsx
 it("renders the benefits, coverage, and testimonials", () => {
   render(<HomePage />);
-  expect(screen.getByRole("heading", { level: 2, name: "Why drivers choose TRUX." })).toBeInTheDocument();
-  expect(screen.getAllByRole("article", { name: /testimonial by/i })).toHaveLength(3);
-  expect(screen.getByRole("img", { name: "TRUX parking coverage across 25 states" })).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Explore Locations" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("heading", { level: 2, name: "Why drivers choose TRUX." }),
+  ).toBeInTheDocument();
+  expect(
+    screen.getAllByRole("article", { name: /testimonial by/i }),
+  ).toHaveLength(3);
+  expect(
+    screen.getByRole("img", { name: "TRUX parking coverage across 25 states" }),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole("button", { name: "Explore Locations" }),
+  ).toBeInTheDocument();
 });
 ```
 
@@ -431,6 +501,7 @@ git commit -m "feat: add benefits coverage and testimonials"
 ### Task 6: Build FAQs, app download, and footer
 
 **Files:**
+
 - Create: `src/components/marketing/faq-section.tsx`
 - Create: `src/components/marketing/app-download-section.tsx`
 - Create: `src/components/marketing/site-footer.tsx`
@@ -438,6 +509,7 @@ git commit -m "feat: add benefits coverage and testimonials"
 - Modify: `src/components/marketing/marketing-page.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `faqs`, `navItems`, `Button`, store/social/logo assets, and `/assets/phone-app.png`.
 - Produces: `FaqSection()`, `AppDownloadSection()`, and `SiteFooter()` Server Components.
 
@@ -446,10 +518,21 @@ git commit -m "feat: add benefits coverage and testimonials"
 ```tsx
 it("renders the static FAQ and app download surfaces", () => {
   render(<HomePage />);
-  expect(screen.getByRole("heading", { level: 2, name: "Frequently Asked Questions" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("heading", {
+      level: 2,
+      name: "Frequently Asked Questions",
+    }),
+  ).toBeInTheDocument();
   expect(screen.getAllByRole("listitem", { name: /FAQ:/ })).toHaveLength(7);
-  expect(screen.getByText("Book, access, and manage your spot all from your phone.")).toBeInTheDocument();
-  expect(screen.getByRole("img", { name: "TRUX mobile app showing a parking location" })).toBeInTheDocument();
+  expect(
+    screen.getByText("Book, access, and manage your spot all from your phone."),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole("img", {
+      name: "TRUX mobile app showing a parking location",
+    }),
+  ).toBeInTheDocument();
   expect(screen.getByRole("contentinfo")).toBeInTheDocument();
 });
 
@@ -487,6 +570,7 @@ git commit -m "feat: complete TRUX marketing page sections"
 ### Task 7: Add required route states and metadata coverage
 
 **Files:**
+
 - Create: `src/app/loading.tsx`
 - Create: `src/app/error.tsx`
 - Create: `src/app/global-error.tsx`
@@ -494,6 +578,7 @@ git commit -m "feat: complete TRUX marketing page sections"
 - Test: `src/app/route-states.test.tsx`
 
 **Interfaces:**
+
 - Consumes: global design tokens and `Button`.
 - Produces: accessible route loading, error, global error, and not-found UI that matches the midnight/amber visual system.
 
@@ -511,7 +596,9 @@ it("announces loading status", () => {
 
 it("renders an accessible not-found heading", () => {
   render(<NotFound />);
-  expect(screen.getByRole("heading", { level: 1, name: "Page not found" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("heading", { level: 1, name: "Page not found" }),
+  ).toBeInTheDocument();
 });
 ```
 
@@ -539,6 +626,7 @@ git commit -m "feat: add accessible route states"
 ### Task 8: Implement responsive behavior and browser visual verification
 
 **Files:**
+
 - Modify: `src/app/globals.css`
 - Modify: `src/components/marketing/site-header.tsx`
 - Modify: `src/components/marketing/hero-section.tsx`
@@ -552,6 +640,7 @@ git commit -m "feat: add accessible route states"
 - Create: `tests/e2e/marketing-page.spec.ts`
 
 **Interfaces:**
+
 - Consumes: completed static page and Playwright web server.
 - Produces: stable layouts at 1512 × 4224 reference width, 768 px tablet, 390 px mobile, and 320 px narrow mobile; screenshot baselines under `tests/e2e/marketing-page.spec.ts-snapshots`.
 
@@ -564,13 +653,20 @@ for (const viewport of [
   { name: "desktop", width: 1512, height: 900 },
   { name: "tablet", width: 768, height: 900 },
   { name: "mobile", width: 390, height: 844 },
-  { name: "narrow-mobile", width: 320, height: 800 }
+  { name: "narrow-mobile", width: 320, height: 800 },
 ]) {
-  test(`${viewport.name} layout has no horizontal overflow`, async ({ page }) => {
-    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+  test(`${viewport.name} layout has no horizontal overflow`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({
+      width: viewport.width,
+      height: viewport.height,
+    });
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-    const hasOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+    const hasOverflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > window.innerWidth,
+    );
     expect(hasOverflow).toBe(false);
   });
 }
@@ -578,7 +674,10 @@ for (const viewport of [
 test("desktop page matches its visual baseline", async ({ page }) => {
   await page.setViewportSize({ width: 1512, height: 900 });
   await page.goto("/");
-  await expect(page).toHaveScreenshot("trux-driver-desktop.png", { fullPage: true, animations: "disabled" });
+  await expect(page).toHaveScreenshot("trux-driver-desktop.png", {
+    fullPage: true,
+    animations: "disabled",
+  });
 });
 ```
 
@@ -612,12 +711,14 @@ git commit -m "feat: refine responsive TRUX layouts"
 ### Task 9: Final quality gate and cleanup
 
 **Files:**
+
 - Modify: only files identified by failing checks.
 - Remove: temporary root screenshot `figma-driver-page.png` after visual comparison.
 - Create: `.gitignore`
 - Create: `.prettierignore`
 
 **Interfaces:**
+
 - Consumes: completed application and all verification commands.
 - Produces: clean, buildable, fully verified repository with no temporary artifacts.
 
@@ -649,3 +750,7 @@ git commit -m "chore: complete TRUX marketing page verification"
 Run: `git status --short`
 
 Expected: no output.
+
+## User Override Addendum — July 14, 2026
+
+The user explicitly replaced the earlier visual-only behavior for the hero search fields and navigation. Implement the four visible hero fields as labeled native `input` and `select` controls, render header account actions and all header/footer navigation through Next.js `Link` with meaningful destinations, and retain the reviewed Figma geometry, responsive breakpoints, theme tokens, 44 px targets, and visible keyboard focus. Do not add a form, submit handler, Client Component, API call, persistence, or other backend behavior; the search button remains `type="button"`.

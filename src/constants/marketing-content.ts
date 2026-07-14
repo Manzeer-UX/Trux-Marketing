@@ -1,6 +1,6 @@
 export interface NavItem {
   label: string;
-  href: "#";
+  href: string;
   active?: boolean;
 }
 
@@ -26,15 +26,21 @@ export interface Faq {
 }
 
 export const navItems = [
-  { label: "Lot Owners", href: "#" },
-  { label: "Drivers", href: "#", active: true },
-  { label: "Why Trux", href: "#" },
-  { label: "About Us", href: "#" },
-  { label: "Partners", href: "#" },
-  { label: "Referrals", href: "#" },
-  { label: "Trux Perx", href: "#" },
-  { label: "Locations", href: "#" },
-  { label: "Blog", href: "#" },
+  { label: "Lot Owners", href: "https://truxparking.com/propertyowners/" },
+  { label: "Drivers", href: "/", active: true },
+  { label: "Why Trux", href: "/#why-trux" },
+  { label: "About Us", href: "https://truxparking.com/about-us/" },
+  { label: "Partners", href: "https://truxparking.com/truxpartners/" },
+  {
+    label: "Referrals",
+    href: "https://truxparking.com/affiliateprogram/",
+  },
+  { label: "Trux Perx", href: "https://truxparking.com/truxpartners/" },
+  {
+    label: "Locations",
+    href: "https://truxparking.com/locations-we-serve/",
+  },
+  { label: "Blog", href: "https://truxparking.com/blog/" },
 ] as const satisfies readonly NavItem[];
 
 export const stats = [

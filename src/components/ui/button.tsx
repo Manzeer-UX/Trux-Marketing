@@ -1,8 +1,9 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import type { ButtonHTMLAttributes } from "react";
+import Link, { type LinkProps } from "next/link";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 
-const buttonVariants = cva(
+export const buttonVariants = cva(
   "inline-flex min-h-11 items-center justify-center rounded-full font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
@@ -26,6 +27,13 @@ export interface ButtonProps
     ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {}
 
+export interface ButtonLinkProps<RouteType>
+  extends
+    Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href">,
+    VariantProps<typeof buttonVariants> {
+  href: LinkProps<RouteType>["href"];
+}
+
 export function Button({
   className,
   variant,
@@ -36,6 +44,22 @@ export function Button({
   return (
     <button
       type={type}
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    />
+  );
+}
+
+export function ButtonLink<RouteType>({
+  className,
+  variant,
+  size,
+  href,
+  ...props
+}: ButtonLinkProps<RouteType>) {
+  return (
+    <Link
+      href={href}
       className={cn(buttonVariants({ variant, size }), className)}
       {...props}
     />

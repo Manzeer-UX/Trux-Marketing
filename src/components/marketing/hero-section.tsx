@@ -1,40 +1,31 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
-const searchFields = [
-  {
-    label: "LOCATION",
-    value: "City, state, or zip code",
-    className: "border-b border-border",
-  },
-  {
-    label: "TYPE",
-    value: "Select type",
-    className: "border-r border-b border-border",
-  },
-  {
-    label: "NUMBER OF SPOTS",
-    value: "Select amount",
-    className: "border-b border-border",
-  },
-  { label: "DATES", value: "Select parking dates", className: "" },
-] as const;
+const controlClassName =
+  "min-w-0 appearance-none bg-transparent p-0 text-base leading-6 text-warm-gray placeholder:text-warm-gray focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber";
 
 function SearchField({
+  id,
   label,
-  value,
-  className,
-}: (typeof searchFields)[number]) {
+  className = "",
+  children,
+}: {
+  id: string;
+  label: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
   return (
     <div
       className={`flex h-[66px] flex-col gap-0.5 bg-off-white/5 px-4 py-3 ${className}`}
     >
-      <span className="text-xs font-semibold leading-4 text-warm-gray">
+      <label
+        htmlFor={id}
+        className="text-xs font-semibold leading-4 text-warm-gray uppercase"
+      >
         {label}
-      </span>
-      <span className="truncate text-base leading-6 text-warm-gray">
-        {value}
-      </span>
+      </label>
+      {children}
     </div>
   );
 }
@@ -71,12 +62,69 @@ export function HeroSection() {
               className="grid h-[198px] w-full max-w-[540px] grid-cols-2 overflow-hidden rounded-md"
             >
               <div className="col-span-2">
-                <SearchField {...searchFields[0]} />
+                <SearchField
+                  id="parking-location"
+                  label="Location"
+                  className="border-b border-border"
+                >
+                  <input
+                    id="parking-location"
+                    type="text"
+                    name="location"
+                    placeholder="City, state, or zip code"
+                    className={controlClassName}
+                  />
+                </SearchField>
               </div>
-              <SearchField {...searchFields[1]} />
-              <SearchField {...searchFields[2]} />
+              <SearchField
+                id="parking-type"
+                label="Type"
+                className="border-r border-b border-border"
+              >
+                <select
+                  id="parking-type"
+                  name="parkingType"
+                  defaultValue=""
+                  className={controlClassName}
+                >
+                  <option value="">Select type</option>
+                  <option value="one-time">One time</option>
+                  <option value="monthly">Monthly</option>
+                </select>
+              </SearchField>
+              <SearchField
+                id="number-of-spots"
+                label="Number of spots"
+                className="border-b border-border"
+              >
+                <select
+                  id="number-of-spots"
+                  name="numberOfSpots"
+                  defaultValue=""
+                  className={controlClassName}
+                >
+                  <option value="">Select amount</option>
+                  {Array.from({ length: 10 }, (_, index) => {
+                    const amount = index + 1;
+
+                    return (
+                      <option key={amount} value={amount}>
+                        {amount}
+                      </option>
+                    );
+                  })}
+                </select>
+              </SearchField>
               <div className="col-span-2">
-                <SearchField {...searchFields[3]} />
+                <SearchField id="parking-dates" label="Dates">
+                  <input
+                    id="parking-dates"
+                    type="text"
+                    name="parkingDates"
+                    placeholder="Select parking dates"
+                    className={controlClassName}
+                  />
+                </SearchField>
               </div>
             </div>
 

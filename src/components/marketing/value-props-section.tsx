@@ -51,6 +51,7 @@ function ValuePropColumn({ start }: { start: number }) {
 export function ValuePropsSection() {
   return (
     <section
+      id="why-trux"
       aria-labelledby="value-props-heading"
       className="bg-section px-6 py-12 md:px-10 wide:grid wide:h-[560px] wide:grid-cols-2 wide:items-center wide:gap-20 wide:px-20 wide:py-0"
     >

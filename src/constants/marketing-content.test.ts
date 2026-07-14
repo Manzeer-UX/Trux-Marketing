@@ -13,3 +13,27 @@ it("captures every repeated item in the Figma page", () => {
   expect(testimonials).toHaveLength(3);
   expect(faqs).toHaveLength(7);
 });
+
+it("provides meaningful destinations for every navigation item", () => {
+  expect(navItems).toEqual([
+    {
+      label: "Lot Owners",
+      href: "https://truxparking.com/propertyowners/",
+    },
+    { label: "Drivers", href: "/", active: true },
+    { label: "Why Trux", href: "/#why-trux" },
+    { label: "About Us", href: "https://truxparking.com/about-us/" },
+    { label: "Partners", href: "https://truxparking.com/truxpartners/" },
+    {
+      label: "Referrals",
+      href: "https://truxparking.com/affiliateprogram/",
+    },
+    { label: "Trux Perx", href: "https://truxparking.com/truxpartners/" },
+    {
+      label: "Locations",
+      href: "https://truxparking.com/locations-we-serve/",
+    },
+    { label: "Blog", href: "https://truxparking.com/blog/" },
+  ]);
+  expect(navItems).not.toContainEqual(expect.objectContaining({ href: "#" }));
+});
