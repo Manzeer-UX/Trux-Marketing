@@ -80,7 +80,7 @@ export function HeroSection() {
               </div>
             </div>
 
-            <Button type="button" className="h-11 w-[191px] px-6">
+            <Button type="button" className="h-11 w-[191px] whitespace-nowrap">
               Search Available Lots
             </Button>
           </div>
@@ -94,7 +94,7 @@ export function HeroSection() {
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="object-cover lg:object-right"
         />
       </div>
     </section>

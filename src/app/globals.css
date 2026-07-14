@@ -13,6 +13,8 @@
   --font-display: var(--font-syne);
   --font-body: var(--font-inter);
 
+  --breakpoint-wide: 90rem;
+
   --spacing: 4px;
   --spacing-1: 4px;
   --spacing-1-5: 6px;

@@ -19,40 +19,52 @@ export function SiteHeader() {
 
         <div
           aria-hidden="true"
-          className="hidden h-6 w-px bg-off-white/30 lg:block"
+          className="hidden h-6 w-px bg-off-white/30 wide:block"
         />
 
         <nav
           aria-label="Primary navigation"
-          className="hidden items-center gap-6 lg:flex"
+          className="hidden items-center wide:flex"
         >
-          {headerNavItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              aria-current={
-                "active" in item && item.active ? "page" : undefined
-              }
-              className="group flex min-h-11 flex-col items-center justify-center px-2 pt-1.5 text-base text-off-white/70 transition-colors hover:text-off-white focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber aria-[current=page]:font-bold aria-[current=page]:text-off-white"
-            >
-              <span>{item.label}</span>
-              <span
-                aria-hidden="true"
-                className="mt-1 h-[3px] w-full bg-gradient-to-r from-amber to-transparent opacity-0 group-aria-[current=page]:opacity-100"
-              />
-            </a>
-          ))}
+          <ul className="flex list-none items-center gap-6">
+            {headerNavItems.map((item) => (
+              <li key={item.label}>
+                <span
+                  aria-current={
+                    "active" in item && item.active ? "page" : undefined
+                  }
+                  className="group flex min-h-11 flex-col items-center justify-center px-2 pt-1.5 text-base whitespace-nowrap text-off-white/70 aria-[current=page]:font-bold aria-[current=page]:text-off-white"
+                >
+                  {item.label}
+                  <span
+                    aria-hidden="true"
+                    className="mt-1 h-[3px] w-full bg-gradient-to-r from-amber to-transparent opacity-0 group-aria-[current=page]:opacity-100"
+                  />
+                </span>
+              </li>
+            ))}
+          </ul>
         </nav>
       </div>
 
-      <div className="hidden items-center gap-3 lg:flex">
-        <Button type="button" variant="ghost" size="sm">
+      <div className="hidden items-center gap-3 wide:flex">
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="whitespace-nowrap"
+        >
           Sign In
         </Button>
-        <Button type="button" variant="blue" size="sm">
+        <Button
+          type="button"
+          variant="blue"
+          size="sm"
+          className="whitespace-nowrap"
+        >
           New Lot Owner Account
         </Button>
-        <Button type="button" size="sm">
+        <Button type="button" size="sm" className="whitespace-nowrap">
           New Driver Account
         </Button>
       </div>
@@ -61,7 +73,7 @@ export function SiteHeader() {
         type="button"
         variant="ghost"
         aria-label="Open navigation menu"
-        className="size-11 p-0 lg:hidden"
+        className="size-11 p-0 wide:hidden"
       >
         <Menu aria-hidden="true" className="size-6" strokeWidth={1.75} />
       </Button>

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import HomePage from "@/app/page";
 
 describe("TRUX marketing page", () => {
@@ -27,6 +27,41 @@ describe("TRUX marketing page", () => {
     for (const value of ["200+", "25", "10K +", "24/7"]) {
       expect(screen.getByText(value)).toBeInTheDocument();
     }
+  });
+
+  it("renders visual-only navigation labels without fake fragment links", () => {
+    render(<HomePage />);
+
+    const navigation = screen.getByRole("navigation", {
+      name: "Primary navigation",
+    });
+
+    expect(navigation.querySelector('a[href="#"]')).not.toBeInTheDocument();
+    expect(within(navigation).getByText("Drivers")).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+    expect(within(navigation).getByText("Trux Perx")).toBeInTheDocument();
+    expect(within(navigation).getAllByRole("listitem")).toHaveLength(7);
+  });
+
+  it("keeps the compact header until the wide breakpoint and right-aligns the desktop map", () => {
+    render(<HomePage />);
+
+    expect(
+      screen.getByRole("navigation", { name: "Primary navigation" }),
+    ).toHaveClass("hidden", "wide:flex");
+    expect(
+      screen.getByRole("button", { name: "Open navigation menu" }),
+    ).toHaveClass("wide:hidden");
+    expect(
+      screen.getByRole("img", {
+        name: "Available TRUX parking lots around Atlanta",
+      }),
+    ).toHaveClass("lg:object-right");
+    expect(
+      screen.getByRole("button", { name: "Search Available Lots" }),
+    ).toHaveClass("whitespace-nowrap");
   });
 
   it("keeps the visual search controls non-submitting", () => {
