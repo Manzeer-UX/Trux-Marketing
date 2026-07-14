@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import HomePage from "@/app/page";
 
 describe("TRUX marketing page", () => {
@@ -219,7 +219,7 @@ describe("TRUX marketing page", () => {
     }
   });
 
-  it("renders the static FAQ and app download surfaces", () => {
+  it("renders the FAQ accordion and app download surfaces", () => {
     render(<HomePage />);
 
     expect(
@@ -228,7 +228,22 @@ describe("TRUX marketing page", () => {
         name: "Frequently Asked Questions",
       }),
     ).toBeInTheDocument();
-    expect(screen.getAllByRole("listitem", { name: /FAQ:/ })).toHaveLength(7);
+    const faqToggles = screen.getAllByRole("button", {
+      name: /Expand answer for:/,
+    });
+
+    expect(faqToggles).toHaveLength(7);
+    for (const toggle of faqToggles) {
+      expect(toggle).toHaveAttribute("aria-expanded", "false");
+    }
+    expect(
+      screen.getAllByText(
+        "More information about this TRUX parking question will be available soon.",
+      ),
+    ).toHaveLength(7);
+
+    fireEvent.click(faqToggles[0]);
+    expect(faqToggles[0]).toHaveAttribute("aria-expanded", "true");
     expect(
       screen.getByText(
         "Book, access, and manage your spot all from your phone.",
@@ -259,17 +274,13 @@ describe("TRUX marketing page", () => {
     expect(phoneInput.closest("form")).toBeNull();
   });
 
-  it("keeps the lower page static and uses exact wide section heights", () => {
+  it("uses exact wide heights and non-submitting lower-page actions", () => {
     const { container } = render(<HomePage />);
-    const faqSection = screen.getByRole("region", {
-      name: "Frequently Asked Questions",
-    });
     const appSection = screen.getByRole("region", {
       name: "Book, access, and manage your spot all from your phone.",
     });
     const footer = screen.getByRole("contentinfo");
 
-    expect(faqSection).toHaveClass("wide:h-[602px]");
     expect(appSection).toHaveClass("wide:h-[716px]");
     expect(footer).toHaveClass("wide:h-[368px]");
     expect(screen.getByRole("button", { name: "Send Link" })).toHaveAttribute(
@@ -283,9 +294,5 @@ describe("TRUX marketing page", () => {
       screen.getByRole("button", { name: "Get it on Google Play" }),
     ).toHaveAttribute("type", "button");
     expect(container.querySelector('a[href="#"]')).toBeNull();
-
-    for (const item of screen.getAllByRole("listitem", { name: /FAQ:/ })) {
-      expect(item.querySelector("button, a, input")).toBeNull();
-    }
   });
 });

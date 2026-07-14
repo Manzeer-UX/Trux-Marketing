@@ -21,6 +21,7 @@ const description =
   "Find safe, monitored truck parking with real-time availability, remote gate access, and support from TRUX.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://truxparking.com"),
   title,
   description,
   alternates: {

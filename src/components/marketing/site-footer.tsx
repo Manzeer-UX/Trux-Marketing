@@ -20,7 +20,20 @@ const socialItems = [
   },
 ] as const;
 
-const legalItems = ["Privacy Policy", "Terms of Service", "Cookies Settings"];
+const legalItems = [
+  {
+    label: "Privacy Policy",
+    href: "https://truxparking.com/privacy-policy/",
+  },
+  {
+    label: "Terms of Service",
+    href: "https://truxparking.com/wp-content/uploads/2026/04/Terms-Conditions.pdf",
+  },
+  {
+    label: "Cookies Settings",
+    href: "https://truxparking.com/privacy-policy/#cookies",
+  },
+] as const;
 
 export function SiteFooter() {
   return (
@@ -90,7 +103,14 @@ export function SiteFooter() {
           <p>Copyright © 2024. All rights reserved by TruxParking.</p>
           <ul className="flex list-none flex-wrap items-center gap-x-7 gap-y-4">
             {legalItems.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item.label}>
+                <Link
+                  href={item.href}
+                  className="nav-gradient-link inline-flex min-h-11 items-center transition-colors hover:text-off-white focus-visible:text-off-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
+                >
+                  {item.label}
+                </Link>
+              </li>
             ))}
           </ul>
         </div>
