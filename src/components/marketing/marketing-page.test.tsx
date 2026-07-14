@@ -29,6 +29,28 @@ describe("TRUX marketing page", () => {
     }
   });
 
+  it("renders the benefits, coverage, and testimonials", () => {
+    render(<HomePage />);
+
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: "Why drivers choose TRUX.",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getAllByRole("article", { name: /testimonial by/i }),
+    ).toHaveLength(3);
+    expect(
+      screen.getByRole("img", {
+        name: "TRUX parking coverage across 25 states",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Explore Locations" }),
+    ).toBeInTheDocument();
+  });
+
   it("renders visual-only navigation labels without fake fragment links", () => {
     render(<HomePage />);
 
