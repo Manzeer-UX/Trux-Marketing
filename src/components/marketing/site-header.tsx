@@ -7,7 +7,13 @@ import {
   headerNavItems,
 } from "@/constants/marketing-content";
 
-export function SiteHeader() {
+type HeaderNavLabel = (typeof headerNavItems)[number]["label"];
+
+interface SiteHeaderProps {
+  activeItem?: HeaderNavLabel;
+}
+
+export function SiteHeader({ activeItem = "Drivers" }: SiteHeaderProps) {
   return (
     <header className="relative z-20 bg-midnight">
       <div className="flex h-[65px] w-full items-center justify-between px-6 lg:px-10">
@@ -38,7 +44,7 @@ export function SiteHeader() {
                   <Link
                     href={item.href}
                     aria-current={
-                      "active" in item && item.active ? "page" : undefined
+                      item.label === activeItem ? "page" : undefined
                     }
                     className="nav-gradient-link flex min-h-11 items-center px-2 text-base whitespace-nowrap text-off-white/70 transition-colors hover:text-off-white focus-visible:text-off-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber aria-[current=page]:font-bold aria-[current=page]:text-off-white"
                   >
