@@ -25,7 +25,9 @@ describe("LocationsAccordion", () => {
 
     const southeastPanel = screen.getByRole("region", { name: "Southeast" });
     expect(within(southeastPanel).getByText("Georgia")).toBeInTheDocument();
-    expect(within(southeastPanel).getByText("34 locations")).toBeInTheDocument();
+    expect(
+      within(southeastPanel).getByText("34 locations"),
+    ).toBeInTheDocument();
     expect(
       screen.queryByRole("region", { name: "Southwest" }),
     ).not.toBeInTheDocument();

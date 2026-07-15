@@ -3,10 +3,7 @@ import { ButtonLink } from "@/components/ui/button";
 
 export function CoverageSection() {
   return (
-    <section
-      aria-labelledby="coverage-heading"
-      className="bg-section"
-    >
+    <section aria-labelledby="coverage-heading" className="bg-section">
       <div className="flex w-full flex-col gap-10 px-6 py-12 md:px-10 wide:grid wide:h-[512px] wide:grid-cols-coverage wide:items-center wide:gap-14 wide:px-20 wide:py-14">
         <div className="flex w-full items-center justify-center wide:h-[400px]">
           <Image

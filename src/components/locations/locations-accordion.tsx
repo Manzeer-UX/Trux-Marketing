@@ -54,7 +54,8 @@ export function LocationsAccordion() {
                       {state.name}
                     </span>
                     <span className="whitespace-nowrap text-muted">
-                      {state.count} {state.count === 1 ? "location" : "locations"}
+                      {state.count}{" "}
+                      {state.count === 1 ? "location" : "locations"}
                     </span>
                   </li>
                 ))}
