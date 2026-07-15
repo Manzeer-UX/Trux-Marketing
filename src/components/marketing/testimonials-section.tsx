@@ -6,7 +6,7 @@ export function TestimonialsSection() {
       aria-labelledby="testimonials-heading"
       className="bg-section"
     >
-      <div className="site-container flex w-full flex-col justify-center gap-6 px-6 py-12 md:px-10 wide:h-[510px] wide:px-20 wide:py-20">
+      <div className="flex w-full flex-col justify-center gap-6 px-6 py-12 md:px-10 wide:h-[510px] wide:px-20 wide:py-20">
         <h2
           id="testimonials-heading"
           className="text-xs leading-4 font-extrabold tracking-[1.8px] text-amber"
@@ -28,11 +28,13 @@ export function TestimonialsSection() {
                 <blockquote className="flex min-w-0 items-start gap-2">
                   <span
                     aria-hidden="true"
-                    className="w-[18px] shrink-0 font-display text-5xl leading-[43px] text-amber"
+                    className="relative h-[51px] w-[18px] shrink-0"
                   >
-                    &ldquo;
+                    <span className="absolute top-[-8px] left-0 font-quote text-5xl leading-[normal] whitespace-nowrap text-amber">
+                      &quot;
+                    </span>
                   </span>
-                  <p className="min-w-0 text-base leading-6 text-white lg:text-lg lg:leading-7">
+                  <p className="min-w-0 max-w-[950px] whitespace-pre-line text-base leading-6 text-white lg:text-lg lg:leading-7">
                     {testimonial.quote}
                   </p>
                 </blockquote>

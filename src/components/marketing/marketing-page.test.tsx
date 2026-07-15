@@ -113,16 +113,65 @@ describe("TRUX marketing page", () => {
       ).toHaveAttribute("href", href);
     }
 
-    for (const [label, href] of [...expectedDestinations].slice(0, 7)) {
+    const expectedHeaderDestinations = new Map([
+      ["Lot Owners", "https://truxparking.com/propertyowners/"],
+      ["Drivers", "/"],
+      ["About Us", "https://truxparking.com/about-us/"],
+      ["Locations", "https://truxparking.com/locations-we-serve/"],
+      ["Partners", "https://truxparking.com/truxpartners/"],
+    ]);
+
+    for (const [label, href] of expectedHeaderDestinations) {
       expect(
         within(primaryNavigation).getByRole("link", { name: label }),
       ).toHaveAttribute("href", href);
     }
 
+    const primaryLinks = within(primaryNavigation).getByRole("list", {
+      name: "Primary links",
+    });
+    const topLevelItems = Array.from(primaryLinks.children);
+    const topLevelLabels = topLevelItems.map((item) => {
+      const target =
+        item.firstElementChild?.tagName === "DETAILS"
+          ? item.firstElementChild.querySelector("summary")
+          : item.firstElementChild;
+
+      return target?.textContent?.trim();
+    });
+
+    expect(topLevelLabels).toEqual([
+      "Lot Owners",
+      "Drivers",
+      "About Us",
+      "Locations",
+      "Partners",
+      "More",
+    ]);
+    expect(topLevelItems).toHaveLength(6);
+
+    const moreMenu = within(primaryNavigation).getByText("More", {
+      selector: "summary",
+    });
+    const moreDetails = moreMenu.closest("details");
+
+    expect(moreDetails).not.toBeNull();
+    expect(
+      within(moreDetails!).getByRole("link", { name: "Why Trux" }),
+    ).toHaveAttribute("href", "/#why-trux");
+    expect(
+      within(moreDetails!).getByRole("link", { name: "Referrals" }),
+    ).toHaveAttribute("href", "https://truxparking.com/affiliateprogram/");
+    expect(
+      within(moreDetails!).getByRole("link", { name: "Trux Perx" }),
+    ).toHaveAttribute("href", "https://truxparking.com/truxpartners/");
+    expect(
+      within(moreDetails!).getByRole("link", { name: "Blog" }),
+    ).toHaveAttribute("href", "https://truxparking.com/blog/");
+
     expect(
       within(primaryNavigation).getByRole("link", { name: "Drivers" }),
     ).toHaveAttribute("aria-current", "page");
-    expect(within(primaryNavigation).getAllByRole("listitem")).toHaveLength(7);
     expect(document.querySelector('a[href="#"]')).not.toBeInTheDocument();
     expect(
       screen.getByRole("region", { name: "Why drivers choose TRUX." }),

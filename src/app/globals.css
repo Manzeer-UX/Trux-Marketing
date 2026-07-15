@@ -12,10 +12,9 @@
 
   --font-display: var(--font-syne);
   --font-body: var(--font-inter);
+  --font-quote: var(--font-squada-one);
 
   --breakpoint-wide: 90rem;
-  --container-site: 90rem;
-
   --grid-template-columns-value-props: minmax(0, 1fr) 1px minmax(0, 1fr);
   --grid-template-columns-coverage: minmax(0, 11fr) minmax(0, 9fr);
 
@@ -69,12 +68,6 @@ select {
 }
 
 @layer components {
-  .site-container {
-    width: 100%;
-    max-width: var(--container-site);
-    margin-inline: auto;
-  }
-
   .nav-gradient-link {
     position: relative;
   }

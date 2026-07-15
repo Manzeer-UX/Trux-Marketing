@@ -43,6 +43,27 @@ export const navItems = [
   { label: "Blog", href: "https://truxparking.com/blog/" },
 ] as const satisfies readonly NavItem[];
 
+export const headerNavItems = [
+  { label: "Lot Owners", href: "https://truxparking.com/propertyowners/" },
+  { label: "Drivers", href: "/", active: true },
+  { label: "About Us", href: "https://truxparking.com/about-us/" },
+  {
+    label: "Locations",
+    href: "https://truxparking.com/locations-we-serve/",
+  },
+  { label: "Partners", href: "https://truxparking.com/truxpartners/" },
+] as const satisfies readonly NavItem[];
+
+export const headerMoreNavItems = [
+  { label: "Why Trux", href: "/#why-trux" },
+  {
+    label: "Referrals",
+    href: "https://truxparking.com/affiliateprogram/",
+  },
+  { label: "Trux Perx", href: "https://truxparking.com/truxpartners/" },
+  { label: "Blog", href: "https://truxparking.com/blog/" },
+] as const satisfies readonly NavItem[];
+
 export const stats = [
   { value: "200+", label: "Verified truck lots" },
   { value: "25", label: "States and growing" },
@@ -78,7 +99,7 @@ export const valueProps = [
 export const testimonials = [
   {
     quote:
-      "Nice place to park your truck/ trailer and be rest assured that your equipment will be safe.The location is very convenient and plenty of space to maneuver your trucks/trailer.No fear of any vandalization of your equipment and the pricing is right compare to other truck parking places.",
+      "Nice place to park your truck/ trailer and be rest assured that your equipment will be safe.\nThe location is very convenient and plenty of space to maneuver your trucks/trailer.\nNo fear of any vandalization of your equipment and the pricing is right compare to other truck parking places.",
     name: "Tony Mark",
     location: "Katy, TX",
   },

@@ -38,7 +38,7 @@ const legalItems = [
 export function SiteFooter() {
   return (
     <footer className="bg-midnight py-12 wide:h-[368px] wide:py-24">
-      <div className="site-container flex h-full flex-col gap-10 px-6 md:px-10 wide:gap-16 wide:px-20">
+      <div className="flex h-full w-full flex-col gap-10 px-6 md:px-10 wide:gap-16 wide:px-20">
         <div className="flex flex-col gap-8 wide:h-7 wide:flex-row wide:items-center wide:justify-between wide:gap-10">
           <div className="flex flex-col gap-6 wide:flex-row wide:items-center wide:gap-12">
             <Image

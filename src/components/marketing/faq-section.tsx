@@ -15,12 +15,14 @@ export function FaqSection() {
       aria-labelledby="faq-heading"
       className="bg-midnight"
     >
-      <div className="site-container flex flex-col gap-10 px-6 py-12 md:px-10 wide:grid wide:min-h-[602px] wide:grid-cols-[minmax(0,1fr)_780px] wide:items-center wide:gap-14 wide:px-20 wide:py-0">
+      <div className="flex w-full flex-col gap-10 px-6 py-12 md:px-10 wide:grid wide:min-h-[602px] wide:grid-cols-[minmax(0,1fr)_780px] wide:items-center wide:gap-14 wide:px-20 wide:py-0">
         <h2
           id="faq-heading"
           className="font-display text-[40px] leading-[44px] font-semibold tracking-[-1.2px] text-white wide:text-5xl wide:leading-12"
         >
-          Frequently Asked Questions
+          Frequently Asked
+          <br aria-hidden="true" />{" "}
+          Questions
         </h2>
 
         <div className="w-full wide:grid wide:h-full wide:grid-cols-[1px_minmax(0,1fr)] wide:items-center wide:gap-10 wide:py-20">

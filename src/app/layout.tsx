@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Syne } from "next/font/google";
+import { Inter, Squada_One, Syne } from "next/font/google";
 import type { ReactNode } from "react";
 import "./globals.css";
 
@@ -13,6 +13,13 @@ const syne = Syne({
   subsets: ["latin"],
   weight: "600",
   variable: "--font-syne",
+  display: "swap",
+});
+
+const squadaOne = Squada_One({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-squada-one",
   display: "swap",
 });
 
@@ -45,7 +52,9 @@ export default function RootLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${syne.variable} font-body`}>
+      <body
+        className={`${inter.variable} ${syne.variable} ${squadaOne.variable} font-body`}
+      >
         {children}
       </body>
     </html>

@@ -55,7 +55,7 @@ export function ValuePropsSection() {
       aria-labelledby="value-props-heading"
       className="bg-section"
     >
-      <div className="site-container px-6 py-12 md:px-10 wide:grid wide:h-[560px] wide:grid-cols-2 wide:items-center wide:gap-20 wide:px-20 wide:py-0">
+      <div className="w-full px-6 py-12 md:px-10 wide:grid wide:h-[560px] wide:grid-cols-2 wide:items-center wide:gap-20 wide:px-20 wide:py-0">
         <h2
           id="value-props-heading"
           className="font-display text-[40px] leading-[44px] font-semibold tracking-[-1.2px] text-off-white wide:min-w-0 wide:text-5xl wide:leading-12"

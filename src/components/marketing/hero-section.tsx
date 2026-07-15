@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 const controlClassName =
-  "min-w-0 appearance-none bg-transparent p-0 text-base leading-6 text-warm-gray placeholder:text-warm-gray focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber";
+  "min-w-0 appearance-none border-0 bg-transparent p-0 text-base leading-6 text-warm-gray outline-none placeholder:text-warm-gray focus:border-transparent focus:outline-none focus-visible:outline-none";
 
 function SearchField({
   id,
@@ -19,7 +19,7 @@ function SearchField({
   return (
     <div
       data-search-field={id}
-      className={`flex h-[66px] flex-col gap-0.5 bg-off-white/5 px-4 py-3 ${className}`}
+      className={`flex h-[66px] flex-col gap-0.5 bg-off-white/5 px-4 py-3 transition-colors focus-within:bg-off-white/10 ${className}`}
     >
       <label
         htmlFor={id}
@@ -49,7 +49,7 @@ export function HeroSection() {
       aria-labelledby="hero-heading"
       className="relative overflow-hidden bg-midnight lg:h-[640px]"
     >
-      <div className="site-container relative lg:h-full">
+      <div className="relative w-full lg:h-full">
         <div className="relative z-10 flex bg-midnight px-6 py-12 md:px-10 lg:absolute lg:inset-y-0 lg:left-0 lg:w-[620px] lg:items-center lg:py-0">
           <div className="flex w-full flex-col gap-8">
             <div className="flex flex-col gap-2">
@@ -164,7 +164,7 @@ export function HeroSection() {
             alt="Available TRUX parking lots around Atlanta"
             fill
             priority
-            sizes="(min-width: 1440px) 1440px, 100vw"
+            sizes="100vw"
             className="object-cover lg:object-right"
           />
         </div>
