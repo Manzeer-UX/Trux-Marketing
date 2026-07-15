@@ -48,10 +48,7 @@ it("groups the requested header links ahead of the overflow menu", () => {
     },
     { label: "Drivers", href: "/", active: true },
     { label: "About Us", href: "https://truxparking.com/about-us/" },
-    {
-      label: "Locations",
-      href: "https://truxparking.com/locations-we-serve/",
-    },
+    { label: "Locations", href: "/locations" },
     { label: "Partners", href: "https://truxparking.com/truxpartners/" },
   ]);
   expect(headerMoreNavItems).toEqual([

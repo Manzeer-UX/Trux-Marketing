@@ -47,10 +47,7 @@ export const headerNavItems = [
   { label: "Lot Owners", href: "https://truxparking.com/propertyowners/" },
   { label: "Drivers", href: "/", active: true },
   { label: "About Us", href: "https://truxparking.com/about-us/" },
-  {
-    label: "Locations",
-    href: "https://truxparking.com/locations-we-serve/",
-  },
+  { label: "Locations", href: "/locations" },
   { label: "Partners", href: "https://truxparking.com/truxpartners/" },
 ] as const satisfies readonly NavItem[];
 

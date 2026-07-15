@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 
 export function CoverageSection() {
   return (
@@ -28,9 +28,9 @@ export function CoverageSection() {
             <span className="block">in 25 states and</span>
             <span className="block">growing.</span>
           </h2>
-          <Button type="button" className="whitespace-nowrap">
+          <ButtonLink href="/locations" className="whitespace-nowrap">
             Explore Locations
-          </Button>
+          </ButtonLink>
         </div>
       </div>
     </section>

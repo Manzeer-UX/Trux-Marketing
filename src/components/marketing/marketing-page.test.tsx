@@ -47,8 +47,8 @@ describe("TRUX marketing page", () => {
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Explore Locations" }),
-    ).toBeInTheDocument();
+      screen.getByRole("link", { name: "Explore Locations" }),
+    ).toHaveAttribute("href", "/locations");
   });
 
   it("uses named split layouts only at the wide desktop breakpoint", () => {
@@ -117,7 +117,7 @@ describe("TRUX marketing page", () => {
       ["Lot Owners", "https://truxparking.com/propertyowners/"],
       ["Drivers", "/"],
       ["About Us", "https://truxparking.com/about-us/"],
-      ["Locations", "https://truxparking.com/locations-we-serve/"],
+      ["Locations", "/locations"],
       ["Partners", "https://truxparking.com/truxpartners/"],
     ]);
 
