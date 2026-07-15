@@ -2,6 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { navItems } from "@/constants/marketing-content";
 
+type FooterNavLabel = (typeof navItems)[number]["label"];
+
+interface SiteFooterProps {
+  activeItem?: FooterNavLabel | null;
+}
+
 const socialItems = [
   {
     label: "Facebook",
@@ -35,7 +41,7 @@ const legalItems = [
   },
 ] as const;
 
-export function SiteFooter() {
+export function SiteFooter({ activeItem = "Drivers" }: SiteFooterProps) {
   return (
     <footer className="bg-midnight py-12 wide:h-[368px] wide:py-24">
       <div className="flex h-full w-full flex-col gap-10 px-6 md:px-10 wide:gap-16 wide:px-20">
@@ -56,7 +62,7 @@ export function SiteFooter() {
                     <Link
                       href={item.href}
                       aria-current={
-                        "active" in item && item.active ? "page" : undefined
+                        item.label === activeItem ? "page" : undefined
                       }
                       className="nav-gradient-link inline-flex min-h-11 items-center transition-colors hover:text-off-white focus-visible:text-off-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
                     >

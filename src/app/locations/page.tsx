@@ -17,7 +17,7 @@ export default function LocationsPage() {
       <main aria-label="TRUX parking locations">
         <LocationsSection />
       </main>
-      <SiteFooter />
+      <SiteFooter activeItem={null} />
     </>
   );
 }

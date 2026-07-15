@@ -112,6 +112,9 @@ describe("TRUX marketing page", () => {
         within(footerNavigation).getByRole("link", { name: label }),
       ).toHaveAttribute("href", href);
     }
+    expect(
+      within(footerNavigation).getByRole("link", { name: "Drivers" }),
+    ).toHaveAttribute("aria-current", "page");
 
     const expectedHeaderDestinations = new Map([
       ["Lot Owners", "https://truxparking.com/propertyowners/"],

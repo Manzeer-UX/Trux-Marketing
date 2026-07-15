@@ -28,5 +28,27 @@ it("renders the Locations page with a static map and active Locations link", () 
   expect(
     within(primaryNavigation).getByRole("link", { name: "Drivers" }),
   ).not.toHaveAttribute("aria-current");
+
+  const footerNavigation = screen.getByRole("navigation", {
+    name: "Footer navigation",
+  });
+  expect(
+    within(footerNavigation).getByRole("link", { name: "Drivers" }),
+  ).not.toHaveAttribute("aria-current");
+  const footerLocationsLink = within(footerNavigation).getByRole("link", {
+    name: "Locations",
+  });
+  expect(footerLocationsLink).toHaveAttribute(
+    "href",
+    "https://truxparking.com/locations-we-serve/",
+  );
+  expect(footerLocationsLink).not.toHaveAttribute("aria-current");
+  expect(
+    screen
+      .getAllByRole("link")
+      .filter((link) => link.getAttribute("aria-current") === "page"),
+  ).toEqual([
+    within(primaryNavigation).getByRole("link", { name: "Locations" }),
+  ]);
   expect(screen.getByRole("contentinfo")).toBeInTheDocument();
 });
