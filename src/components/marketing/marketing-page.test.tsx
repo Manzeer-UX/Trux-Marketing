@@ -57,32 +57,36 @@ describe("TRUX marketing page", () => {
     const valuePropsSection = screen.getByRole("region", {
       name: "Why drivers choose TRUX.",
     });
-    const valuePropsGrid = valuePropsSection.querySelector(":scope > div");
-    const coverageSection = screen.getByRole("region", {
-      name: /Secure parking.*25 states and growing\./,
-    });
+    const valuePropsLayout = valuePropsSection.querySelector(":scope > div");
+    const valuePropsGrid = valuePropsLayout?.querySelector(":scope > div");
+    const coverageHeading = document.getElementById("coverage-heading");
+    const coverageSection = coverageHeading?.closest("section");
+    const coverageGrid = coverageSection?.querySelector(":scope > div");
     const testimonialsSection = screen.getByRole("region", {
       name: "WHAT DRIVERS ARE SAY",
     });
+    const testimonialsLayout =
+      testimonialsSection.querySelector(":scope > div");
 
-    expect(valuePropsSection).toHaveClass(
+    expect(valuePropsLayout).toHaveClass(
       "wide:grid",
       "wide:h-[560px]",
       "wide:grid-cols-2",
     );
-    expect(valuePropsSection).not.toHaveClass("lg:h-[560px]");
+    expect(valuePropsLayout).not.toHaveClass("lg:h-[560px]");
     expect(valuePropsGrid).toHaveClass("wide:grid-cols-value-props");
     expect(valuePropsGrid).not.toHaveClass("sm:grid-cols-2");
 
-    expect(coverageSection).toHaveClass(
+    expect(coverageSection).not.toBeNull();
+    expect(coverageGrid).toHaveClass(
       "wide:grid",
       "wide:h-[512px]",
       "wide:grid-cols-coverage",
     );
-    expect(coverageSection).not.toHaveClass("lg:h-[512px]");
+    expect(coverageGrid).not.toHaveClass("lg:h-[512px]");
 
-    expect(testimonialsSection).toHaveClass("wide:h-[510px]");
-    expect(testimonialsSection).not.toHaveClass("lg:h-[510px]");
+    expect(testimonialsLayout).toHaveClass("wide:h-[510px]");
+    expect(testimonialsLayout).not.toHaveClass("lg:h-[510px]");
   });
 
   it("renders header and footer navigation as links with meaningful destinations", () => {
@@ -95,40 +99,27 @@ describe("TRUX marketing page", () => {
       name: "Footer navigation",
     });
 
-    const expectedDestinations = new Map([
-      ["Lot Owners", "https://truxparking.com/propertyowners/"],
-      ["Drivers", "/"],
-      ["Why Trux", "/#why-trux"],
-      ["About Us", "https://truxparking.com/about-us/"],
-      ["Partners", "https://truxparking.com/truxpartners/"],
-      ["Referrals", "https://truxparking.com/affiliateprogram/"],
-      ["Trux Perx", "https://truxparking.com/truxpartners/"],
-      ["Locations", "https://truxparking.com/locations-we-serve/"],
-      ["Blog", "https://truxparking.com/blog/"],
-    ]);
-
-    for (const [label, href] of expectedDestinations) {
-      expect(
-        within(footerNavigation).getByRole("link", { name: label }),
-      ).toHaveAttribute("href", href);
-    }
-    expect(
-      within(footerNavigation).getByRole("link", { name: "Drivers" }),
-    ).toHaveAttribute("aria-current", "page");
-
     const expectedHeaderDestinations = new Map([
-      ["Lot Owners", "https://truxparking.com/propertyowners/"],
+      ["Lot Owners", "/lot-owners"],
       ["Drivers", "/"],
-      ["About Us", "https://truxparking.com/about-us/"],
+      ["About Us", "/about-us"],
       ["Locations", "/locations"],
-      ["Partners", "https://truxparking.com/truxpartners/"],
+      ["Partners", "/partners"],
+      ["Blog", "/blog"],
     ]);
 
     for (const [label, href] of expectedHeaderDestinations) {
       expect(
+        within(footerNavigation).getByRole("link", { name: label }),
+      ).toHaveAttribute("href", href);
+      expect(
         within(primaryNavigation).getByRole("link", { name: label }),
       ).toHaveAttribute("href", href);
     }
+
+    expect(
+      within(footerNavigation).getByRole("link", { name: "Drivers" }),
+    ).toHaveAttribute("aria-current", "page");
 
     const primaryLinks = within(primaryNavigation).getByRole("list", {
       name: "Primary links",
@@ -149,9 +140,25 @@ describe("TRUX marketing page", () => {
       "About Us",
       "Locations",
       "Partners",
+      "Blog",
       "More",
     ]);
-    expect(topLevelItems).toHaveLength(6);
+    expect(topLevelItems).toHaveLength(7);
+
+    const footerLinks = within(footerNavigation).getByRole("list", {
+      name: "Footer links",
+    });
+    const footerTopLevelItems = Array.from(footerLinks.children);
+    const footerTopLevelLabels = footerTopLevelItems.map((item) => {
+      const target =
+        item.firstElementChild?.tagName === "DETAILS"
+          ? item.firstElementChild.querySelector("summary")
+          : item.firstElementChild;
+
+      return target?.textContent?.trim();
+    });
+
+    expect(footerTopLevelLabels).toEqual(topLevelLabels);
 
     const moreMenu = within(primaryNavigation).getByText("More", {
       selector: "summary",
@@ -163,14 +170,36 @@ describe("TRUX marketing page", () => {
       within(moreDetails!).getByRole("link", { name: "Why Trux" }),
     ).toHaveAttribute("href", "/#why-trux");
     expect(
-      within(moreDetails!).getByRole("link", { name: "Referrals" }),
-    ).toHaveAttribute("href", "https://truxparking.com/affiliateprogram/");
+      within(moreDetails!).queryByRole("link", { name: "Referrals" }),
+    ).not.toBeInTheDocument();
     expect(
-      within(moreDetails!).getByRole("link", { name: "Trux Perx" }),
-    ).toHaveAttribute("href", "https://truxparking.com/truxpartners/");
+      within(moreDetails!).queryByRole("link", { name: "Trux Perx" }),
+    ).not.toBeInTheDocument();
     expect(
-      within(moreDetails!).getByRole("link", { name: "Blog" }),
-    ).toHaveAttribute("href", "https://truxparking.com/blog/");
+      within(moreDetails!).queryByRole("link", { name: "Blog" }),
+    ).not.toBeInTheDocument();
+
+    const footerMoreMenu = within(footerNavigation).getByText("More", {
+      selector: "summary",
+    });
+    const footerMoreDetails = footerMoreMenu.closest("details");
+
+    expect(footerMoreDetails).not.toBeNull();
+    expect(
+      within(footerMoreDetails!).getByRole("link", { name: "Why Trux" }),
+    ).toHaveAttribute("href", "/#why-trux");
+    expect(
+      within(footerMoreDetails!).queryByRole("link", { name: "Referrals" }),
+    ).not.toBeInTheDocument();
+    expect(
+      within(footerMoreDetails!).queryByRole("link", { name: "Trux Perx" }),
+    ).not.toBeInTheDocument();
+
+    for (const navigation of [primaryNavigation, footerNavigation]) {
+      for (const link of within(navigation).getAllByRole("link")) {
+        expect(link.getAttribute("href")).toMatch(/^\//);
+      }
+    }
 
     expect(
       within(primaryNavigation).getByRole("link", { name: "Drivers" }),
@@ -203,7 +232,9 @@ describe("TRUX marketing page", () => {
       screen.getByRole("navigation", { name: "Primary navigation" }),
     ).toHaveClass("hidden", "wide:flex");
     expect(
-      screen.getByRole("button", { name: "Open navigation menu" }),
+      screen
+        .getByRole("button", { name: "Open navigation menu" })
+        .closest("div"),
     ).toHaveClass("wide:hidden");
     expect(
       screen.getByRole("img", {
@@ -215,7 +246,7 @@ describe("TRUX marketing page", () => {
     ).toHaveClass("whitespace-nowrap");
   });
 
-  it("renders four labeled native search controls without submission behavior", () => {
+  it("renders four labeled search controls without submission behavior", () => {
     const { container } = render(<HomePage />);
 
     expect(container.querySelector("form")).not.toBeInTheDocument();
@@ -230,31 +261,211 @@ describe("TRUX marketing page", () => {
 
     const parkingType = screen.getByRole("combobox", { name: "Type" });
     expect(parkingType).toHaveAttribute("name", "parkingType");
-    expect(parkingType).toHaveDisplayValue("Select type");
-    expect(
-      within(parkingType).getByRole("option", { name: "One time" }),
-    ).toBeInTheDocument();
-    expect(
-      within(parkingType).getByRole("option", { name: "Monthly" }),
-    ).toBeInTheDocument();
+    expect(parkingType).toHaveTextContent("Select type");
+    expect(parkingType).toHaveAttribute("aria-haspopup", "listbox");
 
     const numberOfSpots = screen.getByRole("combobox", {
       name: "Number of spots",
     });
     expect(numberOfSpots).toHaveAttribute("name", "numberOfSpots");
-    expect(numberOfSpots).toHaveDisplayValue("Select amount");
-    expect(within(numberOfSpots).getAllByRole("option")).toHaveLength(11);
+    expect(numberOfSpots).toHaveTextContent("Select amount");
+    expect(numberOfSpots).toHaveAttribute("aria-haspopup", "listbox");
+
+    const dates = screen.getByRole("combobox", { name: "Dates" });
+    expect(dates).toHaveAttribute("name", "parkingDates");
+    expect(dates).toHaveTextContent("Select parking dates");
+    expect(dates).toHaveAttribute("aria-haspopup", "dialog");
+  });
+
+  it("allows every search popup to extend beyond the hero boundary", () => {
+    render(<HomePage />);
+
+    const hero = document.getElementById("hero-heading")?.closest("section");
+
+    expect(hero).not.toBeNull();
+    expect(hero).toHaveClass("overflow-visible");
+    expect(hero).not.toHaveClass("overflow-hidden");
+
+    const parkingType = screen.getByRole("combobox", { name: "Type" });
+    fireEvent.click(parkingType);
     expect(
-      within(numberOfSpots).getByRole("option", { name: "1" }),
+      screen.getByRole("listbox", { name: "Type options" }),
     ).toBeInTheDocument();
+    fireEvent.click(parkingType);
+
+    const numberOfSpots = screen.getByRole("combobox", {
+      name: "Number of spots",
+    });
+    fireEvent.click(numberOfSpots);
     expect(
-      within(numberOfSpots).getByRole("option", { name: "10" }),
+      screen.getByRole("listbox", { name: "Number of spots options" }),
+    ).toBeInTheDocument();
+    fireEvent.click(numberOfSpots);
+
+    const dates = screen.getByRole("combobox", { name: "Dates" });
+    fireEvent.click(dates);
+    expect(
+      screen.getByRole("dialog", { name: "July date picker" }),
+    ).toBeInTheDocument();
+  });
+
+  it("raises each open search popup above the following fields", () => {
+    render(<HomePage />);
+
+    for (const name of ["Type", "Number of spots", "Dates"]) {
+      const control = screen.getByRole("combobox", { name });
+      const dropdownRoot = control.parentElement;
+
+      expect(dropdownRoot).toHaveClass("z-30");
+
+      fireEvent.click(control);
+
+      expect(dropdownRoot).toHaveClass("z-40");
+      expect(dropdownRoot).not.toHaveClass("z-30");
+
+      fireEvent.click(control);
+
+      expect(dropdownRoot).toHaveClass("z-30");
+    }
+  });
+
+  it("opens and selects a booking type from the Figma dropdown", () => {
+    render(<HomePage />);
+
+    const parkingType = screen.getByRole("combobox", { name: "Type" });
+    expect(parkingType).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(parkingType);
+
+    expect(parkingType).toHaveAttribute("aria-expanded", "true");
+    const listbox = screen.getByRole("listbox", { name: "Type options" });
+    expect(listbox).toHaveClass(
+      "w-full",
+      "bg-warm-gray",
+      "rounded-sm",
+      "shadow-[0_4px_16px_rgba(0,0,0,0.3)]",
+    );
+    expect(listbox).not.toHaveClass("min-w-[270px]");
+
+    const recurringOption = within(listbox).getByRole("option", {
+      name: "Recurring booking",
+    });
+    const oneTimeOption = within(listbox).getByRole("option", {
+      name: "One time booking",
+    });
+
+    expect(recurringOption).toHaveClass("bg-dropdown-active", "text-white");
+    fireEvent.click(oneTimeOption);
+
+    expect(parkingType).toHaveTextContent("One time booking");
+    expect(parkingType).toHaveAttribute("aria-expanded", "false");
+    expect(
+      screen.queryByRole("listbox", { name: "Type options" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("opens a Figma spots dropdown matching the input width", () => {
+    render(<HomePage />);
+
+    const numberOfSpots = screen.getByRole("combobox", {
+      name: "Number of spots",
+    });
+    expect(numberOfSpots).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(numberOfSpots);
+
+    const listbox = screen.getByRole("listbox", {
+      name: "Number of spots options",
+    });
+    expect(numberOfSpots).toHaveAttribute("aria-expanded", "true");
+    expect(listbox).toHaveClass(
+      "w-full",
+      "max-h-[276px]",
+      "search-dropdown-scrollbar",
+    );
+    expect(listbox).not.toHaveClass("min-w-[270px]");
+
+    const options = within(listbox).getAllByRole("option");
+    expect(options).toHaveLength(10);
+    expect(within(listbox).getByRole("option", { name: "4" })).toHaveClass(
+      "bg-dropdown-active",
+      "text-white",
+    );
+
+    fireEvent.click(within(listbox).getByRole("option", { name: "8" }));
+
+    expect(numberOfSpots).toHaveTextContent("8");
+    expect(numberOfSpots).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("opens a full-field-width Figma calendar and selects a date range", () => {
+    render(<HomePage />);
+
+    const dates = screen.getByRole("combobox", { name: "Dates" });
+    expect(dates).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(dates);
+
+    const calendar = screen.getByRole("dialog", {
+      name: "July date picker",
+    });
+    expect(dates).toHaveAttribute("aria-expanded", "true");
+    expect(calendar).toHaveClass("w-full", "bg-warm-gray");
+    expect(calendar).not.toHaveClass("w-[344px]");
+    expect(screen.getByText("July 2026")).toBeInTheDocument();
+    expect(
+      within(calendar).getAllByRole("button", {
+        name: /Choose July \d+, 2026/,
+      }),
+    ).toHaveLength(31);
+
+    const firstDay = within(calendar).getByRole("button", {
+      name: "Choose July 1, 2026",
+    });
+    fireEvent.click(firstDay);
+    expect(firstDay).toHaveClass("bg-dropdown-active", "text-white");
+
+    fireEvent.click(
+      within(calendar).getByRole("button", {
+        name: "Choose July 3, 2026",
+      }),
+    );
+
+    expect(dates).toHaveTextContent("Jul 1 – Jul 3");
+    expect(dates).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("changes the calendar month and displays the year", () => {
+    render(<HomePage />);
+
+    fireEvent.click(screen.getByRole("combobox", { name: "Dates" }));
+
+    const calendar = screen.getByRole("dialog", {
+      name: "July date picker",
+    });
+    const previousMonth = within(calendar).getByRole("button", {
+      name: "Previous month",
+    });
+    const nextMonth = within(calendar).getByRole("button", {
+      name: "Next month",
+    });
+
+    expect(within(calendar).getByText("July 2026")).toBeInTheDocument();
+
+    fireEvent.click(nextMonth);
+    expect(within(calendar).getByText("August 2026")).toBeInTheDocument();
+    expect(
+      within(calendar).getByRole("button", {
+        name: "Choose August 31, 2026",
+      }),
     ).toBeInTheDocument();
 
-    const dates = screen.getByRole("textbox", { name: "Dates" });
-    expect(dates).toHaveAttribute("type", "text");
-    expect(dates).toHaveAttribute("name", "parkingDates");
-    expect(dates).toHaveAttribute("placeholder", "Select parking dates");
+    fireEvent.click(previousMonth);
+    for (let index = 0; index < 7; index += 1) {
+      fireEvent.click(previousMonth);
+    }
+
+    expect(within(calendar).getByText("December 2025")).toBeInTheDocument();
   });
 
   it("shows a decorative dropdown indicator for each parking select", () => {
@@ -269,6 +480,19 @@ describe("TRUX marketing page", () => {
       expect(indicator).toHaveAttribute("aria-hidden", "true");
       expect(indicator).toHaveClass("pointer-events-none", "text-warm-gray");
     }
+
+    const dates = screen.getByRole("combobox", { name: "Dates" });
+    const datesField = dates.closest("[data-search-field]");
+    const calendarIndicator = datesField?.querySelector(
+      "[data-date-indicator]",
+    );
+
+    expect(datesField).not.toBeNull();
+    expect(calendarIndicator).toHaveAttribute("aria-hidden", "true");
+    expect(calendarIndicator).toHaveClass(
+      "pointer-events-none",
+      "text-warm-gray",
+    );
   });
 
   it("renders the FAQ accordion and app download surfaces", () => {
@@ -332,9 +556,10 @@ describe("TRUX marketing page", () => {
     const appSection = screen.getByRole("region", {
       name: "Book, access, and manage your spot all from your phone.",
     });
+    const appLayout = appSection.querySelector(":scope > div");
     const footer = screen.getByRole("contentinfo");
 
-    expect(appSection).toHaveClass("wide:h-[716px]");
+    expect(appLayout).toHaveClass("wide:h-[716px]");
     expect(footer).toHaveClass("wide:h-[368px]");
     expect(screen.getByRole("button", { name: "Send Link" })).toHaveAttribute(
       "type",

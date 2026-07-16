@@ -11,7 +11,7 @@ const inter = Inter({
 
 const syne = Syne({
   subsets: ["latin"],
-  weight: "600",
+  weight: ["600", "800"],
   variable: "--font-syne",
   display: "swap",
 });

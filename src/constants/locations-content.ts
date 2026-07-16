@@ -1,71 +1,143 @@
-export interface LocationState {
-  name: string;
-  count: number;
-}
-
-export interface LocationRegion {
+export interface ParkingLocation {
   id: string;
   name: string;
-  states: readonly LocationState[];
+  address: string;
+  rating: number;
+  spots: number;
+  nightlyRate: number;
 }
 
-export const locationRegions = [
+export interface LocationState {
+  id: string;
+  name: string;
+  count: number;
+  locations: readonly ParkingLocation[];
+}
+
+export interface MapLocationDetails {
+  id: string;
+  mapName: string;
+  cardAddress: string;
+  mapSpots: number;
+  mapPositionClassName: string;
+  title: string;
+  address: string;
+  managedBy: string;
+  nightlyRate: number;
+  spots: number;
+  checkInDate: string;
+  checkOutDate: string;
+}
+
+const createStaticLocations = (
+  stateId: string,
+  stateName: string,
+  previewCount: number,
+  address: string,
+): readonly ParkingLocation[] =>
+  Array.from({ length: previewCount }, (_, index) => ({
+    id: `${stateId}-location-${index + 1}`,
+    name: `${stateName} Parking Lot #1`,
+    address,
+    rating: 4.8,
+    spots: 30,
+    nightlyRate: 18,
+  }));
+
+export const locationStates = [
   {
-    id: "southeast",
-    name: "Southeast",
-    states: [
-      { name: "Florida", count: 6 },
-      { name: "Georgia", count: 34 },
-      { name: "Mississippi", count: 2 },
-      { name: "Tennessee", count: 3 },
-      { name: "North Carolina", count: 10 },
-      { name: "Alabama", count: 3 },
-      { name: "South Carolina", count: 7 },
-      { name: "Arkansas", count: 2 },
-    ],
+    id: "arkansas",
+    name: "Arkansas",
+    count: 2,
+    locations: createStaticLocations(
+      "arkansas",
+      "Arkansas",
+      2,
+      "1200 Interstate Dr, Little Rock, AR 72209",
+    ),
   },
   {
-    id: "southwest",
-    name: "Southwest",
-    states: [
-      { name: "Oklahoma", count: 2 },
-      { name: "Texas", count: 11 },
-      { name: "Arkansas", count: 2 },
-      { name: "Mississippi", count: 2 },
-      { name: "Tennessee", count: 3 },
-    ],
+    id: "alabama",
+    name: "Alabama",
+    count: 3,
+    locations: createStaticLocations(
+      "alabama",
+      "Alabama",
+      3,
+      "2800 Industrial Pkwy, Birmingham, AL 35217",
+    ),
   },
   {
-    id: "northeast",
-    name: "Northeast",
-    states: [{ name: "Pennsylvania", count: 1 }],
+    id: "georgia",
+    name: "Georgia",
+    count: 34,
+    locations: createStaticLocations(
+      "georgia",
+      "Georgia",
+      13,
+      "17707 NW Miami Ct, Atlanta, GA 33169",
+    ),
   },
   {
-    id: "midwest",
-    name: "Midwest",
-    states: [
-      { name: "Ohio", count: 4 },
-      { name: "Missouri", count: 4 },
-      { name: "Iowa", count: 1 },
-      { name: "Minnesota", count: 3 },
-    ],
+    id: "california",
+    name: "California",
+    count: 9,
+    locations: createStaticLocations(
+      "california",
+      "California",
+      9,
+      "4100 Logistics Way, Ontario, CA 91761",
+    ),
+  },
+] as const satisfies readonly LocationState[];
+
+export const mapLocationDetails = [
+  {
+    id: "georgia-atlanta",
+    mapName: "Georgia Parking Lot #1",
+    cardAddress: "17707 NW Miami Ct, Atlanta, GA 33169",
+    mapSpots: 14,
+    mapPositionClassName: "left-1/2 top-[57%] wide:left-[54%] wide:top-[41.5%]",
+    title: "Atlanta, GA Truck and Trailer Parking on 1345 M-52",
+    address: "1345 M-52, Atlanta, GA 33169",
+    managedBy: "Lot Owner Company",
+    nightlyRate: 18,
+    spots: 2,
+    checkInDate: "2027-07-07",
+    checkOutDate: "2027-07-08",
   },
   {
-    id: "northwest",
-    name: "Northwest",
-    states: [
-      { name: "Idaho", count: 3 },
-      { name: "Oregon", count: 1 },
-    ],
+    id: "west-atlanta",
+    mapName: "West Atlanta Parking Lot",
+    cardAddress: "1800 Marietta Blvd NW, Atlanta, GA 30318",
+    mapSpots: 8,
+    mapPositionClassName:
+      "left-[24%] top-[69%] wide:left-[33%] wide:top-[52.8%]",
+    title: "West Atlanta Truck and Trailer Parking on Marietta Blvd",
+    address: "1800 Marietta Blvd NW, Atlanta, GA 30318",
+    managedBy: "Lot Owner Company",
+    nightlyRate: 18,
+    spots: 2,
+    checkInDate: "2027-07-07",
+    checkOutDate: "2027-07-08",
   },
   {
-    id: "west",
-    name: "West",
-    states: [
-      { name: "California", count: 9 },
-      { name: "Arizona", count: 1 },
-      { name: "Nevada", count: 2 },
-      { name: "Washington", count: 1 },
-    ],
+    id: "south-atlanta",
+    mapName: "South Atlanta Parking Lot",
+    cardAddress: "2600 Moreland Ave SE, Atlanta, GA 30315",
+    mapSpots: 10,
+    mapPositionClassName:
+      "left-[76%] top-[76%] wide:left-[71.6%] wide:top-[57.2%]",
+    title: "South Atlanta Truck and Trailer Parking on Moreland Ave",
+    address: "2600 Moreland Ave SE, Atlanta, GA 30315",
+    managedBy: "Lot Owner Company",
+    nightlyRate: 18,
+    spots: 2,
+    checkInDate: "2027-07-07",
+    checkOutDate: "2027-07-08",
   },
-] as const satisfies readonly LocationRegion[];
+] as const satisfies readonly MapLocationDetails[];
+
+export function getMapLocationDetails(locationId: string) {
+  return mapLocationDetails.find((location) => location.id === locationId);
+}

@@ -1,9 +1,17 @@
-import { ChevronDown } from "lucide-react";
 import Image from "next/image";
+import { ParkingDatesDropdown } from "@/components/marketing/parking-dates-dropdown";
+import { ParkingTypeDropdown } from "@/components/marketing/parking-type-dropdown";
+import { SearchDropdown } from "@/components/marketing/search-dropdown";
 import { Button } from "@/components/ui/button";
 
 const controlClassName =
   "min-w-0 appearance-none border-0 bg-transparent p-0 text-base leading-6 text-warm-gray outline-none placeholder:text-warm-gray focus:border-transparent focus:outline-none focus-visible:outline-none";
+
+const numberOfSpotsOptions = Array.from({ length: 10 }, (_, index) => {
+  const amount = String(index + 1);
+
+  return { value: amount, label: amount };
+});
 
 function SearchField({
   id,
@@ -32,22 +40,11 @@ function SearchField({
   );
 }
 
-function SelectIndicator() {
-  return (
-    <ChevronDown
-      data-select-indicator
-      aria-hidden="true"
-      className="pointer-events-none absolute top-1/2 right-0 size-4 -translate-y-1/2 text-warm-gray"
-      strokeWidth={1.75}
-    />
-  );
-}
-
 export function HeroSection() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative overflow-hidden bg-midnight lg:h-[640px]"
+      className="relative overflow-visible bg-midnight lg:h-[640px]"
     >
       <div className="relative w-full lg:h-full">
         <div className="relative z-10 flex bg-midnight px-6 py-12 md:px-10 lg:absolute lg:inset-y-0 lg:left-0 lg:w-[620px] lg:items-center lg:py-0">
@@ -73,13 +70,13 @@ export function HeroSection() {
               <div
                 role="group"
                 aria-label="Parking search details"
-                className="grid h-[198px] w-full max-w-[540px] grid-cols-2 overflow-hidden rounded-md"
+                className="grid h-[198px] w-full max-w-[540px] grid-cols-2 rounded-md"
               >
                 <div className="col-span-2">
                   <SearchField
                     id="parking-location"
                     label="Location"
-                    className="border-b border-border"
+                    className="rounded-t-md border-b border-border"
                   >
                     <input
                       id="parking-location"
@@ -95,53 +92,38 @@ export function HeroSection() {
                   label="Type"
                   className="border-r border-b border-border"
                 >
-                  <div className="relative min-w-0">
-                    <select
-                      id="parking-type"
-                      name="parkingType"
-                      defaultValue=""
-                      className={`${controlClassName} w-full pr-6`}
-                    >
-                      <option value="">Select type</option>
-                      <option value="one-time">One time</option>
-                      <option value="monthly">Monthly</option>
-                    </select>
-                    <SelectIndicator />
-                  </div>
+                  <ParkingTypeDropdown
+                    id="parking-type"
+                    name="parkingType"
+                    className={`${controlClassName} w-full`}
+                  />
                 </SearchField>
                 <SearchField
                   id="number-of-spots"
                   label="Number of spots"
                   className="border-b border-border"
                 >
-                  <div className="relative min-w-0">
-                    <select
-                      id="number-of-spots"
-                      name="numberOfSpots"
-                      defaultValue=""
-                      className={`${controlClassName} w-full pr-6`}
-                    >
-                      <option value="">Select amount</option>
-                      {Array.from({ length: 10 }, (_, index) => {
-                        const amount = index + 1;
-
-                        return (
-                          <option key={amount} value={amount}>
-                            {amount}
-                          </option>
-                        );
-                      })}
-                    </select>
-                    <SelectIndicator />
-                  </div>
+                  <SearchDropdown
+                    id="number-of-spots"
+                    name="numberOfSpots"
+                    placeholder="Select amount"
+                    listboxLabel="Number of spots options"
+                    options={numberOfSpotsOptions}
+                    className={`${controlClassName} w-full`}
+                    optionClassName="border-b border-white/[0.06] py-2 text-black last:border-b-0"
+                    initialActiveIndex={3}
+                    scrollable
+                  />
                 </SearchField>
                 <div className="col-span-2">
-                  <SearchField id="parking-dates" label="Dates">
-                    <input
+                  <SearchField
+                    id="parking-dates"
+                    label="Dates"
+                    className="rounded-b-md"
+                  >
+                    <ParkingDatesDropdown
                       id="parking-dates"
-                      type="text"
                       name="parkingDates"
-                      placeholder="Select parking dates"
                       className={controlClassName}
                     />
                   </SearchField>
