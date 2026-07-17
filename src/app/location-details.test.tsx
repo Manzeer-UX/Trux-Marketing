@@ -1,6 +1,56 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { vi } from "vitest";
 
+type MockStaticMarker = {
+  iconUrl?: string;
+  position: { lat: number; lng: number };
+  title?: string;
+  tooltip?: string;
+};
+
+vi.mock("@/components/marketing/Map", () => ({
+  Map: ({
+    ariaLabel,
+    center,
+    className,
+    onStaticMarkerClick,
+    renderStaticMarkerPopup,
+    showMarker,
+    staticMarkers = [],
+    theme,
+  }: {
+    ariaLabel?: string;
+    center?: { lat: number; lng: number };
+    className?: string;
+    onStaticMarkerClick?: () => void;
+    renderStaticMarkerPopup?: () => React.ReactNode;
+    showMarker?: boolean;
+    staticMarkers?: readonly MockStaticMarker[];
+    theme?: "dark" | "light";
+  }) => (
+    <div
+      role="region"
+      aria-label={ariaLabel}
+      className={className}
+      data-center={`${center?.lat},${center?.lng}`}
+      data-has-click-handler={String(Boolean(onStaticMarkerClick))}
+      data-has-popup-renderer={String(Boolean(renderStaticMarkerPopup))}
+      data-show-marker={String(showMarker)}
+      data-theme={theme}
+    >
+      {staticMarkers.map((marker) => (
+        <span
+          key={`${marker.position.lat},${marker.position.lng}`}
+          role="img"
+          aria-label={marker.title}
+          data-icon={marker.iconUrl}
+          data-tooltip={marker.tooltip}
+        />
+      ))}
+    </div>
+  ),
+}));
+
 it("renders the Figma location details screen for a static location route", async () => {
   const detailsPageModule = await vi
     .importActual<typeof import("./locations/[locationId]/page")>(
@@ -130,6 +180,32 @@ it("renders the Figma location details screen for a static location route", asyn
   expect(
     screen.getByRole("heading", { name: "Where you’ll be" }),
   ).toBeInTheDocument();
+  const locationTitle =
+    "Atlanta, GA Truck and Trailer Parking on 1345 M-52";
+  const detailsMap = screen.getByRole("region", {
+    name: `Map showing ${locationTitle}`,
+  });
+
+  expect(detailsMap).toHaveClass("h-full", "min-h-0", "w-full");
+  expect(detailsMap).toHaveAttribute("data-center", "33.749,-84.388");
+  expect(detailsMap).toHaveAttribute("data-theme", "dark");
+  expect(detailsMap).toHaveAttribute("data-show-marker", "false");
+  expect(detailsMap).toHaveAttribute("data-has-click-handler", "false");
+  expect(detailsMap).toHaveAttribute("data-has-popup-renderer", "false");
+
+  const markers = within(detailsMap).getAllByRole("img");
+  expect(markers).toHaveLength(1);
+  expect(markers[0]).toHaveAccessibleName(
+    `${locationTitle} parking location`,
+  );
+  expect(markers[0]).toHaveAttribute(
+    "data-icon",
+    "/assets/hero-map-marker-active.svg",
+  );
+  expect(markers[0]).not.toHaveAttribute("data-tooltip");
+  expect(
+    screen.queryByRole("img", { name: `Static map for ${locationTitle}` }),
+  ).not.toBeInTheDocument();
   expect(screen.queryByRole("contentinfo")).not.toBeInTheDocument();
 
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();

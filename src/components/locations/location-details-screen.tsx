@@ -7,7 +7,7 @@ import {
   ScanQrCode,
   type LucideIcon,
 } from "lucide-react";
-import Image from "next/image";
+import { LocationDetailsMap } from "@/components/locations/location-details-map";
 import { LocationPhotoGallery } from "@/components/locations/location-photo-gallery";
 import { LocationReservationForm } from "@/components/locations/location-reservation-form";
 import type { MapLocationDetails } from "@/constants/locations-content";
@@ -146,20 +146,10 @@ export function LocationDetailsScreen({
               <h2 className="text-base leading-6 font-medium">
                 Where you’ll be
               </h2>
-              <div className="relative mt-4 h-[355px] overflow-hidden bg-[#273344]">
-                <Image
-                  src="/assets/location-map-static.png"
-                  alt={`Static map for ${location.title}`}
-                  fill
-                  sizes="(min-width: 1280px) 614px, calc(100vw - 48px)"
-                  className="object-cover"
-                />
-                <Image
-                  src="/assets/location-pin.svg"
-                  alt=""
-                  width={33}
-                  height={40}
-                  className="absolute top-1/2 left-1/2 z-10 h-10 w-[33px] -translate-x-1/2 -translate-y-1/2 drop-shadow-md"
+              <div className="mt-4 h-[355px] overflow-hidden bg-[#273344]">
+                <LocationDetailsMap
+                  coordinates={location.coordinates}
+                  title={location.title}
                 />
               </div>
             </section>
