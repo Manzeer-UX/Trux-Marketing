@@ -186,7 +186,14 @@ it("renders the Figma location details screen for a static location route", asyn
   const amenitiesDialog = screen.getByRole("dialog", {
     name: "All amenities",
   });
-  expect(within(amenitiesDialog).getAllByRole("listitem")).toHaveLength(19);
+  const amenityItems = within(amenitiesDialog).getAllByRole("listitem");
+  expect(amenityItems).toHaveLength(19);
+  expect(amenitiesDialog.querySelector(".lucide-check")).not.toBeInTheDocument();
+  for (const amenityItem of amenityItems) {
+    const amenityIcon = amenityItem.querySelector('[aria-hidden="true"]');
+    expect(amenityIcon).toBeInTheDocument();
+    expect(amenityIcon?.parentElement).toHaveClass("text-[#0f0f1d]");
+  }
   expect(
     within(amenitiesDialog).getByText("Electric Gates"),
   ).toBeInTheDocument();

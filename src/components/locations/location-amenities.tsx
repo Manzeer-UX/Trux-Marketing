@@ -1,53 +1,59 @@
 "use client";
 
 import {
+  Bus,
   Cctv,
-  Check,
+  Clock3,
+  Container,
   Fence,
+  Fuel,
   Grid2X2,
   Lightbulb,
+  MoveRight,
+  PackageOpen,
+  QrCode,
+  Route,
+  Truck,
+  UserRound,
+  Utensils,
+  Wifi,
+  Wrench,
   X,
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-interface PreviewAmenity {
+interface Amenity {
   label: string;
   icon?: LucideIcon;
 }
 
-const previewAmenities: readonly PreviewAmenity[] = [
+const allAmenities = [
   { label: "Electric Gates", icon: Fence },
   { label: "Security Cameras", icon: Cctv },
   { label: "Bathrooms" },
   { label: "Lighting", icon: Lightbulb },
   { label: "Stabilized Yard Surface", icon: Grid2X2 },
-];
+  { label: "Perimeter Fencing", icon: Fence },
+  { label: "24/7 Access", icon: Clock3 },
+  { label: "Mobile QR Code Entry", icon: QrCode },
+  { label: "Wide Turning Radius", icon: Route },
+  { label: "Tractor Parking", icon: Truck },
+  { label: "Trailer Parking", icon: Container },
+  { label: "Oversized Vehicle Parking", icon: Bus },
+  { label: "Pull-Through Spaces", icon: MoveRight },
+  { label: "On-Site Attendant", icon: UserRound },
+  { label: "Fuel Nearby", icon: Fuel },
+  { label: "Food Nearby", icon: Utensils },
+  { label: "Repair Services Nearby", icon: Wrench },
+  { label: "Wi-Fi Access", icon: Wifi },
+  { label: "Vending Machines", icon: PackageOpen },
+] as const satisfies readonly Amenity[];
 
-const allAmenityLabels = [
-  "Electric Gates",
-  "Security Cameras",
-  "Bathrooms",
-  "Lighting",
-  "Stabilized Yard Surface",
-  "Perimeter Fencing",
-  "24/7 Access",
-  "Mobile QR Code Entry",
-  "Wide Turning Radius",
-  "Tractor Parking",
-  "Trailer Parking",
-  "Oversized Vehicle Parking",
-  "Pull-Through Spaces",
-  "On-Site Attendant",
-  "Fuel Nearby",
-  "Food Nearby",
-  "Repair Services Nearby",
-  "Wi-Fi Access",
-  "Vending Machines",
-] as const;
+const previewAmenities = allAmenities.slice(0, 5);
 
-function PreviewAmenityIcon({ amenity }: { amenity: PreviewAmenity }) {
+function AmenityIcon({ amenity }: { amenity: Amenity }) {
   const Icon = amenity.icon;
 
   if (Icon) {
@@ -102,7 +108,7 @@ export function LocationAmenities() {
                   className="flex min-h-6 items-center gap-4 text-sm leading-5"
                 >
                   <span className="flex size-6 shrink-0 items-center justify-center">
-                    <PreviewAmenityIcon amenity={amenity} />
+                    <AmenityIcon amenity={amenity} />
                   </span>
                   {amenity.label}
                 </div>
@@ -166,17 +172,15 @@ export function LocationAmenities() {
 
                 <div className="overflow-y-auto p-5 sm:p-6">
                   <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                    {allAmenityLabels.map((label) => (
+                    {allAmenities.map((amenity) => (
                       <li
-                        key={label}
+                        key={amenity.label}
                         className="flex min-h-10 items-center gap-3 rounded-sm bg-white px-3 py-2 text-sm leading-5"
                       >
-                        <Check
-                          aria-hidden="true"
-                          className="size-4 shrink-0 text-amber"
-                          strokeWidth={2}
-                        />
-                        {label}
+                        <span className="flex size-6 shrink-0 items-center justify-center text-[#0f0f1d]">
+                          <AmenityIcon amenity={amenity} />
+                        </span>
+                        {amenity.label}
                       </li>
                     ))}
                   </ul>
