@@ -15,7 +15,7 @@ describe("TRUX marketing page", () => {
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("img", {
+      screen.getByRole("region", {
         name: "Available TRUX parking lots around Atlanta",
       }),
     ).toBeInTheDocument();
@@ -225,7 +225,7 @@ describe("TRUX marketing page", () => {
     ).toHaveAttribute("href", "https://trucklots.com/");
   });
 
-  it("keeps the compact header until the wide breakpoint and right-aligns the desktop map", () => {
+  it("keeps the compact header until the wide breakpoint and renders the map surface", () => {
     render(<HomePage />);
 
     expect(
@@ -237,13 +237,40 @@ describe("TRUX marketing page", () => {
         .closest("div"),
     ).toHaveClass("wide:hidden");
     expect(
-      screen.getByRole("img", {
+      screen.getByRole("region", {
         name: "Available TRUX parking lots around Atlanta",
       }),
-    ).toHaveClass("lg:object-right");
+    ).toHaveClass("h-full", "w-full");
     expect(
       screen.getByRole("button", { name: "Search Available Lots" }),
     ).toHaveClass("whitespace-nowrap");
+  });
+
+  it("matches the Figma hero with separate content and Google map columns", () => {
+    render(<HomePage />);
+
+    const hero = document.getElementById("hero-heading")?.closest("section");
+    const layout = hero?.firstElementChild;
+    const contentPanel = layout?.firstElementChild;
+    const mapPanel = layout?.lastElementChild;
+    const map = screen.getByRole("region", {
+      name: "Available TRUX parking lots around Atlanta",
+    });
+
+    expect(layout).toHaveClass(
+      "lg:grid",
+      "lg:h-full",
+      "lg:grid-cols-[620px_minmax(0,1fr)]",
+    );
+    expect(contentPanel).not.toHaveClass(
+      "lg:absolute",
+      "lg:inset-y-0",
+      "lg:left-0",
+      "lg:w-[620px]",
+    );
+    expect(mapPanel).toHaveClass("relative", "lg:h-full");
+    expect(mapPanel).not.toHaveClass("lg:absolute", "lg:inset-0");
+    expect(map).toHaveClass("h-full", "w-full");
   });
 
   it("renders four labeled search controls without submission behavior", () => {

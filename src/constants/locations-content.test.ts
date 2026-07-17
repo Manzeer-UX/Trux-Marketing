@@ -53,4 +53,23 @@ it("stores the static map locations needed by the details routes", () => {
       expect.objectContaining({ id: "south-atlanta" }),
     ],
   });
+  expect(
+    locationsContent.mapLocationDetails.map(({ coordinates, id }) => ({
+      coordinates,
+      id,
+    })),
+  ).toEqual([
+    {
+      coordinates: { lat: 33.749, lng: -84.388 },
+      id: "georgia-atlanta",
+    },
+    {
+      coordinates: { lat: 33.78, lng: -84.445 },
+      id: "west-atlanta",
+    },
+    {
+      coordinates: { lat: 33.7, lng: -84.365 },
+      id: "south-atlanta",
+    },
+  ]);
 });

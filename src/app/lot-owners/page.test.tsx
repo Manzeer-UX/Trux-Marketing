@@ -93,10 +93,19 @@ it("renders the static Figma Lot Owners page and active navigation", async () =>
     }),
   ).toHaveClass("wide:h-[640px]");
   expect(
-    screen.getByRole("img", {
+    screen.queryByRole("img", {
       name: "Static map showing TRUX parking lot earnings",
     }),
-  ).toBeInTheDocument();
+  ).not.toBeInTheDocument();
+  expect(
+    screen.getByRole("region", {
+      name: "Map showing TRUX parking lot earnings",
+    }),
+  ).toHaveClass("bg-[#f5f5f5]");
+  expect(screen.queryAllByText(/\$\d+ \/ Night/)).toHaveLength(0);
+  expect(
+    document.querySelectorAll('img[src="/assets/lot-owners-map-pin.svg"]'),
+  ).toHaveLength(0);
 
   expect(screen.getByRole("region", { name: "By the numbers" })).toHaveClass(
     "wide:h-[251px]",

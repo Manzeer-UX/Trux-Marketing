@@ -56,30 +56,32 @@ export function SiteFooter({
   return (
     <footer
       className={cn(
-        "py-12 wide:h-[368px] wide:py-24",
+        "py-16 wide:h-[368px] wide:py-24",
         isLight ? "bg-white text-midnight" : "bg-midnight",
       )}
     >
       <div
         className={cn(
-          "mx-auto flex h-full w-full max-w-[1280px] flex-col gap-10 px-6 md:px-10 wide:gap-16 wide:px-6",
+          "mx-auto flex h-full w-full max-w-[1280px] flex-col items-center gap-12 px-4 md:px-10 wide:items-stretch wide:gap-16 wide:px-6",
         )}
       >
-        <div className="flex flex-col gap-8 wide:h-7 wide:flex-row wide:items-center wide:justify-between wide:gap-10">
-          <div className="flex flex-col gap-6 wide:flex-row wide:items-center wide:gap-12">
-            <Image
-              src="/assets/trux-logo.svg"
-              alt="TRUX Parking"
-              width={80}
-              height={21}
-              className="h-[21px] w-20 shrink-0"
-            />
+        <div className="flex w-full flex-col items-center gap-10 wide:h-7 wide:flex-row wide:justify-between wide:gap-10">
+          <div className="flex flex-col items-center gap-10 wide:flex-row wide:gap-12">
+            <div className="flex h-7 w-20 shrink-0 items-center justify-center">
+              <Image
+                src="/assets/trux-logo.svg"
+                alt="TRUX Parking"
+                width={80}
+                height={21}
+                className="h-[21px] w-20"
+              />
+            </div>
 
             <nav aria-label="Footer navigation">
               <ul
                 aria-label="Footer links"
                 className={cn(
-                  "flex list-none flex-wrap items-start gap-x-8 gap-y-4 text-sm leading-5 wide:items-center",
+                  "flex list-none flex-col items-center gap-4 text-center text-sm leading-5 wide:flex-row wide:gap-x-8 wide:gap-y-0 wide:text-left",
                   isLight ? "text-[#737373]" : "text-muted",
                 )}
               >
@@ -91,7 +93,7 @@ export function SiteFooter({
                         item.label === activeItem ? "page" : undefined
                       }
                       className={cn(
-                        "nav-gradient-link inline-flex min-h-11 items-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber",
+                        "nav-gradient-link inline-flex min-h-6 items-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber wide:min-h-11",
                         isLight
                           ? "hover:text-midnight focus-visible:text-midnight"
                           : "hover:text-off-white focus-visible:text-off-white",
@@ -102,10 +104,10 @@ export function SiteFooter({
                   </li>
                 ))}
                 <li className="whitespace-nowrap">
-                  <details className="group relative">
+                  <details className="group relative flex flex-col items-center wide:items-start">
                     <summary
                       className={cn(
-                        "nav-gradient-link inline-flex min-h-11 cursor-pointer list-none items-center gap-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber [&::-webkit-details-marker]:hidden",
+                        "nav-gradient-link inline-flex min-h-6 cursor-pointer list-none items-center gap-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber wide:min-h-11 [&::-webkit-details-marker]:hidden",
                         isLight
                           ? "hover:text-midnight focus-visible:text-midnight"
                           : "hover:text-off-white focus-visible:text-off-white",
@@ -121,7 +123,7 @@ export function SiteFooter({
                     <ul
                       aria-label="Footer more links"
                       className={cn(
-                        "mt-2 flex min-w-44 list-none flex-col rounded-md border p-2 shadow-xl wide:absolute wide:bottom-full wide:left-0 wide:z-30 wide:mb-2",
+                        "mt-2 flex min-w-44 list-none flex-col items-center rounded-md border p-2 text-center shadow-xl wide:absolute wide:bottom-full wide:left-0 wide:z-30 wide:mb-2 wide:items-stretch wide:text-left",
                         isLight
                           ? "border-[#e5e5e5] bg-white"
                           : "border-white/10 bg-midnight",
@@ -151,7 +153,7 @@ export function SiteFooter({
 
           <div
             aria-label="TRUX social media"
-            className="flex items-center gap-5"
+            className="flex items-center justify-center gap-0 wide:gap-5"
             role="group"
           >
             {socialItems.map((item) => (
@@ -188,18 +190,23 @@ export function SiteFooter({
 
         <div
           className={cn(
-            "flex flex-col gap-5 text-sm leading-5 wide:flex-row wide:items-center wide:justify-between wide:gap-8 wide:whitespace-nowrap",
+            "flex w-full flex-col items-center gap-12 text-center text-sm leading-5 wide:flex-row wide:justify-between wide:gap-8 wide:text-left wide:whitespace-nowrap",
             isLight ? "text-[#737373]" : "text-muted",
           )}
         >
-          <p>Copyright © 2024. All rights reserved by TruxParking.</p>
-          <ul className="flex list-none flex-wrap items-center gap-x-7 gap-y-4">
+          <p className="max-w-[300px] wide:max-w-none">
+            Copyright © 2024. All rights reserved by TruxParking.
+          </p>
+          <ul
+            aria-label="Footer legal links"
+            className="order-first flex list-none flex-col items-center gap-4 text-center wide:order-none wide:flex-row wide:gap-x-7 wide:gap-y-0 wide:text-left"
+          >
             {legalItems.map((item) => (
               <li key={item.label}>
                 <Link
                   href={item.href}
                   className={cn(
-                    "nav-gradient-link inline-flex min-h-11 items-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber",
+                    "nav-gradient-link inline-flex min-h-6 items-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber wide:min-h-11",
                     isLight
                       ? "hover:text-midnight focus-visible:text-midnight"
                       : "hover:text-off-white focus-visible:text-off-white",

@@ -7,16 +7,84 @@ vi.mock("next/link", () => ({
   default: ({
     children,
     href,
+    prefetch,
     ...props
   }: Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & {
     children: ReactNode;
     href: string;
+    prefetch?: boolean;
   }) => (
-    <a href={href} data-next-link="true" {...props}>
+    <a
+      href={href}
+      data-next-link="true"
+      data-prefetch={prefetch ? "true" : undefined}
+      {...props}
+    >
       {children}
     </a>
   ),
 }));
+
+vi.mock("@/components/marketing/Map", async () => {
+  const React = await import("react");
+
+  type MockMarker = {
+    activeIconUrl?: string;
+    iconUrl?: string;
+    id?: string;
+    position: { lat: number; lng: number };
+    title?: string;
+  };
+
+  return {
+    Map: ({
+      ariaLabel,
+      className,
+      onStaticMarkerClick,
+      renderStaticMarkerPopup,
+      staticMarkers = [],
+      theme,
+    }: {
+      ariaLabel?: string;
+      className?: string;
+      onStaticMarkerClick?: (marker: MockMarker) => void;
+      renderStaticMarkerPopup?: (marker: MockMarker) => ReactNode;
+      staticMarkers?: readonly MockMarker[];
+      theme?: "dark" | "light";
+    }) => {
+      const [selectedMarker, setSelectedMarker] =
+        React.useState<MockMarker | null>(null);
+
+      return (
+        <div
+          role="region"
+          aria-label={ariaLabel}
+          className={className}
+          data-theme={theme}
+        >
+          {staticMarkers.map((marker) => (
+            <button
+              key={marker.id}
+              type="button"
+              aria-label={`Show ${marker.title}`}
+              data-active-icon={marker.activeIconUrl}
+              data-default-icon={marker.iconUrl}
+              onClick={() => {
+                setSelectedMarker(marker);
+                onStaticMarkerClick?.(marker);
+              }}
+            />
+          ))}
+          {selectedMarker && renderStaticMarkerPopup ? (
+            <div data-mock-marker-popup="above-marker">
+              {renderStaticMarkerPopup(selectedMarker)}
+            </div>
+          ) : null}
+        </div>
+      );
+    },
+  };
+});
 
 it("renders the Locations page without a footer and with an active Locations link", () => {
   render(<LocationsPage />);
@@ -33,12 +101,36 @@ it("renders the Locations page without a footer and with an active Locations lin
     ),
   ).not.toBeInTheDocument();
 
-  const map = screen.getByRole("img", {
-    name: "Static map of TRUX parking locations around Atlanta",
+  const map = screen.getByRole("region", {
+    name: "TRUX parking locations around Atlanta",
   });
-  expect(decodeURIComponent(map.getAttribute("src") ?? "")).toContain(
-    "/assets/location-map-static.png",
-  );
+  expect(map).toHaveAttribute("data-theme", "dark");
+  expect(
+    screen.queryByRole("img", {
+      name: "Static map of TRUX parking locations around Atlanta",
+    }),
+  ).not.toBeInTheDocument();
+  expect(
+    screen.getAllByRole("button", { name: /^Show .* spots$/ }),
+  ).toHaveLength(3);
+  for (const marker of screen.getAllByRole("button", {
+    name: /^Show .* spots$/,
+  })) {
+    expect(marker).toHaveAttribute(
+      "data-default-icon",
+      "/assets/hero-map-marker-default.svg",
+    );
+    expect(marker).toHaveAttribute(
+      "data-active-icon",
+      "/assets/hero-map-marker-active.svg",
+    );
+  }
+
+  expect(
+    screen.getByRole("region", {
+      name: "TRUX parking locations around Atlanta",
+    }),
+  ).toHaveClass("h-full", "min-h-0", "w-full");
 
   const primaryNavigation = screen.getByRole("navigation", {
     name: "Primary navigation",
@@ -88,10 +180,9 @@ it("uses the measured Figma split, panel, popup, and pin spacing", () => {
       .closest("section"),
   ).toHaveClass("wide:ml-1.5", "wide:mr-2");
 
-  const map = screen.getByRole("img", {
-    name: "Static map of TRUX parking locations around Atlanta",
+  const map = screen.getByRole("region", {
+    name: "TRUX parking locations around Atlanta",
   });
-  expect(map).toHaveClass("z-0");
   expect(map.parentElement).toHaveClass(
     "wide:h-[1162px]",
     "wide:min-h-[1162px]",
@@ -110,20 +201,17 @@ it("uses the measured Figma split, panel, popup, and pin spacing", () => {
   const popup = screen.getByRole("region", {
     name: "Selected parking location",
   });
-  expect(popup).toHaveClass(
-    "max-w-[332px]",
-    "wide:left-[calc(50%+30px)]",
-    "wide:top-[171px]",
+  expect(popup.parentElement).toHaveAttribute(
+    "data-mock-marker-popup",
+    "above-marker",
   );
+  expect(popup).toHaveClass("w-full");
   expect(screen.queryByText("8 Spots")).not.toBeInTheDocument();
   expect(screen.queryByText("10 Spots")).not.toBeInTheDocument();
 
-  for (const pin of screen.getAllByRole("button", { name: /^Show / })) {
-    const pinMark = within(pin).getByRole("presentation");
-    expect(decodeURIComponent(pinMark.getAttribute("src") ?? "")).toContain(
-      "/assets/location-pin.svg",
-    );
-  }
+  expect(
+    screen.getAllByRole("button", { name: /^Show .* spots$/ }),
+  ).toHaveLength(3);
 });
 
 it("opens the matching static location card when a map pin is selected", () => {
@@ -132,9 +220,6 @@ it("opens the matching static location card when a map pin is selected", () => {
   expect(
     screen.queryByRole("region", { name: "Selected parking location" }),
   ).not.toBeInTheDocument();
-  for (const pin of screen.getAllByRole("button", { name: /^Show / })) {
-    expect(pin).toHaveAttribute("aria-pressed", "false");
-  }
 
   const westAtlantaPin = screen.getByRole("button", {
     name: "Show West Atlanta Parking Lot, 8 spots",
@@ -144,7 +229,6 @@ it("opens the matching static location card when a map pin is selected", () => {
   const selectedLocation = screen.getByRole("region", {
     name: "Selected parking location",
   });
-  expect(westAtlantaPin).toHaveAttribute("aria-pressed", "true");
   expect(
     within(selectedLocation).getByRole("heading", {
       name: "West Atlanta Parking Lot",
@@ -156,9 +240,9 @@ it("opens the matching static location card when a map pin is selected", () => {
     ),
   ).toBeInTheDocument();
   expect(
-    within(selectedLocation).getByRole("link", { name: "View Location" }),
+    within(selectedLocation).getByRole("link", { name: "View Details" }),
   ).toHaveAttribute("href", "/locations/west-atlanta");
   expect(
-    within(selectedLocation).getByRole("link", { name: "View Location" }),
+    within(selectedLocation).getByRole("link", { name: "View Details" }),
   ).toHaveAttribute("data-next-link", "true");
 });

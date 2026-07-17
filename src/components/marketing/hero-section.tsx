@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { DriverMap } from "@/components/marketing/driver-map";
 import { ParkingDatesDropdown } from "@/components/marketing/parking-dates-dropdown";
 import { ParkingTypeDropdown } from "@/components/marketing/parking-type-dropdown";
 import { SearchDropdown } from "@/components/marketing/search-dropdown";
@@ -46,8 +46,8 @@ export function HeroSection() {
       aria-labelledby="hero-heading"
       className="relative overflow-visible bg-midnight lg:h-[640px]"
     >
-      <div className="relative w-full lg:h-full">
-        <div className="relative z-10 flex bg-midnight px-6 py-12 md:px-10 lg:absolute lg:inset-y-0 lg:left-0 lg:w-[620px] lg:items-center lg:py-0">
+      <div className="relative w-full lg:grid lg:h-full lg:grid-cols-[620px_minmax(0,1fr)]">
+        <div className="relative z-10 flex bg-midnight px-6 py-12 md:px-10 lg:items-center lg:py-0">
           <div className="flex w-full flex-col gap-8">
             <div className="flex flex-col gap-2">
               <p className="text-xs font-extrabold leading-4 tracking-[1.8px] text-amber">
@@ -140,15 +140,8 @@ export function HeroSection() {
           </div>
         </div>
 
-        <div className="relative h-[320px] w-full lg:absolute lg:inset-0 lg:h-full">
-          <Image
-            src="/assets/hero-map.png"
-            alt="Available TRUX parking lots around Atlanta"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover lg:object-right"
-          />
+        <div className="relative h-[320px] w-full lg:h-full">
+          <DriverMap />
         </div>
       </div>
     </section>

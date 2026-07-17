@@ -16,10 +16,13 @@ export interface LocationState {
 
 export interface MapLocationDetails {
   id: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
   mapName: string;
   cardAddress: string;
   mapSpots: number;
-  mapPositionClassName: string;
   title: string;
   address: string;
   managedBy: string;
@@ -94,10 +97,10 @@ export const locationStates = [
 export const mapLocationDetails = [
   {
     id: "georgia-atlanta",
+    coordinates: { lat: 33.749, lng: -84.388 },
     mapName: "Georgia Parking Lot #1",
     cardAddress: "17707 NW Miami Ct, Atlanta, GA 33169",
     mapSpots: 14,
-    mapPositionClassName: "left-1/2 top-[57%] wide:left-[54%] wide:top-[41.5%]",
     title: "Atlanta, GA Truck and Trailer Parking on 1345 M-52",
     address: "1345 M-52, Atlanta, GA 33169",
     managedBy: "Lot Owner Company",
@@ -108,11 +111,10 @@ export const mapLocationDetails = [
   },
   {
     id: "west-atlanta",
+    coordinates: { lat: 33.78, lng: -84.445 },
     mapName: "West Atlanta Parking Lot",
     cardAddress: "1800 Marietta Blvd NW, Atlanta, GA 30318",
     mapSpots: 8,
-    mapPositionClassName:
-      "left-[24%] top-[69%] wide:left-[33%] wide:top-[52.8%]",
     title: "West Atlanta Truck and Trailer Parking on Marietta Blvd",
     address: "1800 Marietta Blvd NW, Atlanta, GA 30318",
     managedBy: "Lot Owner Company",
@@ -123,11 +125,10 @@ export const mapLocationDetails = [
   },
   {
     id: "south-atlanta",
+    coordinates: { lat: 33.7, lng: -84.365 },
     mapName: "South Atlanta Parking Lot",
     cardAddress: "2600 Moreland Ave SE, Atlanta, GA 30315",
     mapSpots: 10,
-    mapPositionClassName:
-      "left-[76%] top-[76%] wide:left-[71.6%] wide:top-[57.2%]",
     title: "South Atlanta Truck and Trailer Parking on Moreland Ave",
     address: "2600 Moreland Ave SE, Atlanta, GA 30315",
     managedBy: "Lot Owner Company",

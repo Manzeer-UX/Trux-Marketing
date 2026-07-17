@@ -1,9 +1,23 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+import { Map, type StaticMapMarker } from "@/components/marketing/Map";
 import { Button } from "@/components/ui/button";
-import { lotOwnerMapPins } from "@/constants/lot-owners-content";
+
+const lotOwnerStaticMarkers = [
+  {
+    iconUrl: "/assets/lot-owners-map-pin.svg",
+    position: { lat: 33.78, lng: -84.42 },
+    title: "TRUX lot location one",
+    tooltip: "$25 / Night",
+  },
+  {
+    iconUrl: "/assets/lot-owners-map-pin.svg",
+    position: { lat: 33.72, lng: -84.34 },
+    title: "TRUX lot location two",
+    tooltip: "$22 / Night",
+  },
+] satisfies readonly StaticMapMarker[];
 
 function toNonNegativeNumber(value: string) {
   const parsedValue = Number(value);
@@ -25,65 +39,14 @@ export function LotOwnersHero() {
       aria-labelledby="lot-owners-hero-heading"
       className="relative min-h-[640px] overflow-hidden bg-[#f5f5f5] wide:h-[640px]"
     >
-      <div
-        role="img"
-        aria-label="Static map showing TRUX parking lot earnings"
-        className="absolute inset-0 overflow-hidden bg-[#f5f5f5]"
-      >
-        <div className="absolute top-[-23.3px] left-0 h-[978.6px] w-full">
-          <div className="absolute top-[58.8px] left-0 h-[910.552px] w-full">
-            <Image
-              src="/assets/lot-owners-map-parks.svg"
-              alt=""
-              fill
-              sizes="100vw"
-              className="object-fill"
-              priority
-            />
-          </div>
-          <Image
-            src="/assets/lot-owners-map-water.svg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-fill"
-            priority
-          />
-          <Image
-            src="/assets/lot-owners-map-secondary-roads.svg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-fill"
-            priority
-          />
-          <Image
-            src="/assets/lot-owners-map-main-roads.svg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-fill"
-            priority
-          />
-        </div>
-
-        {lotOwnerMapPins.map((pin) => (
-          <div
-            key={pin.price}
-            className="absolute hidden -translate-x-1/2 flex-col items-center gap-1.5 md:flex"
-            style={pin.style}
-          >
-            <span className="rounded-sm bg-trux-blue px-2 py-1.5 text-sm leading-5 font-semibold whitespace-nowrap text-white">
-              {pin.price}
-            </span>
-            <Image
-              src="/assets/lot-owners-map-pin.svg"
-              alt=""
-              width={33}
-              height={40}
-            />
-          </div>
-        ))}
+      <div className="absolute inset-0 overflow-hidden bg-[#f5f5f5]">
+        <Map
+          ariaLabel="Map showing TRUX parking lot earnings"
+          className="h-full min-h-0 w-full"
+          showMarker={false}
+          staticMarkers={lotOwnerStaticMarkers}
+          theme="light"
+        />
       </div>
 
       <div className="relative z-10 m-6 flex max-w-[560px] flex-col rounded-sm bg-white px-6 py-8 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] md:m-10 md:px-10 md:py-12 wide:absolute wide:top-1/2 wide:left-10 wide:m-0 wide:size-[560px] wide:-translate-y-1/2">
