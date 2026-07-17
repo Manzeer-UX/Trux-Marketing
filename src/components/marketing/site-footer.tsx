@@ -1,11 +1,17 @@
+import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { navItems } from "@/constants/marketing-content";
+import {
+  headerMoreNavItems,
+  headerNavItems,
+} from "@/constants/marketing-content";
+import { cn } from "@/lib/cn";
 
-type FooterNavLabel = (typeof navItems)[number]["label"];
+type FooterNavLabel = (typeof headerNavItems)[number]["label"];
 
 interface SiteFooterProps {
   activeItem?: FooterNavLabel | null;
+  variant?: "dark" | "light";
 }
 
 const socialItems = [
@@ -41,42 +47,113 @@ const legalItems = [
   },
 ] as const;
 
-export function SiteFooter({ activeItem = "Drivers" }: SiteFooterProps) {
+export function SiteFooter({
+  activeItem = "Drivers",
+  variant = "dark",
+}: SiteFooterProps) {
+  const isLight = variant === "light";
+
   return (
-    <footer className="bg-midnight py-12 wide:h-[368px] wide:py-24">
-      <div className="flex h-full w-full flex-col gap-10 px-6 md:px-10 wide:gap-16 wide:px-20">
-        <div className="flex flex-col gap-8 wide:h-7 wide:flex-row wide:items-center wide:justify-between wide:gap-10">
-          <div className="flex flex-col gap-6 wide:flex-row wide:items-center wide:gap-12">
-            <Image
-              src="/assets/trux-logo.svg"
-              alt="TRUX Parking"
-              width={80}
-              height={21}
-              className="h-[21px] w-20 shrink-0"
-            />
+    <footer
+      className={cn(
+        "py-16 wide:h-[368px] wide:py-24",
+        isLight ? "bg-white text-midnight" : "bg-midnight",
+      )}
+    >
+      <div
+        className={cn(
+          "mx-auto flex h-full w-full max-w-[1280px] flex-col items-center gap-12 px-4 md:px-10 wide:items-stretch wide:gap-16 wide:px-6",
+        )}
+      >
+        <div className="flex w-full flex-col items-center gap-10 wide:h-7 wide:flex-row wide:justify-between wide:gap-10">
+          <div className="flex flex-col items-center gap-10 wide:flex-row wide:gap-12">
+            <div className="flex h-7 w-20 shrink-0 items-center justify-center">
+              <Image
+                src="/assets/trux-logo.svg"
+                alt="TRUX Parking"
+                width={80}
+                height={21}
+                className="h-[21px] w-20"
+              />
+            </div>
 
             <nav aria-label="Footer navigation">
-              <ul className="flex list-none flex-wrap items-center gap-x-8 gap-y-4 text-sm leading-5 text-muted">
-                {navItems.map((item) => (
+              <ul
+                aria-label="Footer links"
+                className={cn(
+                  "flex list-none flex-col items-center gap-4 text-center text-sm leading-5 wide:flex-row wide:gap-x-8 wide:gap-y-0 wide:text-left",
+                  isLight ? "text-[#737373]" : "text-muted",
+                )}
+              >
+                {headerNavItems.map((item) => (
                   <li key={item.label} className="whitespace-nowrap">
                     <Link
                       href={item.href}
                       aria-current={
                         item.label === activeItem ? "page" : undefined
                       }
-                      className="nav-gradient-link inline-flex min-h-11 items-center transition-colors hover:text-off-white focus-visible:text-off-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
+                      className={cn(
+                        "nav-gradient-link inline-flex min-h-6 items-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber wide:min-h-11",
+                        isLight
+                          ? "hover:text-midnight focus-visible:text-midnight"
+                          : "hover:text-off-white focus-visible:text-off-white",
+                      )}
                     >
                       {item.label}
                     </Link>
                   </li>
                 ))}
+                <li className="whitespace-nowrap">
+                  <details className="group relative flex flex-col items-center wide:items-start">
+                    <summary
+                      className={cn(
+                        "nav-gradient-link inline-flex min-h-6 cursor-pointer list-none items-center gap-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber wide:min-h-11 [&::-webkit-details-marker]:hidden",
+                        isLight
+                          ? "hover:text-midnight focus-visible:text-midnight"
+                          : "hover:text-off-white focus-visible:text-off-white",
+                      )}
+                    >
+                      More
+                      <ChevronDown
+                        aria-hidden="true"
+                        className="size-4 transition-transform group-open:rotate-180"
+                        strokeWidth={1.75}
+                      />
+                    </summary>
+                    <ul
+                      aria-label="Footer more links"
+                      className={cn(
+                        "mt-2 flex min-w-44 list-none flex-col items-center rounded-md border p-2 text-center shadow-xl wide:absolute wide:bottom-full wide:left-0 wide:z-30 wide:mb-2 wide:items-stretch wide:text-left",
+                        isLight
+                          ? "border-[#e5e5e5] bg-white"
+                          : "border-white/10 bg-midnight",
+                      )}
+                    >
+                      {headerMoreNavItems.map((item) => (
+                        <li key={item.label}>
+                          <Link
+                            href={item.href}
+                            className={cn(
+                              "flex min-h-10 items-center rounded-md px-3 transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-amber",
+                              isLight
+                                ? "hover:bg-midnight/5 hover:text-midnight focus-visible:bg-midnight/5 focus-visible:text-midnight"
+                                : "hover:bg-white/10 hover:text-off-white focus-visible:bg-white/10 focus-visible:text-off-white",
+                            )}
+                          >
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                </li>
               </ul>
             </nav>
           </div>
 
           <div
             aria-label="TRUX social media"
-            className="flex items-center gap-5"
+            className="flex items-center justify-center gap-0 wide:gap-5"
             role="group"
           >
             {socialItems.map((item) => (
@@ -86,14 +163,17 @@ export function SiteFooter({ activeItem = "Drivers" }: SiteFooterProps) {
                 aria-label={item.label}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex size-11 shrink-0 items-center justify-center rounded-md p-2.5 transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
+                className={cn(
+                  "inline-flex size-11 shrink-0 items-center justify-center rounded-md p-2.5 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber",
+                  isLight ? "hover:bg-midnight/5" : "hover:bg-white/10",
+                )}
               >
                 <Image
                   src={item.src}
                   alt=""
                   width={24}
                   height={24}
-                  className="brightness-0 invert"
+                  className={cn(!isLight && "brightness-0 invert")}
                 />
               </Link>
             ))}
@@ -102,17 +182,35 @@ export function SiteFooter({ activeItem = "Drivers" }: SiteFooterProps) {
 
         <span
           aria-hidden="true"
-          className="h-0 w-full border-t border-border"
+          className={cn(
+            "h-0 w-full border-t",
+            isLight ? "border-[#e5e5e5]" : "border-border",
+          )}
         />
 
-        <div className="flex flex-col gap-5 text-sm leading-5 text-muted wide:flex-row wide:items-center wide:justify-between wide:gap-8 wide:whitespace-nowrap">
-          <p>Copyright © 2024. All rights reserved by TruxParking.</p>
-          <ul className="flex list-none flex-wrap items-center gap-x-7 gap-y-4">
+        <div
+          className={cn(
+            "flex w-full flex-col items-center gap-12 text-center text-sm leading-5 wide:flex-row wide:justify-between wide:gap-8 wide:text-left wide:whitespace-nowrap",
+            isLight ? "text-[#737373]" : "text-muted",
+          )}
+        >
+          <p className="max-w-[300px] wide:max-w-none">
+            Copyright © 2024. All rights reserved by TruxParking.
+          </p>
+          <ul
+            aria-label="Footer legal links"
+            className="order-first flex list-none flex-col items-center gap-4 text-center wide:order-none wide:flex-row wide:gap-x-7 wide:gap-y-0 wide:text-left"
+          >
             {legalItems.map((item) => (
               <li key={item.label}>
                 <Link
                   href={item.href}
-                  className="nav-gradient-link inline-flex min-h-11 items-center transition-colors hover:text-off-white focus-visible:text-off-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
+                  className={cn(
+                    "nav-gradient-link inline-flex min-h-6 items-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber wide:min-h-11",
+                    isLight
+                      ? "hover:text-midnight focus-visible:text-midnight"
+                      : "hover:text-off-white focus-visible:text-off-white",
+                  )}
                 >
                   {item.label}
                 </Link>

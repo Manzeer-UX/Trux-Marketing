@@ -25,40 +25,22 @@ export interface Faq {
   question: string;
 }
 
-export const navItems = [
-  { label: "Lot Owners", href: "https://truxparking.com/propertyowners/" },
-  { label: "Drivers", href: "/", active: true },
-  { label: "Why Trux", href: "/#why-trux" },
-  { label: "About Us", href: "https://truxparking.com/about-us/" },
-  { label: "Partners", href: "https://truxparking.com/truxpartners/" },
-  {
-    label: "Referrals",
-    href: "https://truxparking.com/affiliateprogram/",
-  },
-  { label: "Trux Perx", href: "https://truxparking.com/truxpartners/" },
-  {
-    label: "Locations",
-    href: "https://truxparking.com/locations-we-serve/",
-  },
-  { label: "Blog", href: "https://truxparking.com/blog/" },
-] as const satisfies readonly NavItem[];
-
 export const headerNavItems = [
-  { label: "Lot Owners", href: "https://truxparking.com/propertyowners/" },
+  { label: "Lot Owners", href: "/lot-owners" },
   { label: "Drivers", href: "/", active: true },
-  { label: "About Us", href: "https://truxparking.com/about-us/" },
+  { label: "About Us", href: "/about-us" },
   { label: "Locations", href: "/locations" },
-  { label: "Partners", href: "https://truxparking.com/truxpartners/" },
+  { label: "Partners", href: "/partners" },
+  { label: "Blog", href: "/blog" },
 ] as const satisfies readonly NavItem[];
 
 export const headerMoreNavItems = [
   { label: "Why Trux", href: "/#why-trux" },
-  {
-    label: "Referrals",
-    href: "https://truxparking.com/affiliateprogram/",
-  },
-  { label: "Trux Perx", href: "https://truxparking.com/truxpartners/" },
-  { label: "Blog", href: "https://truxparking.com/blog/" },
+] as const satisfies readonly NavItem[];
+
+export const navItems = [
+  ...headerNavItems,
+  ...headerMoreNavItems,
 ] as const satisfies readonly NavItem[];
 
 export const stats = [

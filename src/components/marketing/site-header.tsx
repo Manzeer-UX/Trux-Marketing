@@ -1,7 +1,8 @@
-import { ChevronDown, Menu } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button, ButtonLink } from "@/components/ui/button";
+import { MobileNavigation } from "@/components/marketing/mobile-navigation";
+import { ButtonLink } from "@/components/ui/button";
 import {
   headerMoreNavItems,
   headerNavItems,
@@ -10,7 +11,7 @@ import {
 type HeaderNavLabel = (typeof headerNavItems)[number]["label"];
 
 interface SiteHeaderProps {
-  activeItem?: HeaderNavLabel;
+  activeItem?: HeaderNavLabel | null;
 }
 
 export function SiteHeader({ activeItem = "Drivers" }: SiteHeaderProps) {
@@ -109,14 +110,7 @@ export function SiteHeader({ activeItem = "Drivers" }: SiteHeaderProps) {
           </ButtonLink>
         </div>
 
-        <Button
-          type="button"
-          variant="ghost"
-          aria-label="Open navigation menu"
-          className="size-11 p-0 wide:hidden"
-        >
-          <Menu aria-hidden="true" className="size-6" strokeWidth={1.75} />
-        </Button>
+        <MobileNavigation activeItem={activeItem} />
       </div>
     </header>
   );

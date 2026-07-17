@@ -15,6 +15,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "2.1.1",
     "@tailwindcss/postcss": "latest",
     "class-variance-authority": "latest",
     "clsx": "latest",
@@ -30,6 +31,7 @@
     "@playwright/test": "latest",
     "@testing-library/jest-dom": "latest",
     "@testing-library/react": "latest",
+    "@types/google.maps": "^3.65.2",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",

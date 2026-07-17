@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { LocationsSection } from "@/components/locations/locations-section";
-import { SiteFooter } from "@/components/marketing/site-footer";
 import { SiteHeader } from "@/components/marketing/site-header";
 
 export const metadata: Metadata = {
@@ -17,7 +16,6 @@ export default function LocationsPage() {
       <main aria-label="TRUX parking locations">
         <LocationsSection />
       </main>
-      <SiteFooter activeItem={null} />
     </>
   );
 }

@@ -3,10 +3,13 @@
 @theme inline {
   --color-midnight: #171729;
   --color-section: #21213a;
+  --color-card: #2a2a48;
   --color-amber: #f5a623;
   --color-trux-blue: #1e4ed8;
   --color-off-white: #f5f4f0;
   --color-warm-gray: #9e9e9e;
+  --color-dropdown-active: #331a6a;
+  --color-dropdown-ink: #212132;
   --color-muted: #d4d4d4;
   --color-border: rgba(255, 255, 255, 0.1);
 
@@ -67,7 +70,34 @@ select {
   font: inherit;
 }
 
+button:not(:disabled) {
+  cursor: pointer;
+}
+
 @layer components {
+  .search-dropdown-scrollbar {
+    scrollbar-color: rgb(255 255 255 / 35%) rgb(255 255 255 / 8%);
+    scrollbar-width: thin;
+  }
+
+  .search-dropdown-scrollbar::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .search-dropdown-scrollbar::-webkit-scrollbar-track {
+    margin-block: 8px;
+    border: 3px solid var(--color-warm-gray);
+    border-radius: 2px;
+    background: rgb(255 255 255 / 8%);
+  }
+
+  .search-dropdown-scrollbar::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 2px;
+    background: rgb(255 255 255 / 35%);
+    background-clip: content-box;
+  }
+
   .nav-gradient-link {
     position: relative;
   }

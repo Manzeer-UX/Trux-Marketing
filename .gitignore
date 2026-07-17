@@ -18,6 +18,7 @@ coverage/
 # Local environment files (keep the checked-in template)
 .env*
 !.env.example
+!.env.local.example
 
 # TypeScript incremental build state
 *.tsbuildinfo

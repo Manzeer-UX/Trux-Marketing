@@ -1,64 +1,75 @@
-import { locationRegions } from "./locations-content";
+import * as locationsContent from "./locations-content";
 
-it("stores the frozen regional location snapshot in display order", () => {
-  expect(locationRegions).toEqual([
+const { locationStates } = locationsContent;
+
+it("stores the static Figma location snapshot in display order", () => {
+  expect(
+    locationStates.map(({ id, name, count, locations }) => ({
+      id,
+      name,
+      count,
+      previewCount: locations.length,
+    })),
+  ).toEqual([
+    { id: "arkansas", name: "Arkansas", count: 2, previewCount: 2 },
+    { id: "alabama", name: "Alabama", count: 3, previewCount: 3 },
+    { id: "georgia", name: "Georgia", count: 34, previewCount: 13 },
+    { id: "california", name: "California", count: 9, previewCount: 9 },
+  ]);
+
+  expect(locationStates[2].locations[0]).toEqual({
+    id: "georgia-location-1",
+    name: "Georgia Parking Lot #1",
+    address: "17707 NW Miami Ct, Atlanta, GA 33169",
+    rating: 4.8,
+    spots: 30,
+    nightlyRate: 18,
+  });
+
+  expect(locationStates.map((state) => state.locations[0]?.address)).toEqual([
+    "1200 Interstate Dr, Little Rock, AR 72209",
+    "2800 Industrial Pkwy, Birmingham, AL 35217",
+    "17707 NW Miami Ct, Atlanta, GA 33169",
+    "4100 Logistics Way, Ontario, CA 91761",
+  ]);
+  expect(
+    locationStates.flatMap((state) =>
+      state.locations.map((location) => location.address),
+    ),
+  ).not.toContain("Address details available soon");
+});
+
+it("stores the static map locations needed by the details routes", () => {
+  expect(locationsContent).toMatchObject({
+    mapLocationDetails: [
+      expect.objectContaining({
+        id: "georgia-atlanta",
+        title: "Atlanta, GA Truck and Trailer Parking on 1345 M-52",
+        address: "1345 M-52, Atlanta, GA 33169",
+        nightlyRate: 18,
+        spots: 2,
+      }),
+      expect.objectContaining({ id: "west-atlanta" }),
+      expect.objectContaining({ id: "south-atlanta" }),
+    ],
+  });
+  expect(
+    locationsContent.mapLocationDetails.map(({ coordinates, id }) => ({
+      coordinates,
+      id,
+    })),
+  ).toEqual([
     {
-      id: "southeast",
-      name: "Southeast",
-      states: [
-        { name: "Florida", count: 6 },
-        { name: "Georgia", count: 34 },
-        { name: "Mississippi", count: 2 },
-        { name: "Tennessee", count: 3 },
-        { name: "North Carolina", count: 10 },
-        { name: "Alabama", count: 3 },
-        { name: "South Carolina", count: 7 },
-        { name: "Arkansas", count: 2 },
-      ],
+      coordinates: { lat: 33.749, lng: -84.388 },
+      id: "georgia-atlanta",
     },
     {
-      id: "southwest",
-      name: "Southwest",
-      states: [
-        { name: "Oklahoma", count: 2 },
-        { name: "Texas", count: 11 },
-        { name: "Arkansas", count: 2 },
-        { name: "Mississippi", count: 2 },
-        { name: "Tennessee", count: 3 },
-      ],
+      coordinates: { lat: 33.78, lng: -84.445 },
+      id: "west-atlanta",
     },
     {
-      id: "northeast",
-      name: "Northeast",
-      states: [{ name: "Pennsylvania", count: 1 }],
-    },
-    {
-      id: "midwest",
-      name: "Midwest",
-      states: [
-        { name: "Ohio", count: 4 },
-        { name: "Missouri", count: 4 },
-        { name: "Iowa", count: 1 },
-        { name: "Minnesota", count: 3 },
-      ],
-    },
-    {
-      id: "northwest",
-      name: "Northwest",
-      states: [
-        { name: "Idaho", count: 3 },
-        { name: "Oregon", count: 1 },
-      ],
-    },
-    {
-      id: "west",
-      name: "West",
-      states: [
-        { name: "California", count: 9 },
-        { name: "Arizona", count: 1 },
-        { name: "Nevada", count: 2 },
-        { name: "Washington", count: 1 },
-      ],
+      coordinates: { lat: 33.7, lng: -84.365 },
+      id: "south-atlanta",
     },
   ]);
 });

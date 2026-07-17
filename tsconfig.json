@@ -18,7 +18,12 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["node", "vitest/globals", "@testing-library/jest-dom"]
+    "types": [
+      "node",
+      "vitest/globals",
+      "@testing-library/jest-dom",
+      "google.maps"
+    ]
   },
   "include": [
     "next-env.d.ts",
