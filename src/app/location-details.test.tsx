@@ -173,6 +173,33 @@ it("renders the Figma location details screen for a static location route", asyn
   expect(
     screen.getByRole("heading", { name: "Amenities" }),
   ).toBeInTheDocument();
+
+  const amenitiesTrigger = screen.getByRole("button", {
+    name: "Show all 19 amenities",
+  });
+  expect(
+    screen.queryByRole("dialog", { name: "All amenities" }),
+  ).not.toBeInTheDocument();
+
+  fireEvent.click(amenitiesTrigger);
+
+  const amenitiesDialog = screen.getByRole("dialog", {
+    name: "All amenities",
+  });
+  expect(within(amenitiesDialog).getAllByRole("listitem")).toHaveLength(19);
+  expect(
+    within(amenitiesDialog).getByText("Electric Gates"),
+  ).toBeInTheDocument();
+  expect(
+    within(amenitiesDialog).getByText("Vending Machines"),
+  ).toBeInTheDocument();
+
+  fireEvent.keyDown(window, { key: "Escape" });
+
+  expect(
+    screen.queryByRole("dialog", { name: "All amenities" }),
+  ).not.toBeInTheDocument();
+  expect(amenitiesTrigger).toHaveFocus();
   expect(screen.getByText("Mobile QR Code")).toBeInTheDocument();
   expect(
     screen.getByRole("heading", { name: "Hours of operation" }),

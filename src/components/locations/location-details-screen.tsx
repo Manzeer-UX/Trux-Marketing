@@ -1,12 +1,5 @@
-import {
-  Cctv,
-  Fence,
-  Grid2X2,
-  Lightbulb,
-  MapPin,
-  ScanQrCode,
-  type LucideIcon,
-} from "lucide-react";
+import { MapPin, ScanQrCode } from "lucide-react";
+import { LocationAmenities } from "@/components/locations/location-amenities";
 import { LocationDetailsMap } from "@/components/locations/location-details-map";
 import { LocationPhotoGallery } from "@/components/locations/location-photo-gallery";
 import { LocationReservationForm } from "@/components/locations/location-reservation-form";
@@ -15,19 +8,6 @@ import type { MapLocationDetails } from "@/constants/locations-content";
 interface LocationDetailsScreenProps {
   location: MapLocationDetails;
 }
-
-interface Amenity {
-  label: string;
-  icon?: LucideIcon;
-}
-
-const amenities: readonly Amenity[] = [
-  { label: "Electric Gates", icon: Fence },
-  { label: "Security Cameras", icon: Cctv },
-  { label: "Bathrooms" },
-  { label: "Lighting", icon: Lightbulb },
-  { label: "Stabilized Yard Surface", icon: Grid2X2 },
-];
 
 const operatingHours = [
   "Monday",
@@ -38,23 +18,6 @@ const operatingHours = [
   "Saturday",
   "Sunday",
 ] as const;
-
-function AmenityIcon({ amenity }: { amenity: Amenity }) {
-  const Icon = amenity.icon;
-
-  if (Icon) {
-    return <Icon aria-hidden="true" className="size-6" strokeWidth={1.7} />;
-  }
-
-  return (
-    <span
-      aria-hidden="true"
-      className="grid size-5 place-items-center rounded-[2px] border-2 border-[#0f0f1d] text-[8px] leading-none font-bold"
-    >
-      WC
-    </span>
-  );
-}
 
 export function LocationDetailsScreen({
   location,
@@ -87,32 +50,7 @@ export function LocationDetailsScreen({
               Managed by <strong>{location.managedBy}</strong>
             </p>
 
-            <section className="border-b border-[#e5e5e5] py-6">
-              <h2 className="text-base leading-6 font-medium">Amenities</h2>
-              <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                {[0, 1].map((column) => (
-                  <div key={column} className="flex flex-col gap-4">
-                    {amenities.map((amenity) => (
-                      <div
-                        key={`${column}-${amenity.label}`}
-                        className="flex min-h-6 items-center gap-4 text-sm leading-5"
-                      >
-                        <span className="flex size-6 shrink-0 items-center justify-center">
-                          <AmenityIcon amenity={amenity} />
-                        </span>
-                        {amenity.label}
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-              <button
-                type="button"
-                className="mt-4 min-h-8 rounded-full border border-[#e5e5e5] px-3.5 text-sm leading-5 font-medium transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
-              >
-                Show all 19 amenities
-              </button>
-            </section>
+            <LocationAmenities />
 
             <section className="border-b border-[#e5e5e5] py-6">
               <h2 className="text-base leading-6 font-medium">
