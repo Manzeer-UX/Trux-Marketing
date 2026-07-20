@@ -1,7 +1,26 @@
-import Image from "next/image";
+import {
+  ManagedImage,
+  type ManagedImageValue,
+} from "@/components/sanity/managed-image";
 import { partnerProfiles } from "@/constants/partners-content";
 
-export function PartnerProfilesSection() {
+interface PartnerProfilesSectionProps {
+  images?: {
+    otr?: ManagedImageValue | null;
+    marquee?: ManagedImageValue | null;
+    es?: ManagedImageValue | null;
+  };
+}
+
+const partnerImageKeys = {
+  "otr-solutions": "otr",
+  "marquee-insurance": "marquee",
+  "es-advantage": "es",
+} as const;
+
+export function PartnerProfilesSection({
+  images,
+}: PartnerProfilesSectionProps) {
   return (
     <section
       aria-labelledby="partner-profiles-heading"
@@ -30,9 +49,10 @@ export function PartnerProfilesSection() {
               className="grid overflow-hidden rounded-2xl border border-midnight/10 bg-white wide:h-[320px] wide:grid-cols-[420px_minmax(0,1fr)]"
             >
               <div className="relative h-[240px] overflow-hidden wide:h-[320px]">
-                <Image
-                  src={partner.image}
-                  alt={`${partner.name} logo`}
+                <ManagedImage
+                  value={images?.[partnerImageKeys[partner.id]]}
+                  fallbackSrc={partner.image}
+                  fallbackAlt={`${partner.name} logo`}
                   fill
                   sizes="(min-width: 1440px) 420px, 100vw"
                   className="object-cover"

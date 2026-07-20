@@ -1,12 +1,17 @@
-import Image from "next/image";
+import {
+  ManagedImage,
+  type ManagedImageValue,
+} from "@/components/sanity/managed-image";
 import { valueProps } from "@/constants/marketing-content";
 
 function ValuePropItem({
   valueProp,
   index,
+  image,
 }: {
   valueProp: (typeof valueProps)[number];
   index: number;
+  image?: ManagedImageValue | null;
 }) {
   const headingId = `value-prop-${index}`;
 
@@ -15,7 +20,14 @@ function ValuePropItem({
       aria-labelledby={headingId}
       className="flex flex-1 flex-col items-start gap-6"
     >
-      <Image src={valueProp.icon} alt="" width={48} height={48} />
+      <ManagedImage
+        value={image}
+        fallbackSrc={valueProp.icon}
+        fallbackAlt=""
+        decorative
+        width={48}
+        height={48}
+      />
       <div className="flex w-full flex-col gap-1">
         <h3
           id={headingId}
@@ -31,7 +43,13 @@ function ValuePropItem({
   );
 }
 
-function ValuePropColumn({ start }: { start: number }) {
+function ValuePropColumn({
+  start,
+  images,
+}: {
+  start: number;
+  images: readonly (ManagedImageValue | null | undefined)[];
+}) {
   const column = valueProps.slice(start, start + 2);
 
   return (
@@ -41,14 +59,22 @@ function ValuePropColumn({ start }: { start: number }) {
           {offset > 0 ? (
             <span aria-hidden="true" className="border-t border-border" />
           ) : null}
-          <ValuePropItem valueProp={valueProp} index={start + offset} />
+          <ValuePropItem
+            valueProp={valueProp}
+            index={start + offset}
+            image={images[start + offset]}
+          />
         </div>
       ))}
     </div>
   );
 }
 
-export function ValuePropsSection() {
+interface ValuePropsSectionProps {
+  images?: readonly (ManagedImageValue | null | undefined)[];
+}
+
+export function ValuePropsSection({ images = [] }: ValuePropsSectionProps) {
   return (
     <section
       id="why-trux"
@@ -64,12 +90,12 @@ export function ValuePropsSection() {
         </h2>
 
         <div className="mt-10 grid min-w-0 gap-7 wide:mt-0 wide:h-full wide:grid-cols-value-props wide:items-center wide:gap-10 wide:py-10">
-          <ValuePropColumn start={0} />
+          <ValuePropColumn start={0} images={images} />
           <span
             aria-hidden="true"
             className="h-px border-t border-border wide:h-[400px] wide:border-t-0 wide:border-l"
           />
-          <ValuePropColumn start={2} />
+          <ValuePropColumn start={2} images={images} />
         </div>
       </div>
     </section>

@@ -1,7 +1,21 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
-import type { AnchorHTMLAttributes, ReactNode } from "react";
+import type {
+  AnchorHTMLAttributes,
+  ReactElement,
+  ReactNode,
+} from "react";
 import { vi } from "vitest";
-import LocationsPage from "./page";
+import LocationsPageRoute from "./page";
+
+let resolvedLocationsPage: ReactElement;
+
+beforeAll(async () => {
+  resolvedLocationsPage = await LocationsPageRoute();
+});
+
+function LocationsPage() {
+  return resolvedLocationsPage;
+}
 
 vi.mock("next/link", () => ({
   default: ({

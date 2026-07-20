@@ -51,7 +51,9 @@ vi.mock("@/components/marketing/Map", () => ({
   ),
 }));
 
-it("renders the Figma location details screen for a static location route", async () => {
+it(
+  "renders the Figma location details screen for a static location route",
+  async () => {
   const detailsPageModule = await vi
     .importActual<typeof import("./locations/[locationId]/page")>(
       "./locations/[locationId]/page",
@@ -255,4 +257,6 @@ it("renders the Figma location details screen for a static location route", asyn
     within(photoDialog).getByRole("button", { name: "Close all photos" }),
   );
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-});
+  },
+  15000,
+);

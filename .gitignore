@@ -8,6 +8,9 @@ node_modules/
 out/
 dist/
 build/
+studio/schema.json
+studio/.sanity/
+studio/dist/
 
 # Test and coverage output
 playwright-report/

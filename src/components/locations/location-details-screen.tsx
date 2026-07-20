@@ -3,10 +3,15 @@ import { LocationAmenities } from "@/components/locations/location-amenities";
 import { LocationDetailsMap } from "@/components/locations/location-details-map";
 import { LocationPhotoGallery } from "@/components/locations/location-photo-gallery";
 import { LocationReservationForm } from "@/components/locations/location-reservation-form";
+import type { ManagedImageValue } from "@/components/sanity/managed-image";
 import type { MapLocationDetails } from "@/constants/locations-content";
 
 interface LocationDetailsScreenProps {
   location: MapLocationDetails;
+  images?: {
+    primaryPhoto?: ManagedImageValue | null;
+    gallery?: readonly ManagedImageValue[] | null;
+  };
 }
 
 const operatingHours = [
@@ -21,6 +26,7 @@ const operatingHours = [
 
 export function LocationDetailsScreen({
   location,
+  images,
 }: LocationDetailsScreenProps) {
   return (
     <main
@@ -28,7 +34,10 @@ export function LocationDetailsScreen({
       className="min-h-screen bg-[#fafafa] pb-24 text-[#0f0f1d]"
     >
       <div className="mx-auto w-full max-w-[1120px] px-6 pt-6 sm:px-10 xl:px-0 xl:pt-[43px]">
-        <LocationPhotoGallery />
+        <LocationPhotoGallery
+          primaryPhoto={images?.primaryPhoto}
+          gallery={images?.gallery}
+        />
 
         <div className="grid items-start xl:grid-cols-[646px_400px] xl:gap-[74px]">
           <article className="pt-8 xl:px-4">

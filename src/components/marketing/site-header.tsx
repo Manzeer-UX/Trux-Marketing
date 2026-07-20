@@ -1,7 +1,10 @@
 import { ChevronDown } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { MobileNavigation } from "@/components/marketing/mobile-navigation";
+import {
+  ManagedImage,
+  type ManagedImageValue,
+} from "@/components/sanity/managed-image";
 import { ButtonLink } from "@/components/ui/button";
 import {
   headerMoreNavItems,
@@ -12,16 +15,21 @@ type HeaderNavLabel = (typeof headerNavItems)[number]["label"];
 
 interface SiteHeaderProps {
   activeItem?: HeaderNavLabel | null;
+  logo?: ManagedImageValue | null;
 }
 
-export function SiteHeader({ activeItem = "Drivers" }: SiteHeaderProps) {
+export function SiteHeader({
+  activeItem = "Drivers",
+  logo,
+}: SiteHeaderProps) {
   return (
     <header className="relative z-20 bg-midnight">
       <div className="flex h-[65px] w-full items-center justify-between px-6 lg:px-10">
         <div className="flex items-center gap-6">
-          <Image
-            src="/assets/trux-logo.svg"
-            alt="TRUX Parking"
+          <ManagedImage
+            value={logo}
+            fallbackSrc="/assets/trux-logo.svg"
+            fallbackAlt="TRUX Parking"
             width={80}
             height={20}
             priority

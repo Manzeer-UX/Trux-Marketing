@@ -5,6 +5,8 @@ import { PartnerProfilesSection } from "@/components/partners/partner-profiles-s
 import { PartnersCtaSection } from "@/components/partners/partners-cta-section";
 import { PartnersHero } from "@/components/partners/partners-hero";
 import { PartnersStandardSection } from "@/components/partners/partners-standard-section";
+import { sanityFetch } from "@/sanity/lib/live";
+import { PARTNERS_PAGE_IMAGES_QUERY } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "TRUX Partners | The Network Behind the Load",
@@ -13,17 +15,38 @@ export const metadata: Metadata = {
   alternates: { canonical: "/partners" },
 };
 
-export default function PartnersPage() {
+export default async function PartnersPage() {
+  const { data: websiteImages } = await sanityFetch({
+    query: PARTNERS_PAGE_IMAGES_QUERY,
+  });
+  const brand = websiteImages?.brand;
+  const partners = websiteImages?.partners;
+
   return (
     <>
-      <SiteHeader activeItem="Partners" />
+      <SiteHeader activeItem="Partners" logo={brand?.headerLogo} />
       <main aria-label="TRUX partners">
-        <PartnersHero />
+        <PartnersHero image={partners?.heroImage} />
         <PartnersStandardSection />
-        <PartnerProfilesSection />
+        <PartnerProfilesSection
+          images={{
+            otr: partners?.otrImage,
+            marquee: partners?.marqueeImage,
+            es: partners?.esImage,
+          }}
+        />
         <PartnersCtaSection />
       </main>
-      <SiteFooter activeItem={null} variant="light" />
+      <SiteFooter
+        activeItem={null}
+        variant="light"
+        logo={brand?.footerLogo}
+        socialIcons={{
+          facebook: brand?.facebookIcon,
+          linkedIn: brand?.linkedInIcon,
+          instagram: brand?.instagramIcon,
+        }}
+      />
     </>
   );
 }

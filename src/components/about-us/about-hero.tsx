@@ -1,15 +1,24 @@
-import Image from "next/image";
+import {
+  ManagedImage,
+  type ManagedImageValue,
+} from "@/components/sanity/managed-image";
 import { ButtonLink } from "@/components/ui/button";
 
-export function AboutHero() {
+export function AboutHero({
+  image,
+}: {
+  image?: ManagedImageValue | null;
+}) {
   return (
     <section
       aria-labelledby="about-hero-heading"
       className="relative min-h-[560px] overflow-hidden bg-midnight px-6 py-20 md:px-10 wide:h-[640px] wide:px-20 wide:py-[129px]"
     >
-      <Image
-        src="/assets/about-hero.png"
-        alt=""
+      <ManagedImage
+        value={image}
+        fallbackSrc="/assets/about-hero.png"
+        fallbackAlt=""
+        decorative
         fill
         priority
         sizes="100vw"

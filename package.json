@@ -12,15 +12,22 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "studio:dev": "pnpm --dir studio dev",
+    "studio:build": "pnpm --dir studio build",
+    "studio:typegen": "pnpm --dir studio typegen",
+    "studio:schema:deploy": "pnpm --dir studio schema:deploy"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "2.1.1",
+    "@sanity/client": "^7.23.1",
+    "@sanity/image-url": "^2.1.1",
     "@tailwindcss/postcss": "latest",
     "class-variance-authority": "latest",
     "clsx": "latest",
     "lucide-react": "latest",
     "next": "16.2.10",
+    "next-sanity": "^13.1.3",
     "react": "19",
     "react-dom": "19",
     "tailwind-merge": "latest",

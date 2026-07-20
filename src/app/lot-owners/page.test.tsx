@@ -66,7 +66,7 @@ it("renders the static Figma Lot Owners page and active navigation", async () =>
   expect(lotOwnersPageModule).not.toBeNull();
   if (!lotOwnersPageModule) return;
 
-  render(<lotOwnersPageModule.default />);
+  render(await lotOwnersPageModule.default());
 
   expect(
     screen.getByRole("main", { name: "TRUX lot owners" }),

@@ -1,4 +1,8 @@
 import Image from "next/image";
+import {
+  ManagedImage,
+  type ManagedImageValue,
+} from "@/components/sanity/managed-image";
 import { Button } from "@/components/ui/button";
 
 const storeBadges = [
@@ -14,7 +18,11 @@ const storeBadges = [
   },
 ] as const;
 
-export function AppDownloadSection() {
+export function AppDownloadSection({
+  phoneImage,
+}: {
+  phoneImage?: ManagedImageValue | null;
+}) {
   return (
     <section
       aria-labelledby="app-download-heading"
@@ -106,9 +114,10 @@ export function AppDownloadSection() {
         </div>
 
         <div className="relative flex min-w-0 justify-center wide:h-full">
-          <Image
-            src="/assets/phone-app.png"
-            alt="TRUX mobile app showing a parking location"
+          <ManagedImage
+            value={phoneImage}
+            fallbackSrc="/assets/phone-app.png"
+            fallbackAlt="TRUX mobile app showing a parking location"
             width={628}
             height={960}
             sizes="(min-width: 1512px) 628px, (min-width: 768px) 500px, calc(100vw - 48px)"

@@ -1,9 +1,12 @@
 "use client";
 
 import { X } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import {
+  ManagedImage,
+  type ManagedImageValue,
+} from "@/components/sanity/managed-image";
 
 const galleryPhotos = [
   "object-center",
@@ -16,7 +19,15 @@ const galleryPhotos = [
   "scale-110 object-right",
 ] as const;
 
-export function LocationPhotoGallery() {
+interface LocationPhotoGalleryProps {
+  primaryPhoto?: ManagedImageValue | null;
+  gallery?: readonly ManagedImageValue[] | null;
+}
+
+export function LocationPhotoGallery({
+  primaryPhoto,
+  gallery = [],
+}: LocationPhotoGalleryProps) {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -48,9 +59,10 @@ export function LocationPhotoGallery() {
         className="grid gap-4 overflow-hidden xl:h-[378px] xl:grid-cols-[minmax(0,1fr)_340px]"
       >
         <div className="relative h-[260px] overflow-hidden sm:h-[360px] xl:h-full">
-          <Image
-            src="/assets/location-details-primary.png"
-            alt="Entrance to the Atlanta truck and trailer parking lot"
+          <ManagedImage
+            value={primaryPhoto}
+            fallbackSrc="/assets/location-details-primary.png"
+            fallbackAlt="Entrance to the Atlanta truck and trailer parking lot"
             fill
             sizes="(min-width: 1280px) 764px, calc(100vw - 48px)"
             className="object-cover"
@@ -60,18 +72,20 @@ export function LocationPhotoGallery() {
 
         <div className="relative grid grid-cols-2 gap-4 xl:grid-cols-1">
           <div className="relative h-[150px] overflow-hidden xl:h-[183px]">
-            <Image
-              src="/assets/location-details-primary.png"
-              alt="Atlanta parking lot side view"
+            <ManagedImage
+              value={gallery?.[0] || primaryPhoto}
+              fallbackSrc="/assets/location-details-primary.png"
+              fallbackAlt="Atlanta parking lot side view"
               fill
               sizes="(min-width: 1280px) 340px, calc(50vw - 32px)"
               className="object-cover object-left"
             />
           </div>
           <div className="relative h-[150px] overflow-hidden xl:h-[174px]">
-            <Image
-              src="/assets/location-details-primary.png"
-              alt="Atlanta parking lot entrance view"
+            <ManagedImage
+              value={gallery?.[1] || primaryPhoto}
+              fallbackSrc="/assets/location-details-primary.png"
+              fallbackAlt="Atlanta parking lot entrance view"
               fill
               sizes="(min-width: 1280px) 340px, calc(50vw - 32px)"
               className="scale-110 object-cover object-right"
@@ -138,9 +152,10 @@ export function LocationPhotoGallery() {
                         key={`${positionClassName}-${index}`}
                         className="relative aspect-[16/10] overflow-hidden rounded-sm bg-[#e5e5e5]"
                       >
-                        <Image
-                          src="/assets/location-details-primary.png"
-                          alt={`Parking gallery view ${index + 1}`}
+                        <ManagedImage
+                          value={gallery?.[index] || primaryPhoto}
+                          fallbackSrc="/assets/location-details-primary.png"
+                          fallbackAlt={`Parking gallery view ${index + 1}`}
                           fill
                           sizes="(min-width: 640px) 480px, calc(100vw - 72px)"
                           className={`object-cover ${positionClassName}`}

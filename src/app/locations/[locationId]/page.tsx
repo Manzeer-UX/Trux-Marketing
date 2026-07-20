@@ -6,6 +6,8 @@ import {
   getMapLocationDetails,
   mapLocationDetails,
 } from "@/constants/locations-content";
+import { sanityFetch } from "@/sanity/lib/live";
+import { LOCATIONS_PAGE_IMAGES_QUERY } from "@/sanity/lib/queries";
 
 interface LocationDetailsPageProps {
   params: Promise<{ locationId: string }>;
@@ -40,10 +42,20 @@ export default async function LocationDetailsPage({
 
   if (!location) notFound();
 
+  const { data: websiteImages } = await sanityFetch({
+    query: LOCATIONS_PAGE_IMAGES_QUERY,
+  });
+
   return (
     <>
-      <SiteHeader activeItem="Locations" />
-      <LocationDetailsScreen location={location} />
+      <SiteHeader
+        activeItem="Locations"
+        logo={websiteImages?.brand?.headerLogo}
+      />
+      <LocationDetailsScreen
+        location={location}
+        images={websiteImages?.locations || undefined}
+      />
     </>
   );
 }

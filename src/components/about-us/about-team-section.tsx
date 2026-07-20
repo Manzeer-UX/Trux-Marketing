@@ -1,4 +1,7 @@
-import Image from "next/image";
+import {
+  ManagedImage,
+  type ManagedImageValue,
+} from "@/components/sanity/managed-image";
 import {
   getTeamMemberInitials,
   teamMembers,
@@ -13,7 +16,11 @@ const glowPositions: Record<TeamGlowPosition, string> = {
   "high-right": "left-[50px] -top-[100px]",
 };
 
-export function AboutTeamSection() {
+export function AboutTeamSection({
+  decoration,
+}: {
+  decoration?: ManagedImageValue | null;
+}) {
   return (
     <section
       aria-labelledby="about-team-heading"
@@ -42,9 +49,11 @@ export function AboutTeamSection() {
               className="overflow-hidden rounded-[6px] border border-[#e5e5e5]/60 bg-white wide:h-[493px]"
             >
               <div className="relative flex h-60 items-center justify-center overflow-hidden bg-midnight bg-[linear-gradient(to_right,rgba(30,78,216,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(30,78,216,0.08)_1px,transparent_1px)] bg-[size:80px_60px]">
-                <Image
-                  src="/assets/about-team-ellipse.svg"
-                  alt=""
+                <ManagedImage
+                  value={decoration}
+                  fallbackSrc="/assets/about-team-ellipse.svg"
+                  fallbackAlt=""
+                  decorative
                   width={400}
                   height={400}
                   className={cn(

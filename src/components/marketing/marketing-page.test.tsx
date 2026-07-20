@@ -1,5 +1,16 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
-import HomePage from "@/app/page";
+import type { ReactElement } from "react";
+import HomePageRoute from "@/app/page";
+
+let resolvedHomePage: ReactElement;
+
+beforeAll(async () => {
+  resolvedHomePage = await HomePageRoute();
+});
+
+function HomePage() {
+  return resolvedHomePage;
+}
 
 describe("TRUX marketing page", () => {
   it("renders the primary navigation and hero", () => {

@@ -1,14 +1,22 @@
-import Image from "next/image";
+import {
+  ManagedImage,
+  type ManagedImageValue,
+} from "@/components/sanity/managed-image";
 import { ButtonLink } from "@/components/ui/button";
 
-export function CoverageSection() {
+export function CoverageSection({
+  image,
+}: {
+  image?: ManagedImageValue | null;
+}) {
   return (
     <section aria-labelledby="coverage-heading" className="bg-section">
       <div className="flex w-full flex-col gap-10 px-6 py-12 md:px-10 wide:grid wide:h-[512px] wide:grid-cols-coverage wide:items-center wide:gap-14 wide:px-20 wide:py-14">
         <div className="flex w-full items-center justify-center wide:h-[400px]">
-          <Image
-            src="/assets/coverage-map.svg"
-            alt="TRUX parking coverage across 25 states"
+          <ManagedImage
+            value={image}
+            fallbackSrc="/assets/coverage-map.svg"
+            fallbackAlt="TRUX parking coverage across 25 states"
             width={631}
             height={402}
             sizes="(min-width: 1512px) 620px, calc(100vw - 48px)"

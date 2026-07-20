@@ -1,15 +1,24 @@
-import Image from "next/image";
+import {
+  ManagedImage,
+  type ManagedImageValue,
+} from "@/components/sanity/managed-image";
 import { Button } from "@/components/ui/button";
 
-export function PartnersHero() {
+export function PartnersHero({
+  image,
+}: {
+  image?: ManagedImageValue | null;
+}) {
   return (
     <section
       aria-labelledby="partners-hero-heading"
       className="relative min-h-[520px] overflow-hidden bg-midnight px-6 md:px-10 wide:h-[585px] wide:px-20"
     >
-      <Image
-        src="/assets/partners-hero.png"
-        alt=""
+      <ManagedImage
+        value={image}
+        fallbackSrc="/assets/partners-hero.png"
+        fallbackAlt=""
+        decorative
         fill
         priority
         sizes="100vw"

@@ -1,8 +1,17 @@
-import Image from "next/image";
+import {
+  ManagedImage,
+  type ManagedImageValue,
+} from "@/components/sanity/managed-image";
 import { lotOwnerBenefits } from "@/constants/lot-owners-content";
 import { cn } from "@/lib/cn";
 
-export function LotOwnersBenefitsSection() {
+interface LotOwnersBenefitsSectionProps {
+  images?: readonly (ManagedImageValue | null | undefined)[];
+}
+
+export function LotOwnersBenefitsSection({
+  images = [],
+}: LotOwnersBenefitsSectionProps) {
   return (
     <section
       aria-labelledby="lot-owners-benefits-heading"
@@ -26,7 +35,14 @@ export function LotOwnersBenefitsSection() {
                 index < 2 && "border-b border-[#9e9e9e]/30 pb-7",
               )}
             >
-              <Image src={benefit.icon} alt="" width={48} height={48} />
+              <ManagedImage
+                value={images[index]}
+                fallbackSrc={benefit.icon}
+                fallbackAlt=""
+                decorative
+                width={48}
+                height={48}
+              />
               <div className="flex flex-col gap-1">
                 <h3 className="font-display text-2xl leading-6 font-semibold">
                   {benefit.title}

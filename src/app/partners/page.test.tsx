@@ -9,7 +9,7 @@ it("renders the static Figma Partners page and active navigation", async () => {
   expect(partnersPageModule).not.toBeNull();
   if (!partnersPageModule) return;
 
-  render(<partnersPageModule.default />);
+  render(await partnersPageModule.default());
 
   expect(
     screen.getByRole("main", { name: "TRUX partners" }),

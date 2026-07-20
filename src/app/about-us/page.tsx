@@ -6,6 +6,8 @@ import { AboutPrinciplesSection } from "@/components/about-us/about-principles-s
 import { AboutTeamSection } from "@/components/about-us/about-team-section";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { SiteHeader } from "@/components/marketing/site-header";
+import { sanityFetch } from "@/sanity/lib/live";
+import { ABOUT_PAGE_IMAGES_QUERY } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "About TRUX | Secure Truck Parking",
@@ -14,18 +16,32 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about-us" },
 };
 
-export default function AboutUsPage() {
+export default async function AboutUsPage() {
+  const { data: websiteImages } = await sanityFetch({
+    query: ABOUT_PAGE_IMAGES_QUERY,
+  });
+  const brand = websiteImages?.brand;
+
   return (
     <>
-      <SiteHeader activeItem="About Us" />
+      <SiteHeader activeItem="About Us" logo={brand?.headerLogo} />
       <main aria-label="TRUX about us">
-        <AboutHero />
+        <AboutHero image={websiteImages?.about?.heroImage} />
         <AboutOriginStory />
         <AboutPrinciplesSection />
-        <AboutTeamSection />
+        <AboutTeamSection decoration={websiteImages?.about?.teamDecoration} />
         <AboutCtaSection />
       </main>
-      <SiteFooter activeItem={null} variant="light" />
+      <SiteFooter
+        activeItem={null}
+        variant="light"
+        logo={brand?.footerLogo}
+        socialIcons={{
+          facebook: brand?.facebookIcon,
+          linkedIn: brand?.linkedInIcon,
+          instagram: brand?.instagramIcon,
+        }}
+      />
     </>
   );
 }

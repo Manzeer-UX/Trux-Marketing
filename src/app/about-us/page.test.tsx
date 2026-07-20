@@ -64,7 +64,7 @@ it("renders the static Figma About Us page and active navigation", async () => {
   expect(aboutPageModule).not.toBeNull();
   if (!aboutPageModule) return;
 
-  render(<aboutPageModule.default />);
+  render(await aboutPageModule.default());
 
   expect(
     screen.getByRole("main", { name: "TRUX about us" }),

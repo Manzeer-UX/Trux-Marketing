@@ -1,6 +1,9 @@
 import { ChevronDown } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
+import {
+  ManagedImage,
+  type ManagedImageValue,
+} from "@/components/sanity/managed-image";
 import {
   headerMoreNavItems,
   headerNavItems,
@@ -12,22 +15,31 @@ type FooterNavLabel = (typeof headerNavItems)[number]["label"];
 interface SiteFooterProps {
   activeItem?: FooterNavLabel | null;
   variant?: "dark" | "light";
+  logo?: ManagedImageValue | null;
+  socialIcons?: {
+    facebook?: ManagedImageValue | null;
+    linkedIn?: ManagedImageValue | null;
+    instagram?: ManagedImageValue | null;
+  };
 }
 
 const socialItems = [
   {
     label: "Facebook",
     src: "/assets/social-facebook.svg",
+    imageKey: "facebook",
     href: "https://www.facebook.com/truxparking/",
   },
   {
     label: "LinkedIn",
     src: "/assets/social-linkedin.svg",
+    imageKey: "linkedIn",
     href: "https://www.linkedin.com/company/trux-parking",
   },
   {
     label: "Instagram",
     src: "/assets/social-instagram.svg",
+    imageKey: "instagram",
     href: "https://www.instagram.com/truxparking/",
   },
 ] as const;
@@ -50,6 +62,8 @@ const legalItems = [
 export function SiteFooter({
   activeItem = "Drivers",
   variant = "dark",
+  logo,
+  socialIcons,
 }: SiteFooterProps) {
   const isLight = variant === "light";
 
@@ -68,9 +82,10 @@ export function SiteFooter({
         <div className="flex w-full flex-col items-center gap-10 wide:h-7 wide:flex-row wide:justify-between wide:gap-10">
           <div className="flex flex-col items-center gap-10 wide:flex-row wide:gap-12">
             <div className="flex h-7 w-20 shrink-0 items-center justify-center">
-              <Image
-                src="/assets/trux-logo.svg"
-                alt="TRUX Parking"
+              <ManagedImage
+                value={logo}
+                fallbackSrc="/assets/trux-logo.svg"
+                fallbackAlt="TRUX Parking"
                 width={80}
                 height={21}
                 className="h-[21px] w-20"
@@ -168,9 +183,11 @@ export function SiteFooter({
                   isLight ? "hover:bg-midnight/5" : "hover:bg-white/10",
                 )}
               >
-                <Image
-                  src={item.src}
-                  alt=""
+                <ManagedImage
+                  value={socialIcons?.[item.imageKey]}
+                  fallbackSrc={item.src}
+                  fallbackAlt=""
+                  decorative
                   width={24}
                   height={24}
                   className={cn(!isLight && "brightness-0 invert")}
