@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
+import { FAQList } from "@/components/FAQList";
 import { LotOwnersBenefitsSection } from "@/components/lot-owners/lot-owners-benefits-section";
 import { LotOwnersCtaSection } from "@/components/lot-owners/lot-owners-cta-section";
-import { LotOwnersFaqSection } from "@/components/lot-owners/lot-owners-faq-section";
 import { LotOwnersHero } from "@/components/lot-owners/lot-owners-hero";
 import { LotOwnersStatsSection } from "@/components/lot-owners/lot-owners-stats-section";
 import { LotOwnersStepsSection } from "@/components/lot-owners/lot-owners-steps-section";
 import { LotOwnersTestimonialsSection } from "@/components/lot-owners/lot-owners-testimonials-section";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { SiteHeader } from "@/components/marketing/site-header";
+import { sanityFetch } from "@/sanity/lib/live";
+import { FAQS_QUERY, type FAQ } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "List Your Parking Lot | TRUX",
@@ -16,7 +18,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/lot-owners" },
 };
 
-export default function LotOwnersPage() {
+export default async function LotOwnersPage() {
+  const { data } = await sanityFetch({
+    query: FAQS_QUERY,
+    params: { pageType: "lot-owners" },
+  });
+  const faqs = data as FAQ[];
+
   return (
     <>
       <SiteHeader activeItem="Lot Owners" />
@@ -26,7 +34,7 @@ export default function LotOwnersPage() {
         <LotOwnersStepsSection />
         <LotOwnersBenefitsSection />
         <LotOwnersTestimonialsSection />
-        <LotOwnersFaqSection />
+        <FAQList faqs={faqs} variant="light" />
         <LotOwnersCtaSection />
       </main>
       <SiteFooter activeItem={null} variant="light" />

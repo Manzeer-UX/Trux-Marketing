@@ -1,9 +1,40 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
+import { vi } from "vitest";
 import HomePage from "@/app/page";
 
+const sanityFetch = vi.hoisted(() => vi.fn());
+
+vi.mock("@/sanity/lib/live", () => ({ sanityFetch }));
+
+const driverFaqs = [
+  {
+    _id: "driver-faq-1",
+    question: "How do I reserve a TRUX parking space?",
+    answer: "Reserve directly in the TRUX app.",
+    order: 1,
+    pageType: "drivers",
+  },
+  {
+    _id: "driver-faq-2",
+    question: "Can I park both my truck and trailer?",
+    answer: "Yes, when the selected lot has space available.",
+    order: 2,
+    pageType: "drivers",
+  },
+];
+
+async function renderHomePage() {
+  render(await HomePage());
+}
+
+beforeEach(() => {
+  sanityFetch.mockReset();
+  sanityFetch.mockResolvedValue({ data: driverFaqs });
+});
+
 describe("TRUX marketing page", () => {
-  it("renders the primary navigation and hero", () => {
-    render(<HomePage />);
+  it("renders the primary navigation and hero", async () => {
+    await renderHomePage();
 
     expect(
       screen.getByRole("navigation", { name: "Primary navigation" }),
@@ -21,16 +52,16 @@ describe("TRUX marketing page", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders all four metrics", () => {
-    render(<HomePage />);
+  it("renders all four metrics", async () => {
+    await renderHomePage();
 
     for (const value of ["200+", "25", "10K +", "24/7"]) {
       expect(screen.getByText(value)).toBeInTheDocument();
     }
   });
 
-  it("renders the benefits, coverage, and testimonials", () => {
-    render(<HomePage />);
+  it("renders the benefits, coverage, and testimonials", async () => {
+    await renderHomePage();
 
     expect(
       screen.getByRole("heading", {
@@ -51,8 +82,8 @@ describe("TRUX marketing page", () => {
     ).toHaveAttribute("href", "/locations");
   });
 
-  it("uses named split layouts only at the wide desktop breakpoint", () => {
-    render(<HomePage />);
+  it("uses named split layouts only at the wide desktop breakpoint", async () => {
+    await renderHomePage();
 
     const valuePropsSection = screen.getByRole("region", {
       name: "Why drivers choose TRUX.",
@@ -89,8 +120,8 @@ describe("TRUX marketing page", () => {
     expect(testimonialsLayout).not.toHaveClass("lg:h-[510px]");
   });
 
-  it("renders header and footer navigation as links with meaningful destinations", () => {
-    render(<HomePage />);
+  it("renders header and footer navigation as links with meaningful destinations", async () => {
+    await renderHomePage();
 
     const primaryNavigation = screen.getByRole("navigation", {
       name: "Primary navigation",
@@ -210,8 +241,8 @@ describe("TRUX marketing page", () => {
     ).toHaveAttribute("id", "why-trux");
   });
 
-  it("renders account actions as links with exact destinations", () => {
-    render(<HomePage />);
+  it("renders account actions as links with exact destinations", async () => {
+    await renderHomePage();
 
     expect(screen.getByRole("link", { name: "Sign In" })).toHaveAttribute(
       "href",
@@ -225,8 +256,8 @@ describe("TRUX marketing page", () => {
     ).toHaveAttribute("href", "https://trucklots.com/");
   });
 
-  it("keeps the compact header until the wide breakpoint and renders the map surface", () => {
-    render(<HomePage />);
+  it("keeps the compact header until the wide breakpoint and renders the map surface", async () => {
+    await renderHomePage();
 
     expect(
       screen.getByRole("navigation", { name: "Primary navigation" }),
@@ -246,8 +277,8 @@ describe("TRUX marketing page", () => {
     ).toHaveClass("whitespace-nowrap");
   });
 
-  it("matches the Figma hero with separate content and Google map columns", () => {
-    render(<HomePage />);
+  it("matches the Figma hero with separate content and Google map columns", async () => {
+    await renderHomePage();
 
     const hero = document.getElementById("hero-heading")?.closest("section");
     const layout = hero?.firstElementChild;
@@ -273,8 +304,8 @@ describe("TRUX marketing page", () => {
     expect(map).toHaveClass("h-full", "w-full");
   });
 
-  it("renders four labeled search controls without submission behavior", () => {
-    const { container } = render(<HomePage />);
+  it("renders four labeled search controls without submission behavior", async () => {
+    const { container } = render(await HomePage());
 
     expect(container.querySelector("form")).not.toBeInTheDocument();
     expect(
@@ -304,8 +335,8 @@ describe("TRUX marketing page", () => {
     expect(dates).toHaveAttribute("aria-haspopup", "dialog");
   });
 
-  it("allows every search popup to extend beyond the hero boundary", () => {
-    render(<HomePage />);
+  it("allows every search popup to extend beyond the hero boundary", async () => {
+    await renderHomePage();
 
     const hero = document.getElementById("hero-heading")?.closest("section");
 
@@ -336,8 +367,8 @@ describe("TRUX marketing page", () => {
     ).toBeInTheDocument();
   });
 
-  it("raises each open search popup above the following fields", () => {
-    render(<HomePage />);
+  it("raises each open search popup above the following fields", async () => {
+    await renderHomePage();
 
     for (const name of ["Type", "Number of spots", "Dates"]) {
       const control = screen.getByRole("combobox", { name });
@@ -356,8 +387,8 @@ describe("TRUX marketing page", () => {
     }
   });
 
-  it("opens and selects a booking type from the Figma dropdown", () => {
-    render(<HomePage />);
+  it("opens and selects a booking type from the Figma dropdown", async () => {
+    await renderHomePage();
 
     const parkingType = screen.getByRole("combobox", { name: "Type" });
     expect(parkingType).toHaveAttribute("aria-expanded", "false");
@@ -391,8 +422,8 @@ describe("TRUX marketing page", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("opens a Figma spots dropdown matching the input width", () => {
-    render(<HomePage />);
+  it("opens a Figma spots dropdown matching the input width", async () => {
+    await renderHomePage();
 
     const numberOfSpots = screen.getByRole("combobox", {
       name: "Number of spots",
@@ -425,8 +456,8 @@ describe("TRUX marketing page", () => {
     expect(numberOfSpots).toHaveAttribute("aria-expanded", "false");
   });
 
-  it("opens a full-field-width Figma calendar and selects a date range", () => {
-    render(<HomePage />);
+  it("opens a full-field-width Figma calendar and selects a date range", async () => {
+    await renderHomePage();
 
     const dates = screen.getByRole("combobox", { name: "Dates" });
     expect(dates).toHaveAttribute("aria-expanded", "false");
@@ -462,8 +493,8 @@ describe("TRUX marketing page", () => {
     expect(dates).toHaveAttribute("aria-expanded", "false");
   });
 
-  it("changes the calendar month and displays the year", () => {
-    render(<HomePage />);
+  it("changes the calendar month and displays the year", async () => {
+    await renderHomePage();
 
     fireEvent.click(screen.getByRole("combobox", { name: "Dates" }));
 
@@ -495,8 +526,8 @@ describe("TRUX marketing page", () => {
     expect(within(calendar).getByText("December 2025")).toBeInTheDocument();
   });
 
-  it("shows a decorative dropdown indicator for each parking select", () => {
-    render(<HomePage />);
+  it("shows a decorative dropdown indicator for each parking select", async () => {
+    await renderHomePage();
 
     for (const name of ["Type", "Number of spots"]) {
       const combobox = screen.getByRole("combobox", { name });
@@ -522,8 +553,8 @@ describe("TRUX marketing page", () => {
     );
   });
 
-  it("renders the FAQ accordion and app download surfaces", () => {
-    render(<HomePage />);
+  it("renders the FAQ accordion and app download surfaces", async () => {
+    await renderHomePage();
 
     expect(
       screen.getByRole("heading", {
@@ -532,22 +563,21 @@ describe("TRUX marketing page", () => {
       }),
     ).toBeInTheDocument();
     const faqToggles = screen.getAllByRole("button", {
-      name: /Expand answer for:/,
+      name: /How do I reserve|Can I park/,
     });
 
-    expect(faqToggles).toHaveLength(7);
+    expect(faqToggles).toHaveLength(2);
     for (const toggle of faqToggles) {
       expect(toggle).toHaveAttribute("aria-expanded", "false");
     }
     expect(
-      screen.getAllByText(
-        "More information about this TRUX parking question will be available soon.",
-      ),
-    ).toHaveLength(7);
+      screen.queryByText("Reserve directly in the TRUX app."),
+    ).not.toBeInTheDocument();
 
     const firstFaqToggle = faqToggles[0]!;
     fireEvent.click(firstFaqToggle);
     expect(firstFaqToggle).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByText("Reserve directly in the TRUX app.")).toBeVisible();
     expect(
       screen.getByText(
         "Book, access, and manage your spot all from your phone.",
@@ -561,14 +591,14 @@ describe("TRUX marketing page", () => {
     expect(screen.getByRole("contentinfo")).toBeInTheDocument();
   });
 
-  it("contains no submitting form", () => {
-    const { container } = render(<HomePage />);
+  it("contains no submitting form", async () => {
+    const { container } = render(await HomePage());
 
     expect(container.querySelector("form")).toBeNull();
   });
 
-  it("exposes accessible telephone entry without a form", () => {
-    render(<HomePage />);
+  it("exposes accessible telephone entry without a form", async () => {
+    await renderHomePage();
     const phoneInput = screen.getByRole("textbox", {
       name: "Mobile phone number",
     });
@@ -578,8 +608,8 @@ describe("TRUX marketing page", () => {
     expect(phoneInput.closest("form")).toBeNull();
   });
 
-  it("uses exact wide heights and non-submitting lower-page actions", () => {
-    const { container } = render(<HomePage />);
+  it("uses exact wide heights and non-submitting lower-page actions", async () => {
+    const { container } = render(await HomePage());
     const appSection = screen.getByRole("region", {
       name: "Book, access, and manage your spot all from your phone.",
     });
