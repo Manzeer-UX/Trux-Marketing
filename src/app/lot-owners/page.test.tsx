@@ -2,6 +2,11 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { vi } from "vitest";
 import { LotOwnersCtaSection } from "@/components/lot-owners/lot-owners-cta-section";
 import { LotOwnersHero } from "@/components/lot-owners/lot-owners-hero";
+import { FAQS_QUERY } from "@/sanity/lib/queries";
+
+const sanityFetch = vi.hoisted(() => vi.fn());
+
+vi.mock("@/sanity/lib/live", () => ({ sanityFetch }));
 
 it("lets lot owners edit their values and updates the monthly estimate", () => {
   render(<LotOwnersHero />);
@@ -66,7 +71,19 @@ it("renders the static Figma Lot Owners page and active navigation", async () =>
   expect(lotOwnersPageModule).not.toBeNull();
   if (!lotOwnersPageModule) return;
 
-  render(<lotOwnersPageModule.default />);
+  sanityFetch.mockResolvedValueOnce({
+    data: [
+      {
+        _id: "lot-owner-faq-1",
+        question: "How do owners get paid?",
+        answer: "Owners receive revenue deposits from TRUX each month.",
+        order: 1,
+        pageType: "lot-owners",
+      },
+    ],
+  });
+
+  render(await lotOwnersPageModule.default());
 
   expect(
     screen.getByRole("main", { name: "TRUX lot owners" }),
@@ -136,7 +153,14 @@ it("renders the static Figma Lot Owners page and active navigation", async () =>
     name: "Frequently Asked Questions",
   });
   expect(faqSection).toHaveClass("wide:min-h-[464px]", "wide:px-20");
-  expect(within(faqSection).getAllByRole("button")).toHaveLength(5);
+  expect(
+    within(faqSection).getByText("How do owners get paid?"),
+  ).toBeInTheDocument();
+  expect(within(faqSection).getAllByRole("button")).toHaveLength(1);
+  expect(sanityFetch).toHaveBeenCalledWith({
+    query: FAQS_QUERY,
+    params: { pageType: "lot-owners" },
+  });
 
   expect(
     screen.getByRole("region", { name: "No cost. No contract. No effort." }),

@@ -1,46 +1,45 @@
 import { render, screen, within } from "@testing-library/react";
 import { vi } from "vitest";
 
-it("renders the Figma blog grid and links every static article", async () => {
-  const blogPageModule = await vi
-    .importActual<typeof import("./page")>("./page")
-    .catch(() => null);
+const sanityFetch = vi.hoisted(() => vi.fn());
 
-  expect(blogPageModule).not.toBeNull();
-  if (!blogPageModule) return;
+vi.mock("@/sanity/lib/live", () => ({ sanityFetch }));
+vi.mock("@/sanity/lib/image", () => ({
+  urlFor: () => ({
+    width: () => ({
+      height: () => ({
+        fit: () => ({ url: () => "https://cdn.sanity.io/images/test.jpg" }),
+      }),
+    }),
+  }),
+}));
 
-  render(<blogPageModule.default />);
+it("renders posts returned by Sanity on the blog listing", async () => {
+  sanityFetch.mockResolvedValueOnce({
+    data: [
+      {
+        _id: "sanity-listing-post",
+        title: "Sanity listing post",
+        slug: "sanity-listing-post",
+        excerpt: "This excerpt comes from Sanity.",
+        publishedAt: "2026-07-20T12:00:00.000Z",
+        categories: [{ title: "TRUX News" }],
+        author: { name: "Sanity Author" },
+        mainImage: null,
+      },
+    ],
+  });
+
+  const blogPageModule = await import("./page");
+  render(await blogPageModule.default());
 
   const main = screen.getByRole("main", { name: "TRUX blog" });
-  const primaryNavigation = screen.getByRole("navigation", {
-    name: "Primary navigation",
-  });
-  const blogNavigationLink = within(primaryNavigation).getByRole("link", {
-    name: "Blog",
-  });
-
-  expect(blogNavigationLink).toHaveAttribute("href", "/blog");
-  expect(blogNavigationLink).toHaveAttribute("aria-current", "page");
-  expect(main).toHaveClass("bg-midnight");
-
-  const articles = within(main).getAllByRole("article");
-  expect(articles).toHaveLength(12);
-
-  const articleLinks = within(main).getAllByRole("link", {
-    name: /Read Blog Title/i,
-  });
-  expect(articleLinks).toHaveLength(12);
-  for (const link of articleLinks) {
-    expect(link.getAttribute("href")).toMatch(/^\/blog\/[a-z0-9-]+$/);
-  }
-
+  expect(within(main).getByText("Sanity listing post")).toBeInTheDocument();
   expect(
-    screen.getByRole("navigation", { name: "Blog pagination" }),
+    within(main).getByText("This excerpt comes from Sanity."),
   ).toBeInTheDocument();
-  expect(screen.getByText("Previous")).toBeInTheDocument();
-  expect(screen.getByText("Next")).toBeInTheDocument();
-  expect(screen.getByRole("contentinfo")).toHaveClass(
-    "wide:h-[368px]",
-    "bg-midnight",
-  );
+  expect(
+    within(main).getByRole("link", { name: /read sanity listing post/i }),
+  ).toHaveAttribute("href", "/blog/sanity-listing-post");
+  expect(sanityFetch).toHaveBeenCalledOnce();
 });

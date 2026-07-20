@@ -1,8 +1,12 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { BlogCard } from "@/components/blog/blog-card";
-import { blogPosts } from "@/constants/blog-content";
+import type { BlogPostListing } from "@/sanity/lib/queries";
 
-export function BlogListing() {
+interface BlogListingProps {
+  posts: BlogPostListing[];
+}
+
+export function BlogListing({ posts }: BlogListingProps) {
   return (
     <>
       <section
@@ -10,8 +14,8 @@ export function BlogListing() {
         className="mx-auto w-full max-w-[1280px] px-6 py-16 wide:py-24"
       >
         <div className="grid grid-cols-1 gap-x-4 gap-y-20 sm:grid-cols-2 wide:grid-cols-4">
-          {blogPosts.map((post) => (
-            <BlogCard key={post.slug} post={post} />
+          {posts.map((post) => (
+            <BlogCard key={post._id} post={post} />
           ))}
         </div>
       </section>
@@ -33,16 +37,6 @@ export function BlogListing() {
               className="flex size-8 items-center justify-center rounded-lg border border-white/15 bg-white/5"
             >
               1
-            </span>
-          </li>
-          <li>
-            <span className="flex size-8 items-center justify-center rounded-lg">
-              2
-            </span>
-          </li>
-          <li>
-            <span className="flex size-8 items-center justify-center rounded-lg">
-              3
             </span>
           </li>
           <li>

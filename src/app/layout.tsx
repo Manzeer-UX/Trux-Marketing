@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Squada_One, Syne } from "next/font/google";
 import type { ReactNode } from "react";
+import { SanityLive } from "@/sanity/lib/live";
 import "./globals.css";
 
 const inter = Inter({
@@ -56,6 +57,7 @@ export default function RootLayout({
         className={`${inter.variable} ${syne.variable} ${squadaOne.variable} font-body`}
       >
         {children}
+        <SanityLive />
       </body>
     </html>
   );
