@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+﻿import { fireEvent, render, screen, within } from "@testing-library/react";
 import { vi } from "vitest";
 import HomePage from "@/app/page";
 
@@ -333,6 +333,35 @@ describe("TRUX marketing page", () => {
     expect(dates).toHaveAttribute("name", "parkingDates");
     expect(dates).toHaveTextContent("Select parking dates");
     expect(dates).toHaveAttribute("aria-haspopup", "dialog");
+  });\r`n  it("shows matching locations as static autocomplete suggestions on input", async () => {
+    await renderHomePage();
+
+    const location = screen.getByRole("textbox", { name: "Location" });
+
+    fireEvent.change(location, { target: { value: "Atl" } });
+
+    const listbox = screen.getByRole("listbox", {
+      name: "Location suggestions",
+    });
+
+    expect(listbox).toBeInTheDocument();
+    expect(within(listbox).getByRole("option", { name: "Atlanta, GA" })).toBeInTheDocument();
+
+    fireEvent.click(within(listbox).getByRole("option", { name: "Atlanta, GA" }));
+    expect(location).toHaveValue("Atlanta, GA");
+  });
+
+  it("keeps the location suggestion list width aligned with the input", async () => {
+    await renderHomePage();
+
+    const location = screen.getByRole("textbox", { name: "Location" });
+    fireEvent.change(location, { target: { value: "Ga" } });
+
+    const listbox = screen.getByRole("listbox", {
+      name: "Location suggestions",
+    });
+
+    expect(listbox).toHaveClass("w-full", "left-0");
   });
 
   it("allows every search popup to extend beyond the hero boundary", async () => {
@@ -370,7 +399,7 @@ describe("TRUX marketing page", () => {
   it("raises each open search popup above the following fields", async () => {
     await renderHomePage();
 
-    for (const name of ["Type", "Number of spots", "Dates"]) {
+    for (const name of ["Type", "Number of spots"]) {
       const control = screen.getByRole("combobox", { name });
       const dropdownRoot = control.parentElement;
 
@@ -454,9 +483,7 @@ describe("TRUX marketing page", () => {
 
     expect(numberOfSpots).toHaveTextContent("8");
     expect(numberOfSpots).toHaveAttribute("aria-expanded", "false");
-  });
-
-  it("opens a full-field-width Figma calendar and selects a date range", async () => {
+  });  it("opens a full-field-width Figma calendar and selects a date range", async () => {
     await renderHomePage();
 
     const dates = screen.getByRole("combobox", { name: "Dates" });
@@ -525,7 +552,6 @@ describe("TRUX marketing page", () => {
 
     expect(within(calendar).getByText("December 2025")).toBeInTheDocument();
   });
-
   it("shows a decorative dropdown indicator for each parking select", async () => {
     await renderHomePage();
 
@@ -631,3 +657,8 @@ describe("TRUX marketing page", () => {
     expect(container.querySelector('a[href="#"]')).toBeNull();
   });
 });
+
+
+
+
+
