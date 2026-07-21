@@ -1,6 +1,7 @@
 import { DriverMap } from "@/components/marketing/driver-map";
 import { ParkingDatesDropdown } from "@/components/marketing/parking-dates-dropdown";
 import { ParkingTypeDropdown } from "@/components/marketing/parking-type-dropdown";
+import { LocationSearchAutocomplete } from "@/components/marketing/location-search-autocomplete";
 import { SearchDropdown } from "@/components/marketing/search-dropdown";
 import { Button } from "@/components/ui/button";
 
@@ -73,19 +74,18 @@ export function HeroSection() {
                 className="grid h-[198px] w-full max-w-[540px] grid-cols-2 rounded-md"
               >
                 <div className="col-span-2">
-                  <SearchField
+                <SearchField
+                  id="parking-location"
+                  label="Location"
+                  className="rounded-t-md border-b border-border"
+                >
+                  <LocationSearchAutocomplete
                     id="parking-location"
-                    label="Location"
-                    className="rounded-t-md border-b border-border"
-                  >
-                    <input
-                      id="parking-location"
-                      type="text"
-                      name="location"
-                      placeholder="City, state, or zip code"
-                      className={controlClassName}
-                    />
-                  </SearchField>
+                    name="location"
+                    placeholder="City, state, or zip code"
+                    className={controlClassName}
+                  />
+                </SearchField>
                 </div>
                 <SearchField
                   id="parking-type"
